@@ -1,0 +1,10 @@
+#game settings
+RES = WIDTH, HEIGHT = 1000, 600
+FPS = 60
+
+#car settings
+MAX_SPEED = 4
+ACCELERATION = 0.5
+ROTATION_SPEED = 0.2
+FRICTION = 0.001
+
