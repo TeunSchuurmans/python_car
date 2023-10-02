@@ -20,3 +20,6 @@ Pygame Car Racing Tutorial #1 - Moving The Car
 Self-Driving Car with JavaScript Course – Neural Networks and Machine Learning
 
     for learning car mechanics, collision detection and for understanding neural networks
+
+
+

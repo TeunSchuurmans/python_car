@@ -32,7 +32,7 @@ class Game:
         
 
 if __name__ == '__main__':
-    game = Game()
-    game.run()
+    game = Game()   #creates an instance of the Game  class
+    game.run()  #calls the run function inside of the Game class
 
         
