@@ -10,7 +10,7 @@ class Car:
     friction = FRICTION
     car_width = 25
     car_height = 50
-    car_image = pg.transform.rotate(pg.transform.scale(pg.image.load('images/car.png'), (car_height, car_width)), 90)
+    car_image = pg.transform.rotate(pg.transform.scale(pg.image.load(CAR_IMAGE), (car_height, car_width)), 90)
 
 
     def __init__(self, game):
@@ -64,19 +64,14 @@ class Car:
         self.x -= dx    #adds the X increment to the car's X position                       
         self.y -= dy    #adds the Y increment to the car's Y position
 
-        
-
-    
     def draw(self): 
         center_X = self.x + (Car.car_width / 2)
         center_Y = self.y + (Car.car_height / 2)
 
         rotated_image = pg.transform.rotate(Car.car_image, self.angle)
-        self.game.screen.blit(rotated_image, (self.x, self.y))
+        rotated_rect = rotated_image.get_rect(center=(center_X, center_Y))
 
-        pg.draw.circle(self.game.screen, 'white', (center_X, center_Y), 2)
+        self.game.screen.blit(rotated_image, rotated_rect.topleft)
         
-        
-
     def update(self):
         self.movement()
