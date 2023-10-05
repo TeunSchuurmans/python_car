@@ -3,6 +3,7 @@ RES = WIDTH, HEIGHT = 1600, 900
 FPS = 60
 
 #car settings
+CAR_IMAGE = 'images/car.png'
 CAR_POSITION = WIDTH / 2, HEIGHT / 2
 MAX_SPEED = 8
 ACCELERATION = 0.08
