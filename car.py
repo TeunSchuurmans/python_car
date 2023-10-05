@@ -25,7 +25,7 @@ class Car:
 
         dx, dy = 0, 0   #delta x and delta y
 
-        #self.rotation_speed = (self.speed/13)/self.friction
+        self.rotation_speed = (self.speed/13)/self.friction
 
         input = pg.key.get_pressed()
 
@@ -33,18 +33,33 @@ class Car:
             self.speed = min(self.speed + Car.acceleration, Car.max_speed)
         else:               #if the W key is not pressed, the speed will decrement by the friction
             self.speed = max(self.speed - Car.friction, 0)
+
+        if input[pg.K_s]:   #brakes
+            self.speed /= 1.01
         
         if input[pg.K_a]:
-            self.angle += self.rotation_speed *10    #rotates the car to the left
+            self.angle += self.rotation_speed    #rotates the car to the left
             
         if input[pg.K_d]:
-            self.angle -= self.rotation_speed *10    #rotates the car to the right
+            self.angle -= self.rotation_speed    #rotates the car to the right
             
 
         radian = math.radians(self.angle)                  #converts the angle into a radiant
 
         dx = math.sin(radian) * self.speed
         dy = math.cos(radian) * self.speed
+
+        if self.x >= WIDTH + Car.car_width:
+            self.x = 0
+
+        if self.x <= 0 - Car.car_width:
+            self.x = WIDTH
+
+        if self.y >= HEIGHT + Car.car_height:
+            self.y = 0
+
+        if self.y <= 0 - Car.car_height:
+            self.y = HEIGHT
 
         self.x -= dx    #adds the X increment to the car's X position                       
         self.y -= dy    #adds the Y increment to the car's Y position
@@ -57,10 +72,9 @@ class Car:
         center_Y = self.y + (Car.car_height / 2)
 
         rotated_image = pg.transform.rotate(Car.car_image, self.angle)
-        
         self.game.screen.blit(rotated_image, (self.x, self.y))
 
-        car_center = pg.draw.circle(self.game.screen, 'white', (center_X, center_Y), 2)
+        pg.draw.circle(self.game.screen, 'white', (center_X, center_Y), 2)
         
         
 
