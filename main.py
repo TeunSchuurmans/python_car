@@ -2,6 +2,7 @@ import pygame as pg
 import sys
 from settings import *
 from car import *
+from road import *
 
 
 class Game:
@@ -13,6 +14,7 @@ class Game:
 
     def new_game(self):
         self.car = Car(self)
+        self.road = Road(self)
 
     def update(self):
         self.car.update()
@@ -21,8 +23,10 @@ class Game:
         pg.display.set_caption(f'{self.clock.get_fps() :.1f}')
 
     def draw(self):
-        self.screen.fill('black')   #draws the screen black
+        self.screen.fill('black')    #draws the screen black
+        #self.road.draw() 
         self.car.draw()
+        
 
     def check_events(self): #listens for events
         for event in pg.event.get():
