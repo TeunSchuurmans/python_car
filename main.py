@@ -10,6 +10,7 @@ class Game:
         pg.init()   #initializes pygame
         self.screen = pg.display.set_mode(RES)  #sets the screen resolution
         self.clock = pg.time.Clock()    #creates an instance of Clock()
+        self.delta_time = 1
         self.new_game()
 
     def new_game(self):
@@ -19,12 +20,12 @@ class Game:
     def update(self):
         self.car.update()
         pg.display.flip()   #updates the screen
-        self.clock.tick(FPS)    # adds a delay
+        self.delta_time = self.clock.tick(FPS)   # adds a delay
         pg.display.set_caption(f'{self.clock.get_fps() :.1f}')
 
     def draw(self):
         self.screen.fill('black')    #draws the screen black
-        #self.road.draw() 
+        self.road.draw() 
         self.car.draw()
         
 

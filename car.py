@@ -9,8 +9,8 @@ class Car:
     acceleration = ACCELERATION 
     friction = FRICTION
     max_rotation_speed = MAX_ROTATION_SPEED
-    car_width = 25
-    car_height = 50
+    car_width = CAR_WIDTH
+    car_height = CAR_HEIGHT
 
 
     def __init__(self, game):
@@ -22,11 +22,7 @@ class Car:
         self.speed = 0
         self.rotation_speed = 0
 
-    def movement(self):
-
-        dx, dy = 0, 0   #delta x and delta y
-
-        self.rotation_speed = (self.speed / Car.max_speed) * Car.max_rotation_speed   #adjusts the rotation speed based on the speed
+    def listen_inputs(self):
 
         input = pg.key.get_pressed()
 
@@ -36,21 +32,31 @@ class Car:
             self.speed = max(self.speed - Car.friction, 0)
 
         if input[pg.K_s]:   #brakes
-            self.speed /= 1.01
+            self.speed /= BRAKE_SPEED
 
-        
         if input[pg.K_a]:
             self.angle += self.rotation_speed    #rotates the car to the left
             
         if input[pg.K_d]:
             self.angle -= self.rotation_speed    #rotates the car to the right
-            
+
+    def movement(self):
+
+        #print(self.game.delta_time)
+        #self.speed *= self.game.delta_time
+        dx, dy = 0, 0   #delta x and delta y
+
+        self.rotation_speed = (self.speed / Car.max_speed) * Car.max_rotation_speed   #adjusts the rotation speed based on the speed
 
         radian = math.radians(self.angle)   #converts the angle into a radiant
 
         dx = math.sin(radian) * self.speed
         dy = math.cos(radian) * self.speed
 
+        self.x -= dx    #adds the X increment to the car's X position                       
+        self.y -= dy    #adds the Y increment to the car's Y position
+
+    def check_collision(self):
         if self.x >= WIDTH + Car.car_width:
             self.x = 0
 
@@ -62,18 +68,18 @@ class Car:
 
         if self.y <= 0 - Car.car_height:
             self.y = HEIGHT
-
-        self.x -= dx    #adds the X increment to the car's X position                       
-        self.y -= dy    #adds the Y increment to the car's Y position
+        
 
     def draw(self): 
-        center_X = self.x + (Car.car_width / 2)
+        center_X = self.x + (Car.car_width / 2) #gets the center coordinate of the car
         center_Y = self.y + (Car.car_height / 2)
 
-        rotated_car = pg.transform.rotate(self.car, self.angle)
-        car_rect = rotated_car.get_rect(center=(center_X, center_Y))
+        rotated_car = pg.transform.rotate(self.car, self.angle) #rotates the car by the angle
+        car_rect = rotated_car.get_rect(center=(center_X, center_Y)) #gets the center coordinate of the rotated car
 
         self.game.screen.blit(rotated_car, car_rect.topleft)
         
     def update(self):
+        self.listen_inputs()
+        self.check_collision()
         self.movement()
