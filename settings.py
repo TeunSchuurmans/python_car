@@ -15,4 +15,8 @@ BRAKE_SPEED = 1.01
 
 #road settings
 GRASS_IMAGE = 'images/grass.png'
+FINISH_IMAGE = 'images/finish.png'
+STRAIGHT_IMAGE = 'images/straight.png'
+CORNER_IMAGE = 'images/corner.png'
+
 
