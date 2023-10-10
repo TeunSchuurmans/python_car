@@ -45,8 +45,11 @@ class Car:
         #print(self.game.delta_time)
         #self.speed *= self.game.delta_time
         dx, dy = 0, 0   #delta x and delta y
-
-        self.rotation_speed = (self.speed / Car.max_speed) * Car.max_rotation_speed   #adjusts the rotation speed based on the speed
+        
+        if self.speed > Car.max_speed / 10:
+            self.rotation_speed = Car.max_rotation_speed
+        else:
+            self.rotation_speed = 0   
 
         radian = math.radians(self.angle)   #converts the angle into a radiant
 

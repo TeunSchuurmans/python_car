@@ -14,7 +14,7 @@ Python Object Oriented Programming (OOP) - For Beginners
 
     for understanding the basics of OOP
 
-Pygame Car Racing Tutorial #1 - Moving The Car
+Pygame Car Racing Tutorial #1 - Moving The Car and https://asawicki.info/Mirror/Car%20Physics%20for%20Games/Car%20Physics%20for%20Games.html
 
     for learning how to make car mechanics in pygame
 
