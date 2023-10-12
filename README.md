@@ -16,7 +16,7 @@ Python Object Oriented Programming (OOP) - For Beginners
 
 Pygame Car Racing Tutorial #1 - Moving The Car,
 https://asawicki.info/Mirror/Car%20Physics%20for%20Games/Car%20Physics%20for%20Games.html,
-https://www.youtube.com/watch?v=Nd-qTMdgKVE
+Simple Driving Game Physics - How To Steer A Car Accurately
 
     for learning how to make car mechanics in pygame
 
@@ -24,5 +24,15 @@ Self-Driving Car with JavaScript Course – Neural Networks and Machine Learning
 
     for learning car mechanics, collision detection and for understanding neural networks
 
+
+
+To do list:
+
+    detla-time speed
+    road-map algorithm
+    collision detection
+    raycasting system
+    neural network
+    add comments to code
 
 
