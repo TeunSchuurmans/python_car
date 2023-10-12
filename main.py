@@ -21,10 +21,9 @@ class Game:
         self.car.update()
         pg.display.flip()   #updates the screen
         self.delta_time = self.clock.tick(FPS)   # adds a delay
-        pg.display.set_caption(f'{self.clock.get_fps() :.1f}')
+        pg.display.set_caption(f'{self.clock.get_fps() :.1f}')  #shows the current fps
 
     def draw(self):
-        self.screen.fill('black')    #draws the screen black
         self.road.draw() 
         self.car.draw()
         
@@ -45,6 +44,6 @@ class Game:
 
 if __name__ == '__main__':
     game = Game()   #creates an instance of the Game  class
-    game.run()  #calls the run function inside of the Game class
+    game.run()  #calls the run function inside of the Game object
 
         

@@ -22,7 +22,6 @@ class Car:
         self.angle = 0
         self.speed = 0
         self.rotation_speed = 0
-        print(start_pos)
         
 
     def listen_inputs(self):

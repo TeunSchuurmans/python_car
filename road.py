@@ -3,12 +3,14 @@ from settings import *
 
 
 class Road:
-    rows = HEIGHT // TILE_SIZE
-    columns = WIDTH // TILE_SIZE
+    tile = TILE_SIZE
+    tile_center = TILE_CENTER
+    rows = HEIGHT // tile
+    columns = WIDTH // tile
 
     def __init__(self, game):
         self.game = game
-        self.road_map = [[0 for _ in range(Road.columns)] for _ in range(Road.rows)]
+        self.road_map = [[False for _ in range(Road.columns)] for _ in range(Road.rows)]
         self.road_map = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 5, 3, 3, 4, 0, 0, 0, 0, 5, 3, 3, 3, 3, 4, 0],
@@ -22,7 +24,7 @@ class Road:
         ]
 
         self.road_surface = pg.Surface((WIDTH, HEIGHT))
-        self.start_pos = WIDTH//2, HEIGHT//2
+        self.start_pos = WIDTH/2, HEIGHT/2
         self.generate_map()
 
     def generate_map(self):
@@ -31,7 +33,9 @@ class Road:
                 match item:
                     case 1:
                         Tile(self, 'finish', row_index, col_index)
-                        self.start_pos = col_index * (TILE_SIZE *1.3), row_index * (TILE_SIZE *1.3)
+                        
+                        #sets the car's starting position to the center of the finish
+                        self.start_pos = (col_index * Road.tile) + Road.tile_center - (CAR_WIDTH / 2), (row_index * Road.tile) + Road.tile_center  - (CAR_HEIGHT / 2)
                     case 2:
                         Tile(self, 'ver', row_index, col_index)
                     case 3:
@@ -74,4 +78,4 @@ class Tile:
         self.blit()   
     
     def blit(self):
-        self.road.road_surface.blit(Tile.images[self.key], (self.column * 100, self.row * 100))
+        self.road.road_surface.blit(Tile.images[self.key], (self.column * TILE_SIZE, self.row * TILE_SIZE))
