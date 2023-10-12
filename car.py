@@ -8,19 +8,22 @@ class Car:
     max_speed = MAX_SPEED   #defining the class constants
     acceleration = ACCELERATION 
     friction = FRICTION
-    max_rotation_speed = MAX_ROTATION_SPEED
+    base_rotation_speed = 1
+    cornering_speed = 11
     car_width = CAR_WIDTH
     car_height = CAR_HEIGHT
 
 
-    def __init__(self, game):
+    def __init__(self, game, start_pos):
         
         self.game = game
         self.car = pg.transform.rotate(pg.transform.scale(pg.image.load(CAR_IMAGE), (Car.car_height, Car.car_width)), 90)
-        self.x, self.y = CAR_POSITION
+        self.x, self.y = start_pos
         self.angle = 0
         self.speed = 0
         self.rotation_speed = 0
+        print(start_pos)
+        
 
     def listen_inputs(self):
 
@@ -44,12 +47,12 @@ class Car:
 
         #print(self.game.delta_time)
         #self.speed *= self.game.delta_time
-        dx, dy = 0, 0   #delta x and delta y
-        
-        if self.speed > Car.max_speed / 10:
-            self.rotation_speed = Car.max_rotation_speed
+        dx, dy = 0, 0   #delta x and delta y  
+
+        if self.speed <= 0:
+            self.rotation_speed = 0
         else:
-            self.rotation_speed = 0   
+            self.rotation_speed = Car.base_rotation_speed / (1+ (self.speed / Car.cornering_speed))
 
         radian = math.radians(self.angle)   #converts the angle into a radiant
 

@@ -3,8 +3,8 @@ from settings import *
 
 
 class Road:
-    rows = HEIGHT // 100
-    columns = WIDTH // 100
+    rows = HEIGHT // TILE_SIZE
+    columns = WIDTH // TILE_SIZE
 
     def __init__(self, game):
         self.game = game
@@ -22,6 +22,7 @@ class Road:
         ]
 
         self.road_surface = pg.Surface((WIDTH, HEIGHT))
+        self.start_pos = WIDTH//2, HEIGHT//2
         self.generate_map()
 
     def generate_map(self):
@@ -30,6 +31,7 @@ class Road:
                 match item:
                     case 1:
                         Tile(self, 'finish', row_index, col_index)
+                        self.start_pos = col_index * (TILE_SIZE *1.3), row_index * (TILE_SIZE *1.3)
                     case 2:
                         Tile(self, 'ver', row_index, col_index)
                     case 3:
@@ -50,13 +52,14 @@ class Road:
                         
 
 class Tile:
-    corner_image = pg.transform.scale(pg.image.load(CORNER_IMAGE), (100, 100))
+    dimensions = (TILE_SIZE, TILE_SIZE)
+    corner_image = pg.transform.scale(pg.image.load(CORNER_IMAGE), dimensions)
 
     images = {
-        'grass' : pg.transform.scale(pg.image.load(GRASS_IMAGE), (100,100)),
-        'finish' : pg.transform.scale(pg.image.load(FINISH_IMAGE), (100,100)),
-        'ver' : pg.transform.scale(pg.image.load(STRAIGHT_IMAGE), (100,100)),
-        'hor' : pg.transform.rotate(pg.transform.scale(pg.image.load(STRAIGHT_IMAGE), (100, 100)),90),
+        'grass' : pg.transform.scale(pg.image.load(GRASS_IMAGE), dimensions),
+        'finish' : pg.transform.scale(pg.image.load(FINISH_IMAGE), dimensions),
+        'ver' : pg.transform.scale(pg.image.load(STRAIGHT_IMAGE), dimensions),
+        'hor' : pg.transform.rotate(pg.transform.scale(pg.image.load(STRAIGHT_IMAGE), dimensions),90),
         'L_D' : pg.transform.rotate(corner_image, 270),
         'D_R' : corner_image,
         'R_U' : pg.transform.rotate(corner_image, 90),

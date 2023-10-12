@@ -14,9 +14,9 @@ class Game:
         self.new_game()
 
     def new_game(self):
-        self.car = Car(self)
         self.road = Road(self)
-
+        self.car = Car(self, self.road.start_pos)
+    
     def update(self):
         self.car.update()
         pg.display.flip()   #updates the screen
