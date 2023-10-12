@@ -1,4 +1,5 @@
 import pygame as pg
+import random
 from settings import * 
 
 
@@ -16,17 +17,11 @@ class Road:
 
     def generate_map(self):
         self.tile_map = [[False for _ in range(Road.columns)] for _ in range(Road.rows)] #clears the map so it can be regenerated
-        self.tile_map = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 5, 3, 3, 4, 0, 0, 0, 0, 5, 3, 3, 3, 3, 4, 0],
-        [0, 2, 0, 0, 2, 0, 0, 0, 0, 2, 0, 5, 3, 3, 7, 0],
-        [0, 1, 0, 0, 6, 3, 3, 4, 0, 2, 0, 2, 0, 0, 0, 0],
-        [0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 6, 3, 3, 4, 0],
-        [0, 6, 3, 3, 4, 0, 0, 2, 0, 6, 3, 3, 4, 0, 2, 0],
-        [0, 0, 0, 0, 2, 0, 0, 6, 3, 3, 3, 3, 7, 0, 2, 0],
-        [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0],
-        [0, 0, 0, 0, 6, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 0],
-        ]
+
+        curr_row = random.randint(1, len(self.tile_map) -2)
+        curr_col = random.randint(1, len(self.tile_map[0]) - 2)
+        self.tile_map[curr_row][curr_col] = 1
+
         self.init_map()
 
     def init_map(self):     #takes the tile map and draws the according tiles onto a surface
