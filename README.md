@@ -29,7 +29,8 @@ Self-Driving Car with JavaScript Course – Neural Networks and Machine Learning
 To do list:
 
     detla-time speed
-    road-map algorithm
+    road-map algorithm. hamiltonian cycle?!?
+    basic car sounds
     collision detection
     raycasting system
     neural network
