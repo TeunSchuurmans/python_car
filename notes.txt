@@ -1,0 +1,20 @@
+
+To do list:
+
+    detla-time speed
+    road-map algorithm. hamiltonian cycle?!?
+    basic car sounds
+    collision detection
+    raycasting system
+    neural network
+    add comments to code
+
+
+collision detection plan
+
+    make a list of all road tiles
+    if a road is horizontal, check if y axis is out of tile
+    if a road is vertical, check if x axis is out of tile
+
+
+    

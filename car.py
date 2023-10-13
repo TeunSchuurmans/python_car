@@ -61,18 +61,10 @@ class Car:
         self.x -= dx    #adds the X increment to the car's X position                       
         self.y -= dy    #adds the Y increment to the car's Y position
 
-    def check_collision(self):
-        if self.x >= WIDTH + Car.car_width:
-            self.x = 0
+        self.check_collision(dx, dy)
 
-        if self.x <= 0 - Car.car_width:
-            self.x = WIDTH
-
-        if self.y >= HEIGHT + Car.car_height:
-            self.y = 0
-
-        if self.y <= 0 - Car.car_height:
-            self.y = HEIGHT
+    def check_collision(self, dx, dy):
+        return True not in self.game.road.road_dict
         
 
     def draw(self): 
@@ -86,5 +78,4 @@ class Car:
         
     def update(self):
         self.listen_inputs()
-        self.check_collision()
         self.movement()
