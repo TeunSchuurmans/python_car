@@ -46,7 +46,7 @@ class Road:
         for row_index, row in enumerate(self.tile_map):
             for col_index, tile in enumerate(row):
                 if tile:
-                    self.road_dict[(col_index, row_index)] = tile
+                    self.road_dict[(len(self.road_dict),(col_index, row_index))] = tile
         #print(self.road_dict)
 
 

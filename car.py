@@ -23,6 +23,17 @@ class Car:
         self.speed = 0
         self.rotation_speed = 0
         
+    @property
+    def current_tile(self):
+        return (self.x // TILE_SIZE , self.y // TILE_SIZE) 
+    
+    @property
+    def next_tile(self):
+        pass
+
+    @property
+    def prev_tile(self):
+        pass
 
     def listen_inputs(self):
 
@@ -58,17 +69,14 @@ class Car:
         dx = math.sin(radian) * self.speed
         dy = math.cos(radian) * self.speed
 
-        if self.check_collision():
-            pass
-        else:
-            self.x -= dx    #adds the X increment to the car's X position                       
-            self.y -= dy    #adds the Y increment to the car's Y position
+        
+        self.x -= dx    #adds the X increment to the car's X position                       
+        self.y -= dy    #adds the Y increment to the car's Y position
 
         self.check_collision(dx, dy)
 
-    def check_collision(self, index):
-        prev_tile = index[0] - 1, index[1] - 1
-        next_tile = index[0] + 1, index[1] + 1
+    def check_collision(self):
+        curr_tile = (self.x // TILE_SIZE, self.y // TILE_SIZE)
 
     def draw(self): 
         center_X = self.x + (Car.car_width / 2) #gets the center coordinate of the car
@@ -78,10 +86,6 @@ class Car:
         car_rect = rotated_car.get_rect(center=(center_X, center_Y)) #gets the center coordinate of the rotated car
 
         self.game.screen.blit(rotated_car, car_rect.topleft)
-
-    @property
-    def current_tile(self):
-        return (self.x // TILE_SIZE , self.y // TILE_SIZE) 
 
     def update(self):
         self.listen_inputs()

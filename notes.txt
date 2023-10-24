@@ -23,10 +23,10 @@ collision detection idea
     have a dict of all the road pieces
 
     road = {
-        (0,0) : hor,
-        (0,0) : hor,
-        (0,0) : hor,
-        (0,0) : hor,
+        (0, (0,0)) : hor,
+        (1, (0,0)) : hor,
+        (2, (0,0)) : hor,
+        (3, (0,0)) : hor,
     }
 
     get the indexes of the current tile
@@ -48,6 +48,8 @@ collision detection idea
         self.y -= dy
 
     
+
+get the current tile (x, y) -> check_collision() - >
 
 
 
