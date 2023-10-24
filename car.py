@@ -58,14 +58,17 @@ class Car:
         dx = math.sin(radian) * self.speed
         dy = math.cos(radian) * self.speed
 
-        self.x -= dx    #adds the X increment to the car's X position                       
-        self.y -= dy    #adds the Y increment to the car's Y position
+        if self.check_collision():
+            pass
+        else:
+            self.x -= dx    #adds the X increment to the car's X position                       
+            self.y -= dy    #adds the Y increment to the car's Y position
 
         self.check_collision(dx, dy)
 
-    def check_collision(self, dx, dy):
-        return True not in self.game.road.road_dict
-        
+    def check_collision(self, index):
+        prev_tile = index[0] - 1, index[1] - 1
+        next_tile = index[0] + 1, index[1] + 1
 
     def draw(self): 
         center_X = self.x + (Car.car_width / 2) #gets the center coordinate of the car
@@ -75,7 +78,12 @@ class Car:
         car_rect = rotated_car.get_rect(center=(center_X, center_Y)) #gets the center coordinate of the rotated car
 
         self.game.screen.blit(rotated_car, car_rect.topleft)
-        
+
+    @property
+    def current_tile(self):
+        return (self.x // TILE_SIZE , self.y // TILE_SIZE) 
+
     def update(self):
         self.listen_inputs()
         self.movement()
+        print(self.current_tile) 

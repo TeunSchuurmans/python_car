@@ -47,7 +47,7 @@ class Road:
             for col_index, tile in enumerate(row):
                 if tile:
                     self.road_dict[(col_index, row_index)] = tile
-        print(self.road_dict)
+        #print(self.road_dict)
 
 
     #takes the tile map and draws the according tiles onto a surface
@@ -65,12 +65,16 @@ class Road:
                     case 3:
                         Tile(self, 'hor', row_index, col_index)
                     case 4:
+                        Tile(self, 'grass', row_index, col_index)
                         Tile(self, 'L_D', row_index, col_index)
                     case 5:
+                        Tile(self, 'grass', row_index, col_index)
                         Tile(self, 'D_R', row_index, col_index)
                     case 6:
+                        Tile(self, 'grass', row_index, col_index)
                         Tile(self, 'R_U', row_index, col_index)
                     case 7:
+                        Tile(self, 'grass', row_index, col_index)
                         Tile(self, 'U_L', row_index, col_index)
                     case _:
                         Tile(self, 'grass', row_index, col_index)

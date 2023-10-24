@@ -1,14 +1,14 @@
 #game settings
-RES = WIDTH, HEIGHT = 1600, 900
+RES = WIDTH, HEIGHT = 1000, 600
 FPS = 144
 
 #road settings
 TILE_SIZE = 100
 TILE_CENTER = TILE_SIZE / 2
 GRASS_IMAGE = 'images/grass.png'
-FINISH_IMAGE = 'images/finish.png'
-STRAIGHT_IMAGE = 'images/straight.png'
-CORNER_IMAGE = 'images/corner.png'
+FINISH_IMAGE = 'images/grid.png'
+STRAIGHT_IMAGE = 'images/grid.png'
+CORNER_IMAGE = 'images/grid.png'
 
 #car settings
 CAR_IMAGE = 'images/car.png'
