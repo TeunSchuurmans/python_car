@@ -6,50 +6,21 @@ To do list:
     car sounds
     background music
     collision detection
+    incorporate store_road_tiles() into init_road_surface()
     raycasting system
     neural network
     add comments to code
+    camera that follows the car
 
 
 collision detection idea
 
     make a list of all road tiles
-    check the current tile the car is on
-    if a road is horizontal, check if y axis is out of tile
-    if a road is vertical, check if x axis is out of tile
-
-
-
-    have a dict of all the road pieces
-
-    road = {
-        (0, (0,0)) : hor,
-        (1, (0,0)) : hor,
-        (2, (0,0)) : hor,
-        (3, (0,0)) : hor,
-    }
-
-    get the indexes of the current tile
-        index = (self.x // TILE_SIZE , self.y // TILE_SIZE)
-
-    
-    find the tile in the dict
-        road[index[0], index[1]]
-
-    find the previous and next tile in the dict
-        pass
-
-    check collision foreach based on the tile type
-
-    if check_collision(index):                                       def check_collision(self, index):
-        pass                                                            prev_tile = 0
-    else:                                                               
-        self.x -= dx
-        self.y -= dy
-
+    check the current type of tile the car is currently on
+    check collision based on the current tile
     
 
-get the current tile (x, y) -> check_collision() - >
+
 
 
 

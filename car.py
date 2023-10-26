@@ -26,11 +26,36 @@ class Car:
         
 
     #returns the current tile the car is on
-    #for collision detection    
+    #for collision detection
+
+    @property
+    def car_center_x(self):
+        return self.x + (CAR_WIDTH / 2)
+
+    @property
+    def car_center_y(self):
+        return self.y + (CAR_HEIGHT / 2)
+       
     @property
     def current_tile(self):
         return ((self.x + (CAR_WIDTH / 2)) // TILE_SIZE, (self.y + (CAR_HEIGHT / 2)) // TILE_SIZE)
     
+    @property
+    def left_tile_border(self):
+        return self.current_tile[0] * 100
+
+    @property
+    def down_tile_border(self):
+        return self.current_tile[1] * 100 + 100
+
+    @property
+    def right_tile_border(self):
+        return self.current_tile[0] * 100 + 100
+
+    @property
+    def up_tile_border(self):
+        return self.current_tile[1] * 100
+
     def listen_inputs(self):
 
         input = pg.key.get_pressed()
@@ -65,41 +90,42 @@ class Car:
         dx = math.sin(radian) * self.speed
         dy = math.cos(radian) * self.speed
 
-        self.check_collision()
-
-        self.x -= dx                    
-        self.y -= dy    
+        self.check_collision(dx, dy)    
 
     #for now the collision detection will only be for the center of the car
     #in the future, collision will "destroy" the car
-    def check_collision(self):
+    def check_collision(self, dx, dy):
         if self.current_tile in self.road.road_dict:
             match self.road.road_dict[self.current_tile[0], self.current_tile[1]]:
+                #finish
                 case 1:
-                    print('finish')
+                    pass
+                #vertical
                 case 2:
-                    print('vertical')
+                    pass
+                #horizontal
                 case 3: 
-                    print('horizontal')
+                    pass
+                #left->down
                 case 4:
-                    print('left to down')
+                    pass
+                #down->right
                 case 5:
-                    print('down to right')
+                    pass
+                #right->up
                 case 6:
-                    print('right to up')
+                    pass
+                #up->left
                 case 7:
-                    print('up to left')
+                    pass
     
     def draw(self): 
-        center_X = self.x + (Car.car_width / 2)
-        center_Y = self.y + (Car.car_height / 2)
-
         #this makes sure the car rotates around its center
         rotated_car = pg.transform.rotate(self.car, self.angle)
-        car_rect = rotated_car.get_rect(center=(center_X, center_Y))
+        car_rect = rotated_car.get_rect(center=(self.center_x, self.center_y))
 
         self.game.screen.blit(rotated_car, car_rect.topleft)
-        pg.draw.circle(self.game.screen, 'white', (center_X, center_Y), 3)
+        pg.draw.circle(self.game.screen, 'white', (self.center_x, self.center_y), 3)
 
     def update(self):
         self.listen_inputs()

@@ -40,7 +40,8 @@ class Road:
         self.store_road_tiles()
         self.init_road_surface()
 
-    # adds all road pieces to a dictionary with the according indexes for collision detection, WORK IN PROGRESS
+    #adds all road pieces to a dictionary with the according indexes for collision detection
+    #might be incorporated into init_road_surface()
     def store_road_tiles(self):    
         for row_index, row in enumerate(self.tile_map):
             for col_index, tile in enumerate(row):
@@ -54,32 +55,25 @@ class Road:
                 match tile:
                     case 1:
                         Tile(self, 'finish', row_index, col_index)
-                        Tile(self, 'grid', row_index, col_index)
                         
                         #sets the car's starting position to the center of the finish, might be moved to generate_map()
                         self.start_pos = (col_index * Road.tile) + Road.tile_center - (CAR_WIDTH / 2), (row_index * Road.tile) + Road.tile_center  - (CAR_HEIGHT / 2)
                     case 2:
                         Tile(self, 'ver', row_index, col_index)
-                        Tile(self, 'grid', row_index, col_index)
                     case 3:
                         Tile(self, 'hor', row_index, col_index)
-                        Tile(self, 'grid', row_index, col_index)
                     case 4:
                         Tile(self, 'grass', row_index, col_index)
                         Tile(self, 'L_D', row_index, col_index)
-                        Tile(self, 'grid', row_index, col_index)
                     case 5:
                         Tile(self, 'grass', row_index, col_index)
                         Tile(self, 'D_R', row_index, col_index)
-                        Tile(self, 'grid', row_index, col_index)
                     case 6:
                         Tile(self, 'grass', row_index, col_index)
                         Tile(self, 'R_U', row_index, col_index)
-                        Tile(self, 'grid', row_index, col_index)
                     case 7:
                         Tile(self, 'grass', row_index, col_index)
                         Tile(self, 'U_L', row_index, col_index)
-                        Tile(self, 'grid', row_index, col_index)
                     case _:
                         Tile(self, 'grass', row_index, col_index)
 

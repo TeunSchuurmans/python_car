@@ -7,9 +7,9 @@ from road import *
 
 class Game:
     def __init__(self):
-        pg.init()   #initializes pygame
-        self.screen = pg.display.set_mode(RES)  #sets the screen resolution
-        self.clock = pg.time.Clock()    #creates an instance of Clock()
+        pg.init()   
+        self.screen = pg.display.set_mode(RES)  
+        self.clock = pg.time.Clock()    
         self.delta_time = 1
         self.new_game()
 
@@ -19,29 +19,27 @@ class Game:
     
     def update(self):
         self.car.update()
-        pg.display.flip()   #updates the screen
-        self.delta_time = self.clock.tick(FPS)   # adds a delay
+        pg.display.flip()  
+        self.delta_time = self.clock.tick(FPS)
         pg.display.set_caption(f'{self.clock.get_fps() :.1f}')  #shows the current fps
 
     def draw(self):
         self.road.draw() 
-        self.car.draw()
-        
+        self.car.draw() 
 
-    def check_events(self): #listens for events
+    def check_events(self): 
         for event in pg.event.get():
             if event.type == pg.QUIT or (event.type == pg.KEYUP and event.key == pg.K_ESCAPE):
-                pg.quit()   #stops pygame
-                sys.exit()  #stops the program
+                pg.quit()   
+                sys.exit()  
 
-
-    def run(self): #main game loop
+    #main game loop
+    def run(self): 
         while True:
             self.check_events()
             self.update()
             self.draw()
         
-
 if __name__ == '__main__':
     game = Game()   #creates an instance of the Game  class
     game.run()  #calls the run function inside of the Game object
