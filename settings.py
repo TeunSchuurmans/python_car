@@ -1,5 +1,5 @@
 #game settings
-RES = WIDTH, HEIGHT = 1600, 900
+RES = WIDTH, HEIGHT = 1000, 600
 FPS = 144
 
 #road settings

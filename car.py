@@ -38,7 +38,7 @@ class Car:
        
     @property
     def current_tile(self):
-        return ((self.x + (CAR_WIDTH / 2)) // TILE_SIZE, (self.y + (CAR_HEIGHT / 2)) // TILE_SIZE)
+        return ((self.car_center_x + (CAR_WIDTH / 2)) // TILE_SIZE, (self.car_center_y + (CAR_HEIGHT / 2)) // TILE_SIZE)
     
     @property
     def left_tile_border(self):
@@ -92,6 +92,10 @@ class Car:
 
         self.check_collision(dx, dy)    
 
+    #checks if the car is between the 2 borders
+    def in_range(self, min, max, pos):
+        return min < pos <= max
+
     #for now the collision detection will only be for the center of the car
     #in the future, collision will "destroy" the car
     def check_collision(self, dx, dy):
@@ -118,15 +122,17 @@ class Car:
                 #up->left
                 case 7:
                     pass
-    
+
     def draw(self): 
         #this makes sure the car rotates around its center
         rotated_car = pg.transform.rotate(self.car, self.angle)
-        car_rect = rotated_car.get_rect(center=(self.center_x, self.center_y))
+        car_rect = rotated_car.get_rect(center=(self.car_center_x, self.car_center_y))
 
         self.game.screen.blit(rotated_car, car_rect.topleft)
-        pg.draw.circle(self.game.screen, 'white', (self.center_x, self.center_y), 3)
+        pg.draw.circle(self.game.screen, 'white', (self.car_center_x, self.car_center_y), 3)
 
     def update(self):
         self.listen_inputs()
-        self.movement() 
+        self.movement()
+        #print(f'car position:{self.x}, border:{self.left_tile_border}, car center:{self.car_center_x}')
+        print(self.current_tile, self.right_tile_border, round(self.car_center_x, 2))
