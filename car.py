@@ -5,7 +5,7 @@ from settings import *
 
 
 class Car:
-    max_speed = MAX_SPEED   #defining the class constants
+    max_speed = MAX_SPEED
     acceleration = ACCELERATION 
     friction = FRICTION
     rotation_speed = ROTATION_SPEED

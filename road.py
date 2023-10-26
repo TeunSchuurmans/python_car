@@ -12,13 +12,13 @@ class Road:
     def __init__(self, game):
         self.game = game
         self.road_dict = {}
-        self.map_surface = pg.Surface((WIDTH, HEIGHT))
+        self.road_surface = pg.Surface((WIDTH, HEIGHT))
         self.start_pos = WIDTH/2, HEIGHT/2
-        self.generate_map()
+        self.generate_road()
 
 
     #road generating algorithm, STILL IN PROGRESS!!!
-    def generate_map(self):
+    def generate_road(self):
         self.tile_map = [[False for _ in range(Road.columns)] for _ in range(Road.rows)] #clears the map so it can be regenerated
 
         #curr_row = random.randint(1, len(self.tile_map) -2)
@@ -38,20 +38,18 @@ class Road:
         [0, 0, 0, 0, 6, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 0],
         ]
         
-        self.init_road_borders()
-        self.blit_tiles()
+        self.store_road_tiles()
+        self.init_road_surface()
 
-    # adds all road pieces to a dictionary with the according coordinates for collision detection, WORK IN PROGRESS
-    def init_road_borders(self):    
+    # adds all road pieces to a dictionary with the according indexes for collision detection, WORK IN PROGRESS
+    def store_road_tiles(self):    
         for row_index, row in enumerate(self.tile_map):
             for col_index, tile in enumerate(row):
                 if tile:
                     self.road_dict[(len(self.road_dict),(col_index, row_index))] = tile
-        #print(self.road_dict)
 
-
-    #takes the tile map and draws the according tiles onto a surface
-    def blit_tiles(self):    
+    #takes the tile map and draws the tiles onto the road surface
+    def init_road_surface(self):    
         for row_index, row in enumerate(self.tile_map):
             for col_index, tile in enumerate(row):
                 match tile:
@@ -86,9 +84,9 @@ class Road:
                     case _:
                         Tile(self, 'grass', row_index, col_index)
 
-    #takes the tile map and draws the according tiles onto a surface
+    #takes the road surface and draws it onto the main screen
     def draw(self):         
-        self.game.screen.blit(self.map_surface, (0, 0))
+        self.game.screen.blit(self.road_surface, (0, 0))
                         
 
 class Tile:
@@ -115,4 +113,4 @@ class Tile:
         self.blit()   
     
     def blit(self):
-        self.road.map_surface.blit(Tile.images[self.key], (self.column * TILE_SIZE, self.row * TILE_SIZE))
+        self.road.road_surface.blit(Tile.images[self.key], (self.column * TILE_SIZE, self.row * TILE_SIZE))
