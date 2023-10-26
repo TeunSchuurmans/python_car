@@ -14,11 +14,12 @@ class Car:
     car_height = CAR_HEIGHT
 
 
-    def __init__(self, game, start_pos):
+    def __init__(self, game, road):
         
         self.game = game
+        self.road = road
         self.car = pg.transform.rotate(pg.transform.scale(pg.image.load(CAR_IMAGE), (Car.car_height, Car.car_width)), 90)
-        self.x, self.y = start_pos
+        self.x, self.y = road.start_pos
         self.angle = 0
         self.speed = 0
         self.rotation_speed = 0
@@ -64,15 +65,31 @@ class Car:
         dx = math.sin(radian) * self.speed
         dy = math.cos(radian) * self.speed
 
-        
+        self.check_collision()
+
         self.x -= dx                    
         self.y -= dy    
 
     #for now the collision detection will only be for the center of the car
     #in the future, collision will "destroy" the car
     def check_collision(self):
-        pass
-
+        if self.current_tile in self.road.road_dict:
+            match self.road.road_dict[self.current_tile[0], self.current_tile[1]]:
+                case 1:
+                    print('finish')
+                case 2:
+                    print('vertical')
+                case 3: 
+                    print('horizontal')
+                case 4:
+                    print('left to down')
+                case 5:
+                    print('down to right')
+                case 6:
+                    print('right to up')
+                case 7:
+                    print('up to left')
+    
     def draw(self): 
         center_X = self.x + (Car.car_width / 2)
         center_Y = self.y + (Car.car_height / 2)
@@ -86,5 +103,4 @@ class Car:
 
     def update(self):
         self.listen_inputs()
-        self.movement()
-        print(self.current_tile) 
+        self.movement() 

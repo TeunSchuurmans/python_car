@@ -15,7 +15,7 @@ class Game:
 
     def new_game(self):
         self.road = Road(self)
-        self.car = Car(self, self.road.start_pos)
+        self.car = Car(self, self.road)
     
     def update(self):
         self.car.update()

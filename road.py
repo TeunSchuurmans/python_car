@@ -16,7 +16,6 @@ class Road:
         self.start_pos = WIDTH/2, HEIGHT/2
         self.generate_road()
 
-
     #road generating algorithm, STILL IN PROGRESS!!!
     def generate_road(self):
         self.tile_map = [[False for _ in range(Road.columns)] for _ in range(Road.rows)] #clears the map so it can be regenerated
@@ -46,7 +45,7 @@ class Road:
         for row_index, row in enumerate(self.tile_map):
             for col_index, tile in enumerate(row):
                 if tile:
-                    self.road_dict[(len(self.road_dict),(col_index, row_index))] = tile
+                    self.road_dict[(col_index, row_index)] = tile
 
     #takes the tile map and draws the tiles onto the road surface
     def init_road_surface(self):    
