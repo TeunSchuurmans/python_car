@@ -23,28 +23,23 @@ class Car:
         self.speed = 0
         self.rotation_speed = 0
         
+
+    #returns the current tile the car is on
+    #for collision detection    
     @property
     def current_tile(self):
-        return (self.x // TILE_SIZE , self.y // TILE_SIZE) 
+        return ((self.x + (CAR_WIDTH / 2)) // TILE_SIZE, (self.y + (CAR_HEIGHT / 2)) // TILE_SIZE)
     
-    @property
-    def next_tile(self):
-        pass
-
-    @property
-    def prev_tile(self):
-        pass
-
     def listen_inputs(self):
 
         input = pg.key.get_pressed()
 
-        if input[pg.K_w]:   #if the W key is pressed, the speed will increment by the acceleration
+        if input[pg.K_w]:   
             self.speed = min(self.speed + Car.acceleration, Car.max_speed)
-        else:               #if the W key is not pressed, the speed will decrement by the friction
+        else:               
             self.speed = max(self.speed - Car.friction, 0)
 
-        if input[pg.K_s]:   #brakes
+        if input[pg.K_s]:   #brake
             self.speed /= BRAKE_SPEED
 
         if input[pg.K_a]:
@@ -57,35 +52,37 @@ class Car:
 
         #print(self.game.delta_time)
         #self.speed *= self.game.delta_time
-        dx, dy = 0, 0   #delta x and delta y  
+        dx, dy = 0, 0     
 
         if self.speed <= FRICTION:
             self.rotation_speed = 0
         else:
             self.rotation_speed = Car.rotation_speed / (1+ (self.speed / Car.cornering_speed))
 
-        radian = math.radians(self.angle)   #converts the angle into a radiant
+        radian = math.radians(self.angle)
 
         dx = math.sin(radian) * self.speed
         dy = math.cos(radian) * self.speed
 
         
-        self.x -= dx    #adds the X increment to the car's X position                       
-        self.y -= dy    #adds the Y increment to the car's Y position
+        self.x -= dx                    
+        self.y -= dy    
 
-        self.check_collision(dx, dy)
-
+    #for now the collision detection will only be for the center of the car
+    #in the future, collision will "destroy" the car
     def check_collision(self):
-        curr_tile = (self.x // TILE_SIZE, self.y // TILE_SIZE)
+        pass
 
     def draw(self): 
-        center_X = self.x + (Car.car_width / 2) #gets the center coordinate of the car
+        center_X = self.x + (Car.car_width / 2)
         center_Y = self.y + (Car.car_height / 2)
 
-        rotated_car = pg.transform.rotate(self.car, self.angle) #rotates the car by the angle
-        car_rect = rotated_car.get_rect(center=(center_X, center_Y)) #gets the center coordinate of the rotated car
+        #this makes sure the car rotates around its center
+        rotated_car = pg.transform.rotate(self.car, self.angle)
+        car_rect = rotated_car.get_rect(center=(center_X, center_Y))
 
         self.game.screen.blit(rotated_car, car_rect.topleft)
+        pg.draw.circle(self.game.screen, 'white', (center_X, center_Y), 3)
 
     def update(self):
         self.listen_inputs()

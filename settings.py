@@ -5,10 +5,11 @@ FPS = 144
 #road settings
 TILE_SIZE = 100
 TILE_CENTER = TILE_SIZE / 2
+GRID_IMAGE = 'images/grid.png'
 GRASS_IMAGE = 'images/grass.png'
-FINISH_IMAGE = 'images/grid.png'
-STRAIGHT_IMAGE = 'images/grid.png'
-CORNER_IMAGE = 'images/grid.png'
+FINISH_IMAGE = 'images/finish.png'
+STRAIGHT_IMAGE = 'images/straight.png'
+CORNER_IMAGE = 'images/corner.png'
 
 #car settings
 CAR_IMAGE = 'images/car.png'
