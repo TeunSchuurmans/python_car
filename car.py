@@ -38,7 +38,7 @@ class Car:
        
     @property
     def current_tile(self):
-        return ((self.car_center_x + (CAR_WIDTH / 2)) // TILE_SIZE, (self.car_center_y + (CAR_HEIGHT / 2)) // TILE_SIZE)
+        return (self.car_center_x // TILE_SIZE, self.car_center_y // TILE_SIZE)
     
     @property
     def left_tile_border(self):
@@ -94,7 +94,12 @@ class Car:
 
     #checks if the car is between the 2 borders
     def in_range(self, min, max, pos):
-        return min < pos <= max
+        if max is None:
+            return (min < pos)
+        if min is None:
+            return (max > pos)
+        else:
+            return (min < pos) and (max > pos)
 
     #for now the collision detection will only be for the center of the car
     #in the future, collision will "destroy" the car
@@ -103,25 +108,43 @@ class Car:
             match self.road.road_dict[self.current_tile[0], self.current_tile[1]]:
                 #finish
                 case 1:
-                    pass
+                    if self.in_range(self.left_tile_border, self.right_tile_border , self.car_center_x - dx):
+                        self.x -= dx
+                    self.y -= dy
                 #vertical
                 case 2:
-                    pass
+                    if self.in_range(self.left_tile_border, self.right_tile_border , self.car_center_x - dx):
+                        self.x -= dx
+                    self.y -= dy
                 #horizontal
                 case 3: 
-                    pass
+                    if self.in_range(self.up_tile_border, self.down_tile_border , self.car_center_y - dy):
+                        self.y -= dy
+                    self.x -= dx
                 #left->down
                 case 4:
-                    pass
+                    if self.in_range(self.up_tile_border, None, self.car_center_y - dy):
+                        self.y -= dy
+                    if self.in_range(None, self.right_tile_border, self.car_center_x - dx):
+                        self.x -= dx
                 #down->right
                 case 5:
-                    pass
+                    if self.in_range(self.up_tile_border, None, self.car_center_y - dy):
+                        self.y -= dy
+                    if self.in_range(self.left_tile_border, None, self.car_center_x - dx):
+                        self.x -= dx
                 #right->up
                 case 6:
-                    pass
+                    if self.in_range(None, self.down_tile_border, self.car_center_y - dy):
+                        self.y -= dy
+                    if self.in_range(self.left_tile_border, None, self.car_center_x - dx):
+                        self.x -= dx
                 #up->left
                 case 7:
-                    pass
+                    if self.in_range(None, self.down_tile_border, self.car_center_y - dy):
+                        self.y -= dy
+                    if self.in_range(None, self.right_tile_border, self.car_center_x - dx):
+                        self.x -= dx
 
     def draw(self): 
         #this makes sure the car rotates around its center
@@ -129,10 +152,9 @@ class Car:
         car_rect = rotated_car.get_rect(center=(self.car_center_x, self.car_center_y))
 
         self.game.screen.blit(rotated_car, car_rect.topleft)
-        pg.draw.circle(self.game.screen, 'white', (self.car_center_x, self.car_center_y), 3)
+        pg.draw.circle(self.game.screen, 'white', (self.car_center_x, self.car_center_y), 1)
 
     def update(self):
         self.listen_inputs()
         self.movement()
         #print(f'car position:{self.x}, border:{self.left_tile_border}, car center:{self.car_center_x}')
-        print(self.current_tile, self.right_tile_border, round(self.car_center_x, 2))

@@ -55,7 +55,7 @@ class Road:
                 match tile:
                     case 1:
                         Tile(self, 'finish', row_index, col_index)
-                        
+    
                         #sets the car's starting position to the center of the finish, might be moved to generate_map()
                         self.start_pos = (col_index * Road.tile) + Road.tile_center - (CAR_WIDTH / 2), (row_index * Road.tile) + Road.tile_center  - (CAR_HEIGHT / 2)
                     case 2:
