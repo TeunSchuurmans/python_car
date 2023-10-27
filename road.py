@@ -1,5 +1,5 @@
 import pygame as pg
-import random
+#import random
 from settings import * 
 
 
@@ -18,7 +18,9 @@ class Road:
 
     #road generating algorithm, STILL IN PROGRESS!!!
     def generate_road(self):
-        self.tile_map = [[False for _ in range(Road.columns)] for _ in range(Road.rows)] #clears the map so it can be regenerated
+
+        #clears the map so it can be regenerated
+        self.tile_map = [[False for _ in range(Road.columns)] for _ in range(Road.rows)]
 
         #curr_row = random.randint(1, len(self.tile_map) -2)
         #curr_col = random.randint(1, len(self.tile_map[0]) - 2)

@@ -3,7 +3,7 @@ import sys
 from settings import *
 from car import *
 from road import *
-
+from raycasting import *
 
 class Game:
     def __init__(self):
@@ -16,6 +16,7 @@ class Game:
     def new_game(self):
         self.road = Road(self)
         self.car = Car(self, self.road)
+        #self.raycaster = Raycaster(self, self.car)
     
     def update(self):
         self.car.update()

@@ -9,7 +9,7 @@ class Car:
     acceleration = ACCELERATION 
     friction = FRICTION
     rotation_speed = ROTATION_SPEED
-    cornering_speed = 11
+    cornering_speed = CORNERING_SPEED
     car_width = CAR_WIDTH
     car_height = CAR_HEIGHT
 
@@ -22,19 +22,17 @@ class Car:
         self.x, self.y = road.start_pos
         self.angle = 0
         self.speed = 0
-        self.rotation_speed = 0
-        
+        self.rotation_speed = 0      
 
     #returns the current tile the car is on
     #for collision detection
-
     @property
     def car_center_x(self):
-        return self.x + (CAR_WIDTH / 2)
+        return self.x + (Car.car_width / 2)
 
     @property
     def car_center_y(self):
-        return self.y + (CAR_HEIGHT / 2)
+        return self.y + (Car.car_height / 2)
        
     @property
     def current_tile(self):
@@ -76,7 +74,7 @@ class Car:
 
     def movement(self):
 
-        #print(self.game.delta_time)
+        print(self.game.delta_time)
         #self.speed *= self.game.delta_time
         dx, dy = 0, 0     
 
@@ -145,6 +143,10 @@ class Car:
                         self.y -= dy
                     if self.in_range(None, self.right_tile_border, self.car_center_x - dx):
                         self.x -= dx
+        
+        else:
+            self.x -= dx
+            self.y -=dy
 
     def draw(self): 
         #this makes sure the car rotates around its center
@@ -152,9 +154,7 @@ class Car:
         car_rect = rotated_car.get_rect(center=(self.car_center_x, self.car_center_y))
 
         self.game.screen.blit(rotated_car, car_rect.topleft)
-        pg.draw.circle(self.game.screen, 'white', (self.car_center_x, self.car_center_y), 1)
 
     def update(self):
         self.listen_inputs()
         self.movement()
-        #print(f'car position:{self.x}, border:{self.left_tile_border}, car center:{self.car_center_x}')
