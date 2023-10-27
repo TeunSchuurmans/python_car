@@ -16,17 +16,19 @@ class Game:
     def new_game(self):
         self.road = Road(self)
         self.car = Car(self, self.road)
-        #self.raycaster = Raycaster(self, self.car)
+        self.raycaster = Raycaster(self, self.car)
     
     def update(self):
         self.car.update()
+        self.raycaster.update()
         pg.display.flip()  
         self.delta_time = self.clock.tick(FPS)
         pg.display.set_caption(f'{self.clock.get_fps() :.1f}')  #shows the current fps
 
     def draw(self):
         self.road.draw() 
-        self.car.draw() 
+        self.car.draw()
+        self.raycaster.draw()
 
     def check_events(self): 
         for event in pg.event.get():
