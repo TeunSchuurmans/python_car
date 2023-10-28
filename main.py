@@ -11,12 +11,12 @@ class Game:
         self.screen = pg.display.set_mode(RES)  
         self.clock = pg.time.Clock()    
         self.delta_time = 1
-        self.new_game()
+        self.init_objects()
 
-    def new_game(self):
+    def init_objects(self):
         self.road = Road(self)
         self.car = Car(self, self.road)
-        self.raycaster = Raycaster(self, self.car)
+        self.raycaster = RayCaster(self, self.car)
     
     def update(self):
         self.car.update()
@@ -36,15 +36,14 @@ class Game:
                 pg.quit()   
                 sys.exit()  
 
-    #main game loop
-    def run(self): 
+    def main_loop(self): 
         while True:
             self.check_events()
             self.update()
             self.draw()
         
 if __name__ == '__main__':
-    game = Game()   #creates an instance of the Game  class
-    game.run()  #calls the run function inside of the Game object
+    game = Game()
+    game.main_loop() 
 
         

@@ -14,8 +14,7 @@ class Car:
     car_height = CAR_HEIGHT
 
 
-    def __init__(self, game, road):
-        
+    def __init__(self, game, road): 
         self.game = game
         self.road = road
         self.car = pg.transform.rotate(pg.transform.scale(pg.image.load(CAR_IMAGE), (Car.car_height, Car.car_width)), 90)
@@ -23,13 +22,13 @@ class Car:
         self.angle = 0
         self.speed = 0
         self.rotation_speed = 0 
+        
 
+    #collision detection properties
     @property
-    def radians(self):
-        return math.radians(self.angle)     
-
-    #returns the current tile the car is on
-    #for collision detection
+    def current_tile(self):
+        return (self.car_center_x // TILE_SIZE, self.car_center_y // TILE_SIZE)
+    
     @property
     def car_center_x(self):
         return self.x + (Car.car_width / 2)
@@ -37,11 +36,7 @@ class Car:
     @property
     def car_center_y(self):
         return self.y + (Car.car_height / 2)
-       
-    @property
-    def current_tile(self):
-        return (self.car_center_x // TILE_SIZE, self.car_center_y // TILE_SIZE)
-    
+           
     @property
     def left_tile_border(self):
         return self.current_tile[0] * 100
@@ -58,6 +53,22 @@ class Car:
     def up_tile_border(self):
         return self.current_tile[1] * 100
 
+
+    #utility functions
+    def in_range(self, min, max, pos):
+        if max is None:
+            return (min < pos)
+        if min is None:
+            return (max > pos)
+        else:
+            return (min < pos) and (max > pos)
+
+    @property
+    def radians(self):
+        return math.radians(self.angle) 
+
+
+    #loop functions
     def listen_inputs(self):
 
         input = pg.key.get_pressed()
@@ -91,8 +102,6 @@ class Car:
 
         self.check_collision(dx, dy)    
 
-    #for now the collision detection will only be for the center of the car
-    #in the future, collision will "destroy" the car
     def check_collision(self, dx, dy):
 
         if self.current_tile in self.road.road_dict:
@@ -141,15 +150,6 @@ class Car:
         else:
             self.x -= dx
             self.y -=dy
-
-    #checks if the car is between the 2 borders
-    def in_range(self, min, max, pos):
-        if max is None:
-            return (min < pos)
-        if min is None:
-            return (max > pos)
-        else:
-            return (min < pos) and (max > pos)
 
     def draw(self): 
         

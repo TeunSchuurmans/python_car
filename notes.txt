@@ -3,21 +3,16 @@ To do list:
 
     detla-time speed
     road-map algorithm. hamiltonian cycle?!?
+    clean up and improve road.py
+    incorporate store_road_tiles() into init_road_surface()
     car sounds
     background music
-    incorporate store_road_tiles() into init_road_surface()
+    change Car class into an abstract car, together with a bot class and player class
     raycasting system
     neural network
-    add comments to code
     camera that follows the car
 
 
-collision detection idea
-
-    make a list of all road tiles
-    check the current type of tile the car is currently on
-    check collision based on the current tile
-    
 
 
 
