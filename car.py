@@ -22,7 +22,11 @@ class Car:
         self.x, self.y = road.start_pos
         self.angle = 0
         self.speed = 0
-        self.rotation_speed = 0      
+        self.rotation_speed = 0 
+
+    @property
+    def radians(self):
+        return math.radians(self.angle)     
 
     #returns the current tile the car is on
     #for collision detection
@@ -74,7 +78,6 @@ class Car:
 
     def movement(self):
 
-        print(self.game.delta_time)
         #self.speed *= self.game.delta_time
         dx, dy = 0, 0     
 
@@ -83,25 +86,15 @@ class Car:
         else:
             self.rotation_speed = Car.rotation_speed / (1+ (self.speed / Car.cornering_speed))
 
-        radian = math.radians(self.angle)
-
-        dx = math.sin(radian) * self.speed
-        dy = math.cos(radian) * self.speed
+        dx = math.sin(self.radians) * self.speed
+        dy = math.cos(self.radians) * self.speed
 
         self.check_collision(dx, dy)    
-
-    #checks if the car is between the 2 borders
-    def in_range(self, min, max, pos):
-        if max is None:
-            return (min < pos)
-        if min is None:
-            return (max > pos)
-        else:
-            return (min < pos) and (max > pos)
 
     #for now the collision detection will only be for the center of the car
     #in the future, collision will "destroy" the car
     def check_collision(self, dx, dy):
+
         if self.current_tile in self.road.road_dict:
             match self.road.road_dict[self.current_tile[0], self.current_tile[1]]:
                 #finish
@@ -142,13 +135,24 @@ class Car:
                     if self.in_range(None, self.down_tile_border, self.car_center_y - dy):
                         self.y -= dy
                     if self.in_range(None, self.right_tile_border, self.car_center_x - dx):
-                        self.x -= dx
-        
+                      self.x -= dx
+
+        #if a player is on grass, there is no collision               
         else:
             self.x -= dx
             self.y -=dy
 
+    #checks if the car is between the 2 borders
+    def in_range(self, min, max, pos):
+        if max is None:
+            return (min < pos)
+        if min is None:
+            return (max > pos)
+        else:
+            return (min < pos) and (max > pos)
+
     def draw(self): 
+        
         #this makes sure the car rotates around its center
         rotated_car = pg.transform.rotate(self.car, self.angle)
         car_rect = rotated_car.get_rect(center=(self.car_center_x, self.car_center_y))
