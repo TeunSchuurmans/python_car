@@ -11,6 +11,9 @@ To do list:
     raycasting system
     neural network
     camera that follows the car
+    update README
+
+    
 
 
 
