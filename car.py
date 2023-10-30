@@ -23,6 +23,19 @@ class Car:
         self.speed = 0
         self.rotation_speed = 0 
         
+    #utility functions
+    def in_range(self, min, max, pos):
+        if max is None:
+            return (min < pos)
+        if min is None:
+            return (max > pos)
+        else:
+            return (min < pos) and (max > pos)
+
+    @property
+    def radians(self):
+        return math.radians(self.angle)
+    
 
     #collision detection properties
     @property
@@ -52,43 +65,29 @@ class Car:
     @property
     def up_tile_border(self):
         return self.current_tile[1] * 100
-
-
-    #utility functions
-    def in_range(self, min, max, pos):
-        if max is None:
-            return (min < pos)
-        if min is None:
-            return (max > pos)
-        else:
-            return (min < pos) and (max > pos)
-
-    @property
-    def radians(self):
-        return math.radians(self.angle) 
-
+ 
 
     #loop functions
     def listen_inputs(self):
 
         input = pg.key.get_pressed()
 
+        #go forward
         if input[pg.K_w]:   
             self.speed = min(self.speed + Car.acceleration, Car.max_speed)
         else:               
             self.speed = max(self.speed - Car.friction, 0)
 
-        if input[pg.K_s]:   #brake
-            self.speed /= BRAKE_SPEED
-
+        #rotate left
         if input[pg.K_a]:
-            self.angle += self.rotation_speed    #rotates the car to the left
-            
+            self.angle += self.rotation_speed   
+
+        #rotate right 
         if input[pg.K_d]:
-            self.angle -= self.rotation_speed    #rotates the car to the right
+            self.angle -= self.rotation_speed   
 
     def movement(self):
-
+        print(self.game.delta_time)
         #self.speed *= self.game.delta_time
         dx, dy = 0, 0     
 
@@ -153,7 +152,7 @@ class Car:
 
     def draw(self): 
         
-        #this makes sure the car rotates around its center
+        #makes sure the car rotates around its center
         rotated_car = pg.transform.rotate(self.car, self.angle)
         car_rect = rotated_car.get_rect(center=(self.car_center_x, self.car_center_y))
 
