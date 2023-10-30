@@ -3,8 +3,9 @@ import math
 from settings import *
 
 class RayCaster:
-    def __init__(self, game, car):
+    def __init__(self, game, road, car):
         self.game = game
+        self.road = road
         self.car = car
         self.car_fov = CAR_FOV
         self.half_fov = self.car_fov / 2
@@ -22,7 +23,25 @@ class RayCaster:
 
     #loop functions
     def cast_rays(self):
-        for x, ray in enumerate(self.ray_ends):
+        for x, _ in enumerate(self.ray_ends):
+
+            dx = 0
+            dy = 0
+            x_depth = 0
+            y_depth = 0
+
+            for tile in len(self.road.tile_map[0][0]):
+                if tile:
+                    x_depth += dx
+                else:
+                    break
+                    
+            for tile in len(self.road.tile_map[0]):
+                if tile:
+                    y_depth += dy
+                else:
+                    break
+
             self.ray_ends[x] = (self.start_point[0] + math.sin(self.ray_angle(x)) * -100, self.start_point[1] + math.cos(self.ray_angle(x)) * -100)
 
     def draw(self):
@@ -32,7 +51,7 @@ class RayCaster:
                 'white',
                 (self.start_point[0], self.start_point[1]),
                 (end_point[0], end_point[1]),
-                2)
+                3)
             pg.draw.circle(self.game.screen,
                 'orange',
                 (end_point[0], end_point[1]),

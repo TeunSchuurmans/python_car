@@ -56,11 +56,11 @@ class Car:
 
     @property
     def down_tile_border(self):
-        return self.current_tile[1] * 100 + 100
+        return self.current_tile[1] * 100 + TILE_SIZE
 
     @property
     def right_tile_border(self):
-        return self.current_tile[0] * 100 + 100
+        return self.current_tile[0] * 100 + TILE_SIZE
 
     @property
     def up_tile_border(self):

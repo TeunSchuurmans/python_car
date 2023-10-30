@@ -16,7 +16,7 @@ class Game:
     def init_objects(self):
         self.road = Road(self)
         self.car = Car(self, self.road)
-        self.raycaster = RayCaster(self, self.car)
+        self.raycaster = RayCaster(self, self.road,self.car)
     
     def update(self):
         self.car.update()
