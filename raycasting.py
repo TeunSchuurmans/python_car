@@ -18,30 +18,49 @@ class RayCaster:
         return (self.car.car_center_x, self.car.car_center_y)
 
     def ray_angle(self, x):
-        return math.radians((self.car.angle - self.half_fov) + self.ray_gap * x) 
+        return math.radians(self.car.angle - self.half_fov + self.ray_gap * x)
+
+    def ray_length(self, side1, side2):
+        return  math.sqrt(side1**2 + side2 **2) 
 
 
     #loop functions
     def cast_rays(self):
         for x, _ in enumerate(self.ray_ends):
+            
+            hor_d = ((math.tan(self.ray_angle(x)) * TILE_SIZE),TILE_SIZE)
+            hor_x_cl= 0
+            hor_y_cl = 0
 
-            dx = 0
-            dy = 0
-            x_depth = 0
-            y_depth = 0
-
-            for tile in len(self.road.tile_map[0][0]):
-                if tile:
-                    x_depth += dx
-                else:
+            ver_d = (TILE_SIZE,(TILE_SIZE / (math.tan(self.ray_angle(x)) + 0.0000001)))
+            ver_x_cl = 0
+            ver_y_cl = 0
+            
+            #horizontal
+            for _ in self.road.tile_map[0]:
+                if 1 == 2:
                     break
-                    
-            for tile in len(self.road.tile_map[0]):
-                if tile:
-                    y_depth += dy
-                else:
-                    break
+                hor_x_cl += hor_d[0]
+                hor_y_cl += hor_d[1]
+                pg.draw.circle(self.game.screen,
+                'orange',
+                (1,1),
+                4)
 
+            #vertical   
+            for _ in self.road.tile_map:
+                if 1 == 2:
+                        break
+                ver_x_cl += ver_d[0]
+                ver_y_cl += ver_d[1]
+                pg.draw.circle(self.game.screen,
+                'orange',
+                (ver_x_cl, ver_y_cl ),
+                4)
+            
+            #collision_point = min(hor_collision, ver_collision)
+
+            #self.ray_ends[x] = collision_point
             self.ray_ends[x] = (self.start_point[0] + math.sin(self.ray_angle(x)) * -100, self.start_point[1] + math.cos(self.ray_angle(x)) * -100)
 
     def draw(self):
