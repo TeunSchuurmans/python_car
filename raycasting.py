@@ -28,34 +28,36 @@ class RayCaster:
     def cast_rays(self):
         for x, _ in enumerate(self.ray_ends):
             
-            hor_d = ((math.tan(self.ray_angle(x)) * TILE_SIZE),TILE_SIZE)
-            hor_x_cl= 0
-            hor_y_cl = 0
+            #variables for horizontal raycasting
+            hor_d = (TILE_SIZE,(TILE_SIZE / (math.tan(self.ray_angle(x)) + -1e6)))
+            hor_x_end= self.car.current_tile[0] * TILE_SIZE
+            hor_y_end = self.car.current_tile[1] * TILE_SIZE
 
-            ver_d = (TILE_SIZE,(TILE_SIZE / (math.tan(self.ray_angle(x)) + 0.0000001)))
-            ver_x_cl = 0
-            ver_y_cl = 0
+            #variables for vertical raycasting
+            ver_d = ((math.tan(self.ray_angle(x)) * TILE_SIZE),TILE_SIZE)
+            ver_x_end = self.car.current_tile[0] * TILE_SIZE
+            ver_y_end = self.car.current_tile[1] * TILE_SIZE
             
             #horizontal
             for _ in self.road.tile_map[0]:
                 if 1 == 2:
                     break
-                hor_x_cl += hor_d[0]
-                hor_y_cl += hor_d[1]
+                hor_x_end += hor_d[0]
+                hor_y_end += hor_d[1]
                 pg.draw.circle(self.game.screen,
                 'orange',
-                (1,1),
+                (hor_x_end, hor_y_end),
                 4)
 
             #vertical   
             for _ in self.road.tile_map:
                 if 1 == 2:
                         break
-                ver_x_cl += ver_d[0]
-                ver_y_cl += ver_d[1]
+                ver_x_end += ver_d[0]
+                ver_y_end += ver_d[1]
                 pg.draw.circle(self.game.screen,
                 'orange',
-                (ver_x_cl, ver_y_cl ),
+                (ver_x_end, ver_y_end),
                 4)
             
             #collision_point = min(hor_collision, ver_collision)
