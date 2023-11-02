@@ -27,18 +27,6 @@ class Road:
         #self.tile_map[curr_row][curr_col] = 1
 
         
-        self.tile_map = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 5, 3, 3, 4, 0, 0, 0, 0, 5, 3, 3, 3, 3, 4, 0],
-        [0, 2, 0, 0, 2, 0, 0, 0, 0, 2, 0, 5, 3, 3, 7, 0],
-        [0, 1, 0, 0, 6, 3, 3, 4, 0, 2, 0, 2, 0, 0, 0, 0],
-        [0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 6, 3, 3, 4, 0],
-        [0, 6, 3, 3, 4, 0, 0, 2, 0, 6, 3, 3, 4, 0, 2, 0],
-        [0, 0, 0, 0, 2, 0, 0, 6, 3, 3, 3, 3, 7, 0, 2, 0],
-        [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0],
-        [0, 0, 0, 0, 6, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 0],
-        ]
-        
         self.store_road_tiles()
         self.init_road_surface()
 
@@ -78,6 +66,7 @@ class Road:
                         Tile(self, 'U_L', row_index, col_index)
                     case _:
                         Tile(self, 'grass', row_index, col_index)
+                        Tile(self, 'grid', row_index, col_index)
 
     #takes the road surface and draws it onto the main screen
     def draw(self):         

@@ -9,7 +9,7 @@ class RayCaster:
         self.car = car
         self.car_fov = CAR_FOV
         self.half_fov = self.car_fov / 2
-        self.ray_gap = self.car_fov / (NUM_OF_RAYS )
+        self.ray_gap = self.car_fov / (NUM_OF_RAYS + -1e6)
         self.ray_ends = [_ for _ in range(NUM_OF_RAYS)]
 
     #utility functions
@@ -30,41 +30,40 @@ class RayCaster:
 
     #loop functions
     def cast_rays(self):
-        for x, _ in enumerate(self.ray_ends):
+        for x, _ in enumerate(self.ray_ends):            
             
-            #variables for horizontal raycasting
-            hor_dx = TILE_SIZE
-            hor_dy = TILE_SIZE / (math.tan(self.ray_angle(x)) + -1e6)
+            #horizontal raycasting
+            hor_dx = TILE_SIZE / (math.tan(self.ray_angle(x)) + -1e6)
+            hor_dy = TILE_SIZE
             hor_x_end= self.tile_pos[0]
             hor_y_end = self.tile_pos[1]
 
-            #variables for vertical raycasting
-            ver_dx = math.tan(self.ray_angle(x)) * TILE_SIZE
-            ver_dy = TILE_SIZE
-            ver_x_end = self.tile_pos[0]
-            ver_y_end = self.tile_pos[1]
-            
-            #horizontal
             for _ in self.road.tile_map[0]:
                 if 1 == 2:
                     break
                 hor_x_end += hor_dx
                 hor_y_end += hor_dy
                 pg.draw.circle(self.game.screen,
-                'orange',
+                'white',
                 (hor_x_end, hor_y_end),
-                4)
+                5)
 
-            #vertical   
+
+            #vertical raycasting
+            ver_dx = TILE_SIZE
+            ver_dy = math.tan(self.ray_angle(x)) * TILE_SIZE
+            ver_x_end = self.tile_pos[0]
+            ver_y_end = self.tile_pos[1]
+
             for _ in self.road.tile_map:
                 if 1 == 2:
                         break
                 ver_x_end += ver_dx
                 ver_y_end += ver_dy
                 pg.draw.circle(self.game.screen,
-                'orange',
+                'white',
                 (ver_x_end, ver_y_end),
-                4)
+                5)
     
     
             self.ray_ends[x] = (self.start_point[0] + math.sin(self.ray_angle(x)) * -100, self.start_point[1] + math.cos(self.ray_angle(x)) * -100)

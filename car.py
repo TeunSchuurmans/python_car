@@ -1,6 +1,7 @@
 import pygame as pg
 import math
-from settings import * 
+from settings import *
+from raycasting import * 
 
 
 
@@ -17,6 +18,7 @@ class Car:
     def __init__(self, game, road): 
         self.game = game
         self.road = road
+        self.raycaster = RayCaster(self.game, self.road, self)
         self.car = pg.transform.rotate(pg.transform.scale(pg.image.load(CAR_IMAGE), (Car.car_height, Car.car_width)), 90)
         self.x, self.y = road.start_pos
         self.angle = 0
@@ -158,6 +160,9 @@ class Car:
 
         self.game.screen.blit(rotated_car, car_rect.topleft)
 
+        self.raycaster.draw()
+
     def update(self):
         self.listen_inputs()
         self.movement()
+        self.raycaster.update()
