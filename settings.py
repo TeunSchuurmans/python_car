@@ -23,7 +23,7 @@ FRICTION = MAX_SPEED / 150
 BRAKE_SPEED = 1.01
 
 #raycast  settings
-CAR_FOV = 1
-NUM_OF_RAYS = 1
+RAY_SPREAD = 180
+NUM_OF_RAYS = 5
 
 

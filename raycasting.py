@@ -7,10 +7,10 @@ class RayCaster:
         self.game = game
         self.road = road
         self.car = car
-        self.car_fov = CAR_FOV
-        self.half_fov = self.car_fov / 2
-        self.ray_gap = self.car_fov / (NUM_OF_RAYS)
+        self.half_fov = RAY_SPREAD / 2
+        self.ray_gap = RAY_SPREAD / (NUM_OF_RAYS - 1)
         self.ray_ends = [_ for _ in range(NUM_OF_RAYS)]
+        print(self.ray_gap, RAY_SPREAD, math.pi)
 
     #utility functions
     @property
@@ -21,6 +21,9 @@ class RayCaster:
     def tile_pos(self):
         return (self.car.current_tile[0] * TILE_SIZE, self.car.current_tile[1] * TILE_SIZE)
     
+    def current_tile(self, x, y):
+        return (x // TILE_SIZE, y // TILE_SIZE)
+
     def ray_angle(self, x):
         return math.radians(self.car.angle - self.half_fov + self.ray_gap * x)
 
@@ -49,7 +52,7 @@ class RayCaster:
 
             #vertical raycasting
             ver_dx = TILE_SIZE
-            ver_dy = TILE_SIZE / (math.tan(self.ray_angle(x)))
+            ver_dy = TILE_SIZE / (math.tan(self.ray_angle(x)) + 1e-10)
             ver_x_end = self.tile_pos[0]
             ver_y_end = self.tile_pos[1]
 
@@ -62,7 +65,7 @@ class RayCaster:
                 5)
     
     
-            self.ray_ends[x] = (self.start_point[0] + math.sin(self.ray_angle(x)) * -1000, self.start_point[1] + math.cos(self.ray_angle(x)) * -1000)
+            self.ray_ends[x] = (self.start_point[0] + math.sin(self.ray_angle(x)) * -100, self.start_point[1] + math.cos(self.ray_angle(x)) * -100)
 
     def draw(self):
         for end_point in self.ray_ends:
