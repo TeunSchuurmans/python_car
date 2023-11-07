@@ -9,6 +9,7 @@ To do list:
     background music
     change Car class into an abstract car, together with a bot class and player class
     raycasting system
+    make current_tile a global function
     neural network
     camera that follows the car
     update README
@@ -94,4 +95,5 @@ self.tile_map = [
 
 
 
+    
     
