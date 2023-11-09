@@ -92,10 +92,9 @@ self.tile_map = [
 
 
 
+npc car:
+    neural network
+    different input 
 
 
-
-
-
-for each ray -> get ray angle -> calculate dx and dy for horizontal -> get ray length -> same thing for vetical 
     

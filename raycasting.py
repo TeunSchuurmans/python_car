@@ -1,13 +1,14 @@
 import pygame as pg
 import math
 from settings import *
-
+from nnet import *
 
 class RayCaster:
     def __init__(self, game, road, car):
         self.game = game
         self.road = road
         self.car = car
+        self.nnet = NNet(self)
         self.ray_ends = [_ for _ in range(NUM_OF_RAYS)]
 
     #utility functions
@@ -19,7 +20,7 @@ class RayCaster:
         return (x // TILE_SIZE, y // TILE_SIZE)
 
     def ray_angle(self, index):
-        return math.radians(self.car.angle - HALF_SPREAD + RAY_GAP * index)
+        return self.car.angle - HALF_SPREAD + RAY_GAP * index - 1e-10
 
     def ray_length(self, side1, side2):
         return  math.sqrt(side1**2 + side2 **2) 
@@ -29,14 +30,8 @@ class RayCaster:
     def cast_rays(self):
         for x, _ in enumerate(self.ray_ends):
             pass
-
-    def check_collision(self, dx, dy):
-        end_point = 0,0
-
-        for x in range(10):
-            pass
-        
-        return end_point
+            #self.car.rays[x] = self.ray_length(side1, side2)
+            
             
     def draw(self):
         pass
@@ -56,5 +51,6 @@ class RayCaster:
             
     def update(self):
         self.cast_rays()
+
     
 

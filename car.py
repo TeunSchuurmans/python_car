@@ -7,7 +7,6 @@ class Car:
     def __init__(self, game, road):
         self.game = game
         self.road = road
-        self.raycaster = RayCaster(self.game, self.road, self)
         self.image = pg.transform.rotate(pg.transform.scale(pg.image.load(CAR_IMAGE), (CAR_HEIGHT, CAR_WIDTH)), 90)
         self.x, self.y = road.start_pos
         self.angle = 0
@@ -53,17 +52,14 @@ class Car:
 
         input = pg.key.get_pressed()
 
-        #go forward
         if input[pg.K_w]:
             self.speed = min(self.speed + ACCELERATION, MAX_SPEED)
         else:
             self.speed = max(self.speed - FRICTION, 0)
 
-        #rotate left
         if input[pg.K_a]:
             self.angle += self.rotation_speed
 
-        #rotate right
         if input[pg.K_d]:
             self.angle -= self.rotation_speed
 
@@ -139,9 +135,51 @@ class Car:
 
         self.game.screen.blit(rotated_car, car_rect.topleft)
 
-        self.raycaster.draw()
-
     def update(self):
         self.listen_inputs()
         self.movement()
+
+
+class Npc(Car):
+    def __init__(self, game, road):
+        super().__init__(game, road)
+        self.raycaster = RayCaster(self.game, self.road, self)
+        self.nnet = self.raycaster.nnet
+        self.rays = [0 for _ in range(NUM_OF_RAYS)]
+        self.input_data = {
+            'speed' : self.car.speed,
+            'angle' : self.car.angle,
+            'rotation speed' : self.car.rotation_speed,
+            'rays' : self.rays,
+        }
+
+
+    def listen_inputs(self):
+
+        forward, left, right = self.nnet.predict(self.input_data)
+
+        if forward:
+            self.speed = min(self.speed + ACCELERATION, MAX_SPEED)
+        else:
+            self.speed = max(self.speed - FRICTION, 0)
+        
+        if left:
+            self.angle += self.rotation_speed
+
+        if right:
+            self.angle -= self.rotation_speed
+        
+    def movement(self):
+        super().movement()
+
+    def draw(self):
+        super().draw()
+        self.raycaster.draw()
+
+    def update(self):
         self.raycaster.update()
+        self.listen_inputs()
+        self.movement()
+        
+        
+    

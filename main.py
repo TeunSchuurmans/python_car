@@ -15,7 +15,7 @@ class Game:
 
     def init_objects(self):
         self.road = Road(self)
-        self.car = Car(self, self.road)
+        self.car = Npc(self, self.road)
     
     def update(self):
         self.car.update()
@@ -42,5 +42,3 @@ class Game:
 if __name__ == '__main__':
     game = Game()
     game.main_loop() 
-
-        
