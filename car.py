@@ -8,7 +8,7 @@ class Car:
         self.game = game
         self.road = road
         self.raycaster = RayCaster(self.game, self.road, self)
-        self.car = pg.transform.rotate(pg.transform.scale(pg.image.load(CAR_IMAGE), (CAR_HEIGHT, CAR_WIDTH)), 90)
+        self.image = pg.transform.rotate(pg.transform.scale(pg.image.load(CAR_IMAGE), (CAR_HEIGHT, CAR_WIDTH)), 90)
         self.x, self.y = road.start_pos
         self.angle = 0
         self.speed = 0
@@ -22,10 +22,6 @@ class Car:
             return (max > pos)
         else:
             return (min < pos) and (max > pos)
-
-    @property
-    def radians(self):
-        return math.radians(self.angle)
     
     #collision detection properties
     @property
@@ -80,8 +76,9 @@ class Car:
         else:
             self.rotation_speed = ROTATION_SPEED / (1+ (self.speed / CORNERING_SPEED))
 
-        dx = math.sin(self.radians) * self.speed
-        dy = math.cos(self.radians) * self.speed
+        radian = math.radians(self.angle)
+        dx = math.sin(radian) * self.speed
+        dy = math.cos(radian) * self.speed
 
         self.check_collision(dx, dy)
 
@@ -129,7 +126,7 @@ class Car:
                     if self.in_range(None, self.right_tile_border, self.center[0] - dx):
                       self.x -= dx
 
-        #if a player is on grass, there is no collision
+        #if a player is on grass, there is no collision to check
         else:
             self.x -= dx
             self.y -=dy
@@ -137,7 +134,7 @@ class Car:
     def draw(self):
 
         #makes sure the car rotates around its center
-        rotated_car = pg.transform.rotate(self.car, self.angle)
+        rotated_car = pg.transform.rotate(self.image, self.angle)
         car_rect = rotated_car.get_rect(center=(self.center))
 
         self.game.screen.blit(rotated_car, car_rect.topleft)

@@ -4,11 +4,13 @@ To do list:
     detla-time speed
     road-map algorithm. hamiltonian cycle?!?
     clean up and improve road.py
+    define images in settings
     incorporate store_road_tiles() into init_road_surface()
     car sounds
     background music
     change Car class into an abstract car, together with a bot class and player class
     raycasting system
+    make the fov adaptable for any amount of rays
     make current_tile a global function
     neural network
     camera that follows the car
@@ -21,7 +23,7 @@ raycasting:
 
     #vertical
     for x in range(MAX_DEPTH)
-        if self.current_tile is in self.road.road_dict      #check if the current tile is a road
+        if self.current_tile is in self.road.road_dict 
             math self.road.road_dict[self.current_tile[0], self.current_tile[1]]:
                 #finish
                     case 1:
@@ -95,5 +97,5 @@ self.tile_map = [
 
 
 
-    
+for each ray -> get ray angle -> calculate dx and dy for horizontal -> get ray length -> same thing for vetical 
     
