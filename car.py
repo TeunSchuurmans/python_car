@@ -48,21 +48,6 @@ class Car:
         return self.current_tile[1] * TILE_SIZE
 
     #loop functions
-    def listen_inputs(self):
-
-        input = pg.key.get_pressed()
-
-        if input[pg.K_w]:
-            self.speed = min(self.speed + ACCELERATION, MAX_SPEED)
-        else:
-            self.speed = max(self.speed - FRICTION, 0)
-
-        if input[pg.K_a]:
-            self.angle += self.rotation_speed
-
-        if input[pg.K_d]:
-            self.angle -= self.rotation_speed
-
     def movement(self):
         #print(self.game.delta_time)
         #self.speed *= self.game.delta_time
@@ -136,7 +121,6 @@ class Car:
         self.game.screen.blit(rotated_car, car_rect.topleft)
 
     def update(self):
-        self.listen_inputs()
         self.movement()
 
 
@@ -147,14 +131,19 @@ class Npc(Car):
         self.nnet = self.raycaster.nnet
         self.rays = [0 for _ in range(NUM_OF_RAYS)]
         self.input_data = {
-            'speed' : self.car.speed,
-            'angle' : self.car.angle,
-            'rotation speed' : self.car.rotation_speed,
+            'speed' : self.speed,
+            'angle' : self.angle,
+            'rotation speed' : self.rotation_speed,
             'rays' : self.rays,
-        }
-
+        }        
 
     def listen_inputs(self):
+        self.input_data = {
+            'speed' : self.speed,
+            'angle' : self.angle,
+            'rotation speed' : self.rotation_speed,
+            'rays' : self.rays
+        }
 
         forward, left, right = self.nnet.predict(self.input_data)
 
@@ -181,5 +170,24 @@ class Npc(Car):
         self.listen_inputs()
         self.movement()
         
-        
+
+class Player(Car):
+    def listen_inputs(self):
+
+        input = pg.key.get_pressed()
+
+        if input[pg.K_w]:
+            self.speed = min(self.speed + ACCELERATION, MAX_SPEED)
+        else:
+            self.speed = max(self.speed - FRICTION, 0)
+
+        if input[pg.K_a]:
+            self.angle += self.rotation_speed
+
+        if input[pg.K_d]:
+            self.angle -= self.rotation_speed
+
+    def update(self):
+        self.listen_inputs()
+        super().update()
     

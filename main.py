@@ -15,10 +15,15 @@ class Game:
 
     def init_objects(self):
         self.road = Road(self)
-        self.car = Npc(self, self.road)
+        self.car = Player(self, self.road)
+        for _ in range(CAR_AMOUNT):
+            self.road.cars.append(Npc(self, self.road))
+
     
     def update(self):
         self.car.update()
+        for x in self.road.cars:
+            x.update()
         pg.display.flip()  
         self.delta_time = self.clock.tick(FPS)
         pg.display.set_caption(f'{self.clock.get_fps() :.1f}')  #shows the current fps
@@ -26,6 +31,8 @@ class Game:
     def draw(self):
         self.road.draw() 
         self.car.draw()
+        for x in self.road.cars:
+            x.draw()
 
     def check_events(self): 
         for event in pg.event.get():

@@ -1,5 +1,5 @@
 #game settings
-RES = WIDTH, HEIGHT = 1000, 600
+RES = WIDTH, HEIGHT = 1600, 900
 FPS = 144
 
 #road settings
@@ -10,6 +10,7 @@ GRASS_IMAGE = 'images/grass.png'
 FINISH_IMAGE = 'images/finish.png'
 STRAIGHT_IMAGE = 'images/straight.png'
 CORNER_IMAGE = 'images/corner.png'
+CAR_AMOUNT = 1
 
 #car settings
 CAR_IMAGE = 'images/car.png'
