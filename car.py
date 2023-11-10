@@ -130,6 +130,7 @@ class Npc(Car):
         self.raycaster = RayCaster(self.game, self.road, self)
         self.nnet = self.raycaster.nnet
         self.rays = [0 for _ in range(NUM_OF_RAYS)]
+        self.points = 0
         self.input_data = {
             'speed' : self.speed,
             'angle' : self.angle,

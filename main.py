@@ -16,7 +16,7 @@ class Game:
     def init_objects(self):
         self.road = Road(self)
         self.car = Player(self, self.road)
-        for _ in range(CAR_AMOUNT):
+        for _ in range(NPC_AMOUNT):
             self.road.cars.append(Npc(self, self.road))
 
     

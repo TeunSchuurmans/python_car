@@ -6,7 +6,7 @@ class NNet:
         self.raycaster = raycaster
 
     def predict(self, data):
-        forward = True
+        forward = random.getrandbits(1)
         left = random.getrandbits(1)
         right = random.getrandbits(1)
 

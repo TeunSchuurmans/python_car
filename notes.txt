@@ -8,7 +8,7 @@ To do list:
     incorporate store_road_tiles() into init_road_surface()
     car sounds
     background music
-    change Car class into an abstract car, together with a bot class and player class
+    have seperate collision detection for players and npc's
     raycasting system
     make the fov adaptable for any amount of rays
     make current_tile a global function
