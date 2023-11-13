@@ -1,5 +1,10 @@
+"""
+Code inspired by : Coder Space
+    Video title: Creating a DOOM (Wolfenstein) - style 3D Game in Python
+    Video link: https://www.youtube.com/watch?v=ECqUrT7IdqQ&t=2m43s
+"""
+
 import pygame as pg
-#import random
 from settings import * 
 
 

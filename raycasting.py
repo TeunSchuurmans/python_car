@@ -1,3 +1,10 @@
+"""
+Code inspired by : javidx9
+    Video title: Super Fast Ray Casting in Tiled Worlds using DDA
+    Video link: https://www.youtube.com/watch?v=NbSee-XM7WA
+    also: https://lodev.org/cgtutor/raycasting.html
+"""
+
 import pygame as pg
 import math
 from settings import *

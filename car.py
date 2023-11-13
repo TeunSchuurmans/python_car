@@ -1,3 +1,12 @@
+"""
+Code inspired by : TechWithTim
+    Video title: Pygame Car Racing Tutorial #1 - Moving The Car 
+    Video link: https://www.youtube.com/watch?v=L3ktUWfAMPg&t=31m4s 
+Code inspired by: Dr. Radu Mariescu-Istodor
+    Video title: Self-Driving Car with JavaScript Course - Neural Networks and Machine Learning
+    Video link: https://www.youtube.com/watch?v=Rs_rAxEsAvI&t=3m44s
+"""
+
 import pygame as pg
 import math
 from settings import *
