@@ -10,7 +10,7 @@ GRASS_IMAGE = 'images/grass.png'
 FINISH_IMAGE = 'images/finish.png'
 STRAIGHT_IMAGE = 'images/straight.png'
 CORNER_IMAGE = 'images/corner.png'
-NPC_AMOUNT = 100
+NPC_AMOUNT = 0
 
 #car settings
 CAR_IMAGE = 'images/car.png'
@@ -25,6 +25,7 @@ BRAKE_SPEED = 1.01
 
 #raycast  settings
 NUM_OF_RAYS = 1
+MAX_RAY_LENGTH = 200
 RAY_SPREAD = 0
 HALF_SPREAD = RAY_SPREAD / 2
 RAY_GAP = RAY_SPREAD / NUM_OF_RAYS if NUM_OF_RAYS == 1 else NUM_OF_RAYS - 1

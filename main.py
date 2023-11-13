@@ -19,7 +19,6 @@ class Game:
         for _ in range(NPC_AMOUNT):
             self.road.cars.append(Npc(self, self.road))
 
-    
     def update(self):
         self.car.update()
         for x in self.road.cars:
