@@ -15,8 +15,7 @@ class Game:
     def __init__(self):
         pg.init()   
         self.screen = pg.display.set_mode(RES)  
-        self.clock = pg.time.Clock()    
-        self.delta_time = 1
+        self.clock = pg.time.Clock()
         self.init_objects()
 
     def init_objects(self):
@@ -30,7 +29,7 @@ class Game:
         for x in self.road.cars:
             x.update()
         pg.display.flip()  
-        self.delta_time = self.clock.tick(FPS)
+        self.clock.tick(FPS)
         pg.display.set_caption(f'{self.clock.get_fps() :.1f}')  #shows the current fps
 
     def draw(self):

@@ -5,8 +5,8 @@ Code inspired by : javidx9
     also: https://lodev.org/cgtutor/raycasting.html
 """
 
-import pygame as pg
 import math
+import pygame as pg
 from settings import *
 from nnet import *
 
@@ -27,7 +27,7 @@ class RayCaster:
         return (x // TILE_SIZE, y // TILE_SIZE)
 
     def ray_angle(self, index):
-        return self.car.angle - HALF_SPREAD + RAY_GAP * index - 1e-10
+        return self.car.angle - HALF_SPREAD + RAY_GAP * index
 
     def ray_length(self, side1, side2):
         return  math.sqrt(side1**2 + side2 **2) 
@@ -37,24 +37,22 @@ class RayCaster:
     def cast_rays(self):
         for x, _ in enumerate(self.ray_ends):
             pass
+            self.ray_ends[x] = (self.car.center[0] + math.sin(self.ray_angle(x)) * -100, self.car.center[1] + math.cos(self.ray_angle(x)) * -100)
             #self.car.rays[x] = self.ray_length(side1, side2)
             
             
     def draw(self):
-        pass
-        """
-        for end_point in self.ray_ends:
+        for end in self.ray_ends:
             pg.draw.line(
                 self.game.screen,
                 'white',
                 self.car.center,
-                (end_point[0], end_point[1]),
+                (end[0], end[1]),
                 3)
             pg.draw.circle(self.game.screen,
                 'orange',
-                (end_point[0], end_point[1]),
-                4)
-        """    
+                (end[0], end[1]),
+                4)    
             
     def update(self):
         self.cast_rays()
