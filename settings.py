@@ -1,18 +1,25 @@
-#game settings
+import pygame as pg
+
+# game settings
 RES = WIDTH, HEIGHT = 1600, 900
 FPS = 144
 
-#road settings
+# road settings
 TILE_SIZE = 100
 TILE_CENTER = TILE_SIZE / 2
-GRID_IMAGE = 'images/grid.png'
-GRASS_IMAGE = 'images/grass.png'
-FINISH_IMAGE = 'images/finish.png'
-STRAIGHT_IMAGE = 'images/straight.png'
-CORNER_IMAGE = 'images/corner.png'
-NPC_AMOUNT = 0
+TILE_IMAGES = {
+    'grid': pg.transform.scale(pg.image.load('images/grid.png'), (TILE_SIZE, TILE_SIZE)),
+    'grass': pg.transform.scale(pg.image.load('images/grass.png'), (TILE_SIZE, TILE_SIZE)),
+    'finish': pg.transform.scale(pg.image.load('images/finish.png'), (TILE_SIZE, TILE_SIZE)),
+    'ver': pg.transform.scale(pg.image.load('images/straight.png'), (TILE_SIZE, TILE_SIZE)),
+    'hor': pg.transform.rotate(pg.transform.scale(pg.image.load('images/straight.png'), (TILE_SIZE, TILE_SIZE)), 90),
+    'ld': pg.transform.rotate(pg.transform.scale(pg.image.load('images/corner.png'), (TILE_SIZE, TILE_SIZE)), 270),
+    'dr': pg.transform.scale(pg.image.load('images/corner.png'), (TILE_SIZE, TILE_SIZE)),
+    'ru': pg.transform.rotate(pg.transform.scale(pg.image.load('images/corner.png'), (TILE_SIZE, TILE_SIZE)), 90),
+    'ul': pg.transform.rotate(pg.transform.scale(pg.image.load('images/corner.png'), (TILE_SIZE, TILE_SIZE)), 180),
+}
 
-#car settings
+# car settings
 CAR_IMAGE = 'images/car.png'
 CAR_WIDTH = TILE_SIZE / 6
 CAR_HEIGHT = CAR_WIDTH * 2
@@ -23,12 +30,12 @@ CORNERING_SPEED = ROTATION_SPEED * 10
 FRICTION = MAX_SPEED / 150
 BRAKE_SPEED = 1.01
 
-#raycast  settings
+# raycast  settings
 NUM_OF_RAYS = 360
 MAX_RAY_LENGTH = 200
 RAY_SPREAD = 360
 HALF_SPREAD = RAY_SPREAD / 2
 RAY_GAP = RAY_SPREAD / NUM_OF_RAYS if NUM_OF_RAYS == 1 else NUM_OF_RAYS - 1
 
-
-
+# nnet settings
+NPC_AMOUNT = 0

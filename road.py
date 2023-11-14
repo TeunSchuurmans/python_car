@@ -16,6 +16,7 @@ class Road:
 
     def __init__(self, game):
         self.game = game
+        self.tile_map = [[0 for _ in range(Road.columns)] for _ in range(Road.rows)]
         self.road_dict = {}
         self.road_surface = pg.Surface((WIDTH, HEIGHT))
         self.start_pos = WIDTH / 2, HEIGHT / 2
@@ -26,12 +27,9 @@ class Road:
     def generate_road(self):
 
         # clears the map so it can be regenerated
-        self.tile_map = [[False for _ in range(Road.columns)] for _ in range(Road.rows)]
+        self.tile_map = [[0 for _ in range(Road.columns)] for _ in range(Road.rows)]
 
-        # curr_row = random.randint(1, len(self.tile_map) -2)
-        # curr_col = random.randint(1, len(self.tile_map[0]) - 2)
-        # self.tile_map[curr_row][curr_col] = 1
-
+        # temporary tile map
         self.tile_map = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 5, 3, 3, 4, 0, 0, 0, 0, 5, 3, 3, 3, 3, 4, 0],
@@ -47,15 +45,14 @@ class Road:
         self.store_road_tiles()
         self.init_road_surface()
 
-    # adds all road pieces to a dictionary with the according indexes for collision detection
-    # might be incorporated into init_road_surface()
+    # will be incorporated into generate_map()
     def store_road_tiles(self):
         for row_index, row in enumerate(self.tile_map):
             for col_index, tile in enumerate(row):
                 if tile:
                     self.road_dict[(col_index, row_index)] = tile
 
-    # draws tiles from tile_map  onto the road surface
+    # initializes tiles from tile_map onto the road surface
     def init_road_surface(self):
         for row_index, row in enumerate(self.tile_map):
             for col_index, tile in enumerate(row):
@@ -70,40 +67,24 @@ class Road:
                         Tile(self, 'hor', row_index, col_index)
                     case 4:
                         Tile(self, 'grass', row_index, col_index)
-                        Tile(self, 'L_D', row_index, col_index)
+                        Tile(self, 'ld', row_index, col_index)
                     case 5:
                         Tile(self, 'grass', row_index, col_index)
-                        Tile(self, 'D_R', row_index, col_index)
+                        Tile(self, 'dr', row_index, col_index)
                     case 6:
                         Tile(self, 'grass', row_index, col_index)
-                        Tile(self, 'R_U', row_index, col_index)
+                        Tile(self, 'ru', row_index, col_index)
                     case 7:
                         Tile(self, 'grass', row_index, col_index)
-                        Tile(self, 'U_L', row_index, col_index)
+                        Tile(self, 'ul', row_index, col_index)
                     case _:
                         Tile(self, 'grass', row_index, col_index)
 
-    # takes the road surface and draws it onto the main screen
     def draw(self):
         self.game.screen.blit(self.road_surface, (0, 0))
 
 
 class Tile:
-    dimensions = (TILE_SIZE, TILE_SIZE)
-    corner_image = pg.transform.scale(pg.image.load(CORNER_IMAGE), dimensions)
-
-    images = {
-        'grid': pg.transform.scale(pg.image.load(GRID_IMAGE), dimensions),
-        'grass': pg.transform.scale(pg.image.load(GRASS_IMAGE), dimensions),
-        'finish': pg.transform.scale(pg.image.load(FINISH_IMAGE), dimensions),
-        'ver': pg.transform.scale(pg.image.load(STRAIGHT_IMAGE), dimensions),
-        'hor': pg.transform.rotate(pg.transform.scale(pg.image.load(STRAIGHT_IMAGE), dimensions), 90),
-        'L_D': pg.transform.rotate(corner_image, 270),
-        'D_R': corner_image,
-        'R_U': pg.transform.rotate(corner_image, 90),
-        'U_L': pg.transform.rotate(corner_image, 180),
-    }
-
     def __init__(self, road, key, row, col):
         self.road = road
         self.key = key
@@ -112,4 +93,4 @@ class Tile:
         self.blit()
 
     def blit(self):
-        self.road.road_surface.blit(Tile.images[self.key], (self.column * TILE_SIZE, self.row * TILE_SIZE))
+        self.road.road_surface.blit(TILE_IMAGES[self.key], (self.column * TILE_SIZE, self.row * TILE_SIZE))
