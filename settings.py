@@ -20,9 +20,9 @@ TILE_IMAGES = {
 }
 
 # car settings
-CAR_IMAGE = 'images/car.png'
 CAR_WIDTH = TILE_SIZE / 6
 CAR_HEIGHT = CAR_WIDTH * 2
+CAR_IMAGE = pg.transform.rotate(pg.transform.scale(pg.image.load('images/car.png'), (CAR_HEIGHT, CAR_WIDTH)), 90)
 MAX_SPEED = 2
 ACCELERATION = MAX_SPEED / 150
 ROTATION_SPEED = 1.2
@@ -31,11 +31,11 @@ FRICTION = MAX_SPEED / 150
 BRAKE_SPEED = 1.01
 
 # raycast  settings
-NUM_OF_RAYS = 360
+NUM_OF_RAYS = 1
 MAX_RAY_LENGTH = 200
-RAY_SPREAD = 360
+RAY_SPREAD = 1
 HALF_SPREAD = RAY_SPREAD / 2
 RAY_GAP = RAY_SPREAD / NUM_OF_RAYS if NUM_OF_RAYS == 1 else NUM_OF_RAYS - 1
 
 # nnet settings
-NPC_AMOUNT = 0
+NPC_AMOUNT = 100

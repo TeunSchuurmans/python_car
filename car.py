@@ -7,9 +7,7 @@ Code inspired by: Dr. Radu Mariescu-Istodor
     Video link: https://www.youtube.com/watch?v=Rs_rAxEsAvI&t=3m44s
 """
 
-import pygame as pg
-import math
-from settings import *
+
 from raycasting import *
 from utils import *
 
@@ -18,7 +16,7 @@ class Car:
     def __init__(self, game, road):
         self.game = game
         self.road = road
-        self.image = pg.transform.rotate(pg.transform.scale(pg.image.load(CAR_IMAGE), (CAR_HEIGHT, CAR_WIDTH)), 90)
+        self.image = CAR_IMAGE
         self.x, self.y = road.start_pos
         self.angle = 0
         self.speed = 0
@@ -139,7 +137,6 @@ class Npc(Car):
         super().__init__(game, road)
         self.raycaster = RayCaster(self.game, self.road, self)
         self.nnet = self.raycaster.nnet
-        self.rays = [0 for _ in range(NUM_OF_RAYS)]
         self.points = 0
 
     @property
@@ -148,7 +145,7 @@ class Npc(Car):
             'speed': self.speed,
             'angle': self.angle,
             'rotation speed': self.rotation_speed,
-            'rays': self.rays,
+            'rays': self.raycaster.rays,
         }
 
     def listen_inputs(self):
