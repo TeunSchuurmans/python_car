@@ -19,9 +19,6 @@ class RayCaster:
         self.ray_ends = [_ for _ in range(NUM_OF_RAYS)]
         self.rays = [0 for _ in range(NUM_OF_RAYS)]
 
-    def __del__(self):
-        print('deleted raycaster')
-
     #utility functions
     def ray_angle(self, index):
         return math.radians(self.npc.angle) - HALF_SPREAD + RAY_GAP * index

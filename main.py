@@ -11,10 +11,11 @@ from car import *
 from road import *
 from raycasting import *
 
+
 class Game:
     def __init__(self):
-        pg.init()   
-        self.screen = pg.display.set_mode(RES)  
+        pg.init()
+        self.screen = pg.display.set_mode(RES)
         self.clock = pg.time.Clock()
         self.init_objects()
 
@@ -28,12 +29,12 @@ class Game:
         self.car.update()
         for key, car in list(self.road.cars.items()):
             car.update()
-        pg.display.flip()  
+        pg.display.flip()
         self.clock.tick(FPS)
-        pg.display.set_caption(f'{self.clock.get_fps() :.1f}')  #shows the current fps
+        pg.display.set_caption(f'{self.clock.get_fps() :.1f}')  # shows the current fps
 
     def draw(self):
-        self.road.draw() 
+        self.road.draw()
         self.car.draw()
         for key, car in list(self.road.cars.items()):
             car.draw()
@@ -53,4 +54,4 @@ class Game:
 
 if __name__ == '__main__':
     game = Game()
-    game.main_loop() 
+    game.main_loop()

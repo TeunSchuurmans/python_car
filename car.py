@@ -53,13 +53,10 @@ class Car:
 class Npc(Car):
     def __init__(self, game, road, index):
         super().__init__(game, road)
-        self.index = index
+        self.key = index
         self.raycaster = RayCaster(self.game, self.road, self)
         self.nnet = self.raycaster.nnet
         self.points = 0
-
-    def delete(self):
-        del self.road.cars[self.index]
 
     @property
     def input_data(self):
@@ -69,6 +66,9 @@ class Npc(Car):
             'rotation speed': self.rotation_speed,
             'rays': self.raycaster.rays,
         }
+
+    def delete(self):
+        del self.road.cars[self.key]
 
     def listen_inputs(self):
         forward, left, right = self.nnet.predict(self.input_data)
@@ -86,6 +86,7 @@ class Npc(Car):
 
     def check_collision(self, dx, dy):
         if Utils.Tile.current(self.center) in self.road.road_dict:
+            delete = False
             match self.road.road_dict[Utils.Tile.current(self.center)]:
                 # finish
                 case 1:
@@ -93,18 +94,17 @@ class Npc(Car):
                             Utils.Tile.left_border(self.center),
                             Utils.Tile.right_border(self.center),
                             self.center[0] - dx):
-                        self.delete()
+                        delete = True
                     else:
                         self.x -= dx
                     self.y -= dy
-
                 # vertical
                 case 2:
                     if not Utils.in_range(
                             Utils.Tile.left_border(self.center),
                             Utils.Tile.right_border(self.center),
                             self.center[0] - dx):
-                        self.delete()
+                        delete = True
                     else:
                         self.x -= dx
                     self.y -= dy
@@ -114,7 +114,7 @@ class Npc(Car):
                             Utils.Tile.up_border(self.center),
                             Utils.Tile.down_border(self.center),
                             self.center[1] - dy):
-                        self.delete()
+                        delete = True
                     else:
                         self.y -= dy
                     self.x -= dx
@@ -124,14 +124,14 @@ class Npc(Car):
                             Utils.Tile.up_border(self.center),
                             None,
                             self.center[1] - dy):
-                        self.delete()
+                        delete = True
                     else:
                         self.y -= dy
                     if not Utils.in_range(
                             None,
                             Utils.Tile.right_border(self.center),
                             self.center[0] - dx):
-                        self.delete()
+                        delete = True
                     else:
                         self.x -= dx
                 # down->right
@@ -140,14 +140,14 @@ class Npc(Car):
                             Utils.Tile.up_border(self.center),
                             None,
                             self.center[1] - dy):
-                        self.delete()
+                        delete = True
                     else:
                         self.y -= dy
                     if not Utils.in_range(
                             Utils.Tile.left_border(self.center),
                             None,
                             self.center[0] - dx):
-                        self.delete()
+                        delete = True
                     else:
                         self.x -= dx
                 # right->up
@@ -156,30 +156,31 @@ class Npc(Car):
                             None,
                             Utils.Tile.down_border(self.center),
                             self.center[1] - dy):
-                        self.delete()
+                        delete = True
                     else:
                         self.y -= dy
                     if not Utils.in_range(
                             Utils.Tile.left_border(self.center),
                             None,
                             self.center[0] - dx):
-                        self.delete()
+                        delete = True
                     else:
                         self.x -= dx
                 # up->left
                 case 7:
+                    print('case 7')
                     if not Utils.in_range(
                             None,
                             Utils.Tile.down_border(self.center),
                             self.center[1] - dy):
-                        self.delete()
+                        delete = True
                     else:
                         self.y -= dy
                     if not Utils.in_range(
                             None,
                             Utils.Tile.right_border(self.center),
                             self.center[0] - dx):
-                        self.delete()
+                        delete = True
                     else:
                         self.x -= dx
 
@@ -187,6 +188,8 @@ class Npc(Car):
         else:
             self.x -= dx
             self.y -= dy
+        if delete:
+            self.delete()
 
     def movement(self):
         super().movement()
