@@ -1,4 +1,5 @@
 import pygame as pg
+import math
 
 # game settings
 RES = WIDTH, HEIGHT = 1600, 900
@@ -25,7 +26,7 @@ CAR_HEIGHT = CAR_WIDTH * 2
 CAR_IMAGE = pg.transform.rotate(pg.transform.scale(pg.image.load('images/car.png'), (CAR_HEIGHT, CAR_WIDTH)), 90)
 MAX_SPEED = 2
 ACCELERATION = MAX_SPEED / 150
-ROTATION_SPEED = 1.2
+ROTATION_SPEED = 0.06
 CORNERING_SPEED = ROTATION_SPEED * 10
 FRICTION = MAX_SPEED / 150
 BRAKE_SPEED = 1.01
@@ -33,7 +34,7 @@ BRAKE_SPEED = 1.01
 # raycast  settings
 NUM_OF_RAYS = 1
 MAX_RAY_LENGTH = 200
-RAY_SPREAD = 1
+RAY_SPREAD = math.pi / 3
 HALF_SPREAD = RAY_SPREAD / 2
 RAY_GAP = RAY_SPREAD / NUM_OF_RAYS if NUM_OF_RAYS == 1 else NUM_OF_RAYS - 1
 

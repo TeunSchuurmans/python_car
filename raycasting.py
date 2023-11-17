@@ -19,12 +19,12 @@ class RayCaster:
         self.ray_ends = [_ for _ in range(NUM_OF_RAYS)]
         self.rays = [0 for _ in range(NUM_OF_RAYS)]
 
+    def __del__(self):
+        print('deleted raycaster')
+
     #utility functions
     def ray_angle(self, index):
-        return self.npc.angle - HALF_SPREAD + RAY_GAP * index
-
-    def ray_radians(self, x):
-        return math.radians(self.ray_angle(x))
+        return math.radians(self.npc.angle) - HALF_SPREAD + RAY_GAP * index
 
     def ray_length(self, side1, side2):
         return  math.sqrt(side1**2 + side2 **2) 
@@ -33,7 +33,7 @@ class RayCaster:
     def cast_rays(self):
         for x, _ in enumerate(self.ray_ends):
             pass
-            self.ray_ends[x] = (self.npc.center[0] + math.sin(self.ray_radians(x)) * -100, self.npc.center[1] + math.cos(self.ray_radians(x)) * -100)
+            self.ray_ends[x] = (self.npc.center[0] + math.sin(self.ray_angle(x)) * -MAX_RAY_LENGTH, self.npc.center[1] + math.cos(self.ray_angle(x)) * -MAX_RAY_LENGTH)
             #self.rays[x] = self.ray_length(side1, side2)
             
             

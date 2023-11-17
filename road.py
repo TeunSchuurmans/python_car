@@ -20,8 +20,9 @@ class Road:
         self.road_dict = {}
         self.road_surface = pg.Surface((WIDTH, HEIGHT))
         self.start_pos = WIDTH / 2, HEIGHT / 2
-        self.cars = []
+        self.cars = {}
         self.generate_road()
+
 
     # road generating algorithm. STILL IN PROGRESS!!!
     def generate_road(self):
