@@ -21,7 +21,7 @@ class RayCaster:
 
     #utility functions
     def ray_angle(self, index):
-        return math.radians(self.npc.angle) - HALF_SPREAD + RAY_GAP * index
+        return self.npc.angle - HALF_SPREAD + RAY_GAP * index
 
     def ray_length(self, side1, side2):
         return  math.sqrt(side1**2 + side2 **2) 
@@ -41,7 +41,7 @@ class RayCaster:
                 'white',
                 self.npc.center,
                 (end[0], end[1]),
-                3)
+                2)
             pg.draw.circle(self.game.screen,
                 'orange',
                 (end[0], end[1]),
