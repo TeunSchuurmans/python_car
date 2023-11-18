@@ -5,7 +5,9 @@ import math
 RES = WIDTH, HEIGHT = 1600, 900
 FPS = 144
 
-# road settings
+# terrain settings
+ROWS = 9
+COLUMNS = 16
 TILE_SIZE = 100
 TILE_CENTER = TILE_SIZE / 2
 TILE_IMAGES = {
@@ -26,12 +28,12 @@ CAR_HEIGHT = CAR_WIDTH * 2
 CAR_IMAGE = pg.transform.rotate(pg.transform.scale(pg.image.load('images/car.png'), (CAR_HEIGHT, CAR_WIDTH)), 90)
 MAX_SPEED = 2
 ACCELERATION = MAX_SPEED / 150
-ROTATION_SPEED = 0.07
+ROTATION_SPEED = 0.065
 CORNERING_SPEED = ROTATION_SPEED * 10
 FRICTION = MAX_SPEED / 150
 BRAKE_SPEED = 1.01
 
-# raycast  settings
+# raycaster  settings
 NUM_OF_RAYS = 5
 MAX_RAY_LENGTH = 200
 RAY_SPREAD = math.pi / 3

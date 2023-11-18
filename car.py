@@ -13,11 +13,11 @@ from utils import *
 
 
 class Car:
-    def __init__(self, game, road):
+    def __init__(self, game, terrain):
         self.game = game
-        self.road = road
+        self.terrain = terrain
         self.image = CAR_IMAGE
-        self.x, self.y = road.start_pos
+        self.x, self.y = terrain.start_pos
         self.angle = 0
         self.speed = 0
         self.rotation_speed = 0
@@ -54,7 +54,7 @@ class Npc(Car):
     def __init__(self, game, road, index):
         super().__init__(game, road)
         self.key = index
-        self.raycaster = RayCaster(self.game, self.road, self)
+        self.raycaster = RayCaster(self.game, self.terrain, self)
         self.nnet = self.raycaster.nnet
         self.points = 0
 
@@ -68,7 +68,7 @@ class Npc(Car):
         }
 
     def delete(self):
-        del self.road.cars[self.key]
+        del self.terrain.cars[self.key]
 
     def listen_inputs(self):
         forward, left, right = self.nnet.predict(self.input_data)
@@ -85,9 +85,9 @@ class Npc(Car):
             self.angle -= self.rotation_speed
 
     def check_collision(self, dx, dy):
-        if Utils.Tile.current(self.center) in self.road.road_dict:
+        if Utils.Tile.current(self.center) in self.terrain.roads:
             delete = False
-            match self.road.road_dict[Utils.Tile.current(self.center)]:
+            match self.terrain.roads[Utils.Tile.current(self.center)]:
                 # finish
                 case 1:
                     if not Utils.in_range(
@@ -220,8 +220,8 @@ class Player(Car):
             self.angle -= self.rotation_speed
 
     def check_collision(self, dx, dy):
-        if Utils.Tile.current(self.center) in self.road.road_dict:
-            match self.road.road_dict[Utils.Tile.current(self.center)]:
+        if Utils.Tile.current(self.center) in self.terrain.roads:
+            match self.terrain.roads[Utils.Tile.current(self.center)]:
                 # finish
                 case 1:
                     if Utils.in_range(

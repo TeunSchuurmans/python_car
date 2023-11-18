@@ -8,7 +8,7 @@ import pygame as pg
 import sys
 from settings import *
 from car import *
-from road import *
+from terrain import *
 from raycasting import *
 
 
@@ -17,26 +17,23 @@ class Game:
         pg.init()
         self.screen = pg.display.set_mode(RES)
         self.clock = pg.time.Clock()
-        self.init_objects()
-
-    def init_objects(self):
-        self.road = Road(self)
-        self.car = Player(self, self.road)
+        self.terrain = Terrain(self)
+        self.car = Player(self, self.terrain)
         for i in range(NPC_AMOUNT):
-            self.road.cars[i] = Npc(self, self.road, i)
+            self.terrain.cars[i] = Npc(self, self.terrain, i)
 
     def update(self):
         self.car.update()
-        for key, car in list(self.road.cars.items()):
+        for key, car in list(self.terrain.cars.items()):
             car.update()
         pg.display.flip()
         self.clock.tick(FPS)
         pg.display.set_caption(f'{self.clock.get_fps() :.1f}')  # shows the current fps
 
     def draw(self):
-        self.road.draw()
+        self.terrain.draw()
         self.car.draw()
-        for key, car in list(self.road.cars.items()):
+        for key, car in list(self.terrain.cars.items()):
             car.draw()
 
     def check_events(self):
