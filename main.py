@@ -24,7 +24,7 @@ class Game:
 
     def update(self):
         self.car.update()
-        for key, car in list(self.terrain.cars.items()):
+        for _, car in list(self.terrain.cars.items()):
             car.update()
         pg.display.flip()
         self.clock.tick(FPS)

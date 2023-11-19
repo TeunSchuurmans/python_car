@@ -17,7 +17,7 @@ class Car:
         self.game = game
         self.terrain = terrain
         self.image = CAR_IMAGE
-        self.x, self.y = terrain.start_pos
+        self.pos = self.x, self.y = terrain.start_pos
         self.angle = 0
         self.speed = 0
         self.rotation_speed = 0
@@ -36,7 +36,17 @@ class Car:
         dx = math.sin(self.angle) * self.speed
         dy = math.cos(self.angle) * self.speed
 
-        self.check_collision(dx, dy)
+        self.handle_collision(dx, dy)
+
+    def check_collision(self, dx, dy):
+        tile = Utils.Tile.current(self.center)
+        future_pos = (self.center[0] - dx, self.center[1] - dy)
+        if tile in self.terrain.roads:
+            print(self.terrain.roads[tile].type)
+            print(self.terrain.roads[tile].check_collision(future_pos))
+            return self.terrain.roads[tile].check_collision(future_pos)
+        else:
+            return True, True
 
     def check_status(self):
         pass
@@ -87,115 +97,15 @@ class Npc(Car):
         if right:
             self.angle -= self.rotation_speed
 
-    def check_collision(self, dx, dy):
-        if Utils.Tile.current(self.center) in self.terrain.roads:
-            delete = False
-            match self.terrain.roads[Utils.Tile.current(self.center)]:
-                # finish
-                case 1:
-                    if not Utils.in_range(
-                            Utils.Tile.left_border(self.center),
-                            Utils.Tile.right_border(self.center),
-                            self.center[0] - dx):
-                        delete = True
-                    else:
-                        self.x -= dx
-                    self.y -= dy
-                # vertical
-                case 2:
-                    if not Utils.in_range(
-                            Utils.Tile.left_border(self.center),
-                            Utils.Tile.right_border(self.center),
-                            self.center[0] - dx):
-                        delete = True
-                    else:
-                        self.x -= dx
-                    self.y -= dy
-                # horizontal
-                case 3:
-                    if not Utils.in_range(
-                            Utils.Tile.up_border(self.center),
-                            Utils.Tile.down_border(self.center),
-                            self.center[1] - dy):
-                        delete = True
-                    else:
-                        self.y -= dy
-                    self.x -= dx
-                # left->down
-                case 4:
-                    if not Utils.in_range(
-                            Utils.Tile.up_border(self.center),
-                            None,
-                            self.center[1] - dy):
-                        delete = True
-                    else:
-                        self.y -= dy
-                    if not Utils.in_range(
-                            None,
-                            Utils.Tile.right_border(self.center),
-                            self.center[0] - dx):
-                        delete = True
-                    else:
-                        self.x -= dx
-                # down->right
-                case 5:
-                    if not Utils.in_range(
-                            Utils.Tile.up_border(self.center),
-                            None,
-                            self.center[1] - dy):
-                        delete = True
-                    else:
-                        self.y -= dy
-                    if not Utils.in_range(
-                            Utils.Tile.left_border(self.center),
-                            None,
-                            self.center[0] - dx):
-                        delete = True
-                    else:
-                        self.x -= dx
-                # right->up
-                case 6:
-                    if not Utils.in_range(
-                            None,
-                            Utils.Tile.down_border(self.center),
-                            self.center[1] - dy):
-                        delete = True
-                    else:
-                        self.y -= dy
-                    if not Utils.in_range(
-                            Utils.Tile.left_border(self.center),
-                            None,
-                            self.center[0] - dx):
-                        delete = True
-                    else:
-                        self.x -= dx
-                # up->left
-                case 7:
-                    print('case 7')
-                    if not Utils.in_range(
-                            None,
-                            Utils.Tile.down_border(self.center),
-                            self.center[1] - dy):
-                        delete = True
-                    else:
-                        self.y -= dy
-                    if not Utils.in_range(
-                            None,
-                            Utils.Tile.right_border(self.center),
-                            self.center[0] - dx):
-                        delete = True
-                    else:
-                        self.x -= dx
+    def handle_collision(self, dx, dy):
+        hor, ver = self.check_collision(dx, dy)
+        print(hor, ver)
 
-        # player is on grass or no tile
+        if not hor or not ver:
+            self.delete()
         else:
             self.x -= dx
             self.y -= dy
-        if delete:
-            self.delete()
-
-    def movement(self):
-        super().movement()
 
     def draw(self):
         super().draw()
@@ -204,7 +114,7 @@ class Npc(Car):
     def update(self):
         self.raycaster.update()
         self.listen_inputs()
-        self.movement()
+        super().movement()
 
 
 class Player(Car):
@@ -222,88 +132,14 @@ class Player(Car):
         if player_input[pg.K_d]:
             self.angle -= self.rotation_speed
 
-    def check_collision(self, dx, dy):
-        if Utils.Tile.current(self.center) in self.terrain.roads:
-            match self.terrain.roads[Utils.Tile.current(self.center)]:
-                # finish
-                case 1:
-                    if Utils.in_range(
-                            Utils.Tile.left_border(self.center),
-                            Utils.Tile.right_border(self.center),
-                            self.center[0] - dx):
-                        self.x -= dx
-                    self.y -= dy
-                # vertical
-                case 2:
-                    if Utils.in_range(
-                            Utils.Tile.left_border(self.center),
-                            Utils.Tile.right_border(self.center),
-                            self.center[0] - dx):
-                        self.x -= dx
-                    self.y -= dy
-                # horizontal
-                case 3:
-                    if Utils.in_range(
-                            Utils.Tile.up_border(self.center),
-                            Utils.Tile.down_border(self.center),
-                            self.center[1] - dy):
-                        self.y -= dy
-                    self.x -= dx
-                # left->down
-                case 4:
-                    if Utils.in_range(
-                            Utils.Tile.up_border(self.center),
-                            None,
-                            self.center[1] - dy):
-                        self.y -= dy
-                    if Utils.in_range(
-                            None,
-                            Utils.Tile.right_border(self.center),
-                            self.center[0] - dx):
-                        self.x -= dx
-                # down->right
-                case 5:
-                    if Utils.in_range(
-                            Utils.Tile.up_border(self.center),
-                            None,
-                            self.center[1] - dy):
-                        self.y -= dy
-                    if Utils.in_range(
-                            Utils.Tile.left_border(self.center),
-                            None,
-                            self.center[0] - dx):
-                        self.x -= dx
-                # right->up
-                case 6:
-                    if Utils.in_range(
-                            None,
-                            Utils.Tile.down_border(self.center),
-                            self.center[1] - dy):
-                        self.y -= dy
-                    if Utils.in_range(
-                            Utils.Tile.left_border(self.center),
-                            None,
-                            self.center[0] - dx):
-                        self.x -= dx
-                # up->left
-                case 7:
-                    if Utils.in_range(
-                            None,
-                            Utils.Tile.down_border(self.center),
-                            self.center[1] - dy):
-                        self.y -= dy
-                    if Utils.in_range(
-                            None,
-                            Utils.Tile.right_border(self.center),
-                            self.center[0] - dx):
-                        self.x -= dx
+    def handle_collision(self, dx, dy):
+        hor, ver = self.check_collision(dx, dy)
 
-        # player is on grass or no tile
-        else:
+        if hor:
             self.x -= dx
+        if ver:
             self.y -= dy
 
     def update(self):
         self.listen_inputs()
         super().update()
-
