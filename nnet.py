@@ -1,6 +1,7 @@
 from settings import *
 import random
 
+
 class NNet:
     def __init__(self, wheights):
         pass

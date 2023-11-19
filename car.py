@@ -38,6 +38,9 @@ class Car:
 
         self.check_collision(dx, dy)
 
+    def check_status(self):
+        pass
+
     def draw(self):
 
         # rotates the car around its center
