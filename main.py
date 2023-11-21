@@ -18,12 +18,14 @@ class Game:
         self.screen = pg.display.set_mode(RES)
         self.clock = pg.time.Clock()
         self.terrain = Terrain(self)
-        self.car = Player(self, self.terrain)
+        self.player_1 = Player1(self, self.terrain)
+        self.player_2 = Player2(self, self.terrain)
         for i in range(NPC_AMOUNT):
             self.terrain.cars[i] = Npc(self, self.terrain, i)
 
     def update(self):
-        self.car.update()
+        self.player_1.update()
+        self.player_2.update()
         for _, car in list(self.terrain.cars.items()):
             car.update()
         pg.display.flip()
@@ -32,11 +34,13 @@ class Game:
 
     def draw(self):
         self.terrain.draw()
-        self.car.draw()
+        self.player_1.draw()
+        self.player_2.draw()
         for key, car in list(self.terrain.cars.items()):
             car.draw()
 
-    def check_events(self):
+    @staticmethod
+    def check_events():
         for event in pg.event.get():
             if event.type == pg.QUIT or (event.type == pg.KEYUP and event.key == pg.K_ESCAPE):
                 pg.quit()

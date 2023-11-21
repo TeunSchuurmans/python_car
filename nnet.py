@@ -10,7 +10,7 @@ class NNet:
         input_1 = data['speed'] / MAX_SPEED
         input_2 = data['angle'] % 360 / 360
         input_3 = data['rotation speed'] / ROTATION_SPEED
-        forward = True
+        forward = random.getrandbits(1)
         left = random.getrandbits(1)
         right = random.getrandbits(1)
 

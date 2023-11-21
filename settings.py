@@ -16,20 +16,22 @@ TILE_IMAGES = {
     'finish': pg.transform.scale(pg.image.load('images/finish.png'), (TILE_SIZE, TILE_SIZE)),
     'ver': pg.transform.scale(pg.image.load('images/straight.png'), (TILE_SIZE, TILE_SIZE)),
     'hor': pg.transform.rotate(pg.transform.scale(pg.image.load('images/straight.png'), (TILE_SIZE, TILE_SIZE)), 90),
-    'ld': pg.transform.rotate(pg.transform.scale(pg.image.load('images/corner.png'), (TILE_SIZE, TILE_SIZE)), 270),
-    'dr': pg.transform.scale(pg.image.load('images/corner.png'), (TILE_SIZE, TILE_SIZE)),
-    'ru': pg.transform.rotate(pg.transform.scale(pg.image.load('images/corner.png'), (TILE_SIZE, TILE_SIZE)), 90),
-    'ul': pg.transform.rotate(pg.transform.scale(pg.image.load('images/corner.png'), (TILE_SIZE, TILE_SIZE)), 180),
+    'ld': pg.transform.rotate(pg.transform.scale(pg.image.load('images/straight_corner.png'), (TILE_SIZE, TILE_SIZE)), 270),
+    'dr': pg.transform.scale(pg.image.load('images/straight_corner.png'), (TILE_SIZE, TILE_SIZE)),
+    'ru': pg.transform.rotate(pg.transform.scale(pg.image.load('images/straight_corner.png'), (TILE_SIZE, TILE_SIZE)), 90),
+    'ul': pg.transform.rotate(pg.transform.scale(pg.image.load('images/straight_corner.png'), (TILE_SIZE, TILE_SIZE)), 180),
 }
 
 # car settings
 CAR_WIDTH = TILE_SIZE / 6
 CAR_HEIGHT = CAR_WIDTH * 2
-CAR_IMAGE = pg.transform.rotate(pg.transform.scale(pg.image.load('images/car.png'), (CAR_HEIGHT, CAR_WIDTH)), 90)
+P1_IMAGE = pg.transform.rotate(pg.transform.scale(pg.image.load('images/player_1.png'), (CAR_HEIGHT, CAR_WIDTH)), 90)
+P2_IMAGE = pg.transform.rotate(pg.transform.scale(pg.image.load('images/player_2.png'), (CAR_HEIGHT, CAR_WIDTH)), 90)
+NPC_IMAGE = pg.transform.rotate(pg.transform.scale(pg.image.load('images/npc.png'), (CAR_HEIGHT, CAR_WIDTH)), 90)
 MAX_SPEED = 2
 ACCELERATION = MAX_SPEED / 150
-ROTATION_SPEED = 0.065
-CORNERING_SPEED = ROTATION_SPEED * 10
+ROTATION_SPEED = 0.05
+CORNERING_SPEED = ROTATION_SPEED * 15
 FRICTION = MAX_SPEED / 150
 BRAKE_SPEED = 1.01
 
@@ -41,4 +43,4 @@ HALF_SPREAD = RAY_SPREAD / 2
 RAY_GAP = RAY_SPREAD / (NUM_OF_RAYS - 1)
 
 # nnet settings
-NPC_AMOUNT = 200
+NPC_AMOUNT = 0

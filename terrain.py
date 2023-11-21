@@ -4,7 +4,7 @@ Code inspired by : Coder Space
     Video link: https://www.youtube.com/watch?v=ECqUrT7IdqQ&t=2m43s
 """
 
-from utils import *
+from settings import *
 
 
 class Terrain:
@@ -38,10 +38,9 @@ class Terrain:
             [0, 0, 0, 0, 6, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 0],
         ]
 
-        self.init_road_surface()
+        self.init_tiles()
 
-    # initializes tiles from tile_map onto the terrain surface
-    def init_road_surface(self):
+    def init_tiles(self):
         for row_i, row in enumerate(self.tile_map):
             for col_i, tile in enumerate(row):
                 key = (col_i, row_i)
@@ -61,12 +60,12 @@ class Tile:
         self.key = key
         self.pos = self.x, self.y = pos
         self.type = ''
-        self.borders = self.borders()
+        self.collision_borders = self.__init_border_type()
         self.image = TILE_IMAGES[self.type]
         self.draw_on_surface()
 
     @property
-    def border(self):
+    def borders(self):
         return {
             'left': self.x,
             'down': self.y + TILE_SIZE,
@@ -74,40 +73,57 @@ class Tile:
             'up': self.y,
         }
 
-    def borders(self):
+    @staticmethod
+    def current(pos):
+        return pos[0] // TILE_SIZE, pos[1] // TILE_SIZE
+
+    @staticmethod
+    def in_range(bounds, value):
+        minimum, maximum = bounds
+
+        if minimum is None and maximum is None:
+            return True
+        if maximum is None:
+            return minimum < value
+        if minimum is None:
+            return maximum > value
+        else:
+            return minimum < value < maximum
+
+    def __init_border_type(self):
         match self.key:
             case 1:
                 self.terrain.start_pos = self.x + TILE_CENTER - (CAR_WIDTH / 2), self.y + TILE_CENTER - (CAR_HEIGHT / 2)
                 self.type = 'finish'
-                return (self.border['left'], self.border['right']), (None, None)
+                return (self.borders['left'], self.borders['right']), (None, None)
             case 2:
                 self.type = 'ver'
-                return (self.border['left'], self.border['right']), (None, None)
+                return (self.borders['left'], self.borders['right']), (None, None)
             case 3:
                 self.type = 'hor'
-                return (None, None), (self.border['up'], self.border['down'])
+                return (None, None), (self.borders['up'], self.borders['down'])
             case 4:
                 self.type = 'ld'
-                return (None, self.border['right']), (self.border['up'], None)
+                return (None, self.borders['right']), (self.borders['up'], None)
             case 5:
                 self.type = 'dr'
-                return (self.border['left'], None), (self.border['up'], None)
+                return (self.borders['left'], None), (self.borders['up'], None)
             case 6:
                 self.type = 'ru'
-                return (self.border['left'], None), (None, self.border['down'])
+                return (self.borders['left'], None), (None, self.borders['down'])
             case 7:
                 self.type = 'ul'
-                return (None, self.border['right']), (None, self.border['down'])
-            case 0:
+                return (None, self.borders['right']), (None, self.borders['down'])
+            case _:
                 self.type = 'grass'
                 return (None, None), (None, None)
 
     def check_collision(self, pos):
         hor = False
         ver = False
-        if Utils.in_range(self.borders[0], pos[0]):
+        if Tile.in_range(self.collision_borders[0], pos[0]):
             hor = True
-        if Utils.in_range(self.borders[1], pos[1]):
+        if Tile.in_range(self.collision_borders[1], pos[1]):
             ver = True
 
         return hor, ver

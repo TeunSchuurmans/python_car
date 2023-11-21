@@ -32,8 +32,7 @@ class RayCaster:
             pass
             self.ray_ends[x] = (self.npc.center[0] + math.sin(self.ray_angle(x)) * -MAX_RAY_LENGTH, self.npc.center[1] + math.cos(self.ray_angle(x)) * -MAX_RAY_LENGTH)
             #self.rays[x] = self.ray_length(side1, side2)
-            
-            
+
     def draw(self):
         for end in self.ray_ends:
             pg.draw.line(

@@ -7,16 +7,15 @@ Code inspired by: Dr. Radu Mariescu-Istodor
     Video link: https://www.youtube.com/watch?v=Rs_rAxEsAvI&t=3m44s
 """
 
-
 from raycasting import *
-from utils import *
+from terrain import *
 
 
 class Car:
-    def __init__(self, game, terrain):
+    def __init__(self, game, terrain, image):
         self.game = game
         self.terrain = terrain
-        self.image = CAR_IMAGE
+        self.image = image
         self.pos = self.x, self.y = terrain.start_pos
         self.angle = 0
         self.speed = 0
@@ -39,11 +38,9 @@ class Car:
         self.handle_collision(dx, dy)
 
     def check_collision(self, dx, dy):
-        tile = Utils.Tile.current(self.center)
+        tile = Tile.current(self.center)
         future_pos = (self.center[0] - dx, self.center[1] - dy)
         if tile in self.terrain.roads:
-            print(self.terrain.roads[tile].type)
-            print(self.terrain.roads[tile].check_collision(future_pos))
             return self.terrain.roads[tile].check_collision(future_pos)
         else:
             return True, True
@@ -64,12 +61,13 @@ class Car:
 
 
 class Npc(Car):
-    def __init__(self, game, road, index):
-        super().__init__(game, road)
+    def __init__(self, game, terrain, index):
+        self.image = NPC_IMAGE
         self.key = index
-        self.raycaster = RayCaster(self.game, self.terrain, self)
+        self.raycaster = RayCaster(game, terrain, self)
         self.nnet = self.raycaster.nnet
         self.points = 0
+        super().__init__(game, terrain, self.image)
 
     @property
     def input_data(self):
@@ -99,7 +97,6 @@ class Npc(Car):
 
     def handle_collision(self, dx, dy):
         hor, ver = self.check_collision(dx, dy)
-        print(hor, ver)
 
         if not hor or not ver:
             self.delete()
@@ -118,18 +115,21 @@ class Npc(Car):
 
 
 class Player(Car):
+
+    def __init__(self, game, terrain, input_type, image):
+        super().__init__(game, terrain, image)
+        self.player_input = input_type
+
     def listen_inputs(self):
         player_input = pg.key.get_pressed()
 
-        if player_input[pg.K_w]:
+        if player_input[self.player_input['forward']]:
             self.speed = min(self.speed + ACCELERATION, MAX_SPEED)
         else:
             self.speed = max(self.speed - FRICTION, 0)
-
-        if player_input[pg.K_a]:
+        if player_input[self.player_input['left']]:
             self.angle += self.rotation_speed
-
-        if player_input[pg.K_d]:
+        if player_input[self.player_input['right']]:
             self.angle -= self.rotation_speed
 
     def handle_collision(self, dx, dy):
@@ -143,3 +143,27 @@ class Player(Car):
     def update(self):
         self.listen_inputs()
         super().update()
+
+
+class Player1(Player):
+    def __init__(self, game, terrain):
+        self.image = P1_IMAGE
+        self.input_type = {
+            'forward': pg.K_w,
+            'right': pg.K_d,
+            'left': pg.K_a,
+        }
+        super().__init__(game, terrain, self.input_type, self.image)
+
+
+class Player2(Player):
+
+    def __init__(self, game, road):
+        self.image = P2_IMAGE
+        self.input_type = {
+            'forward': pg.K_UP,
+            'right': pg.K_RIGHT,
+            'left': pg.K_LEFT,
+        }
+        self.image = P2_IMAGE
+        super().__init__(game, road, self.input_type, self.image)
