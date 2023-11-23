@@ -2,7 +2,7 @@ import pygame as pg
 import math
 
 # game settings
-RES = WIDTH, HEIGHT = 1600, 900
+RES = WIDTH, HEIGHT = 1000, 600
 FPS = 144
 
 # terrain settings
@@ -25,6 +25,8 @@ TILE_IMAGES = {
 # car settings
 CAR_WIDTH = TILE_SIZE / 6
 CAR_HEIGHT = CAR_WIDTH * 2
+P1 = True
+P2 = False
 P1_IMAGE = pg.transform.rotate(pg.transform.scale(pg.image.load('images/player_1.png'), (CAR_HEIGHT, CAR_WIDTH)), 90)
 P2_IMAGE = pg.transform.rotate(pg.transform.scale(pg.image.load('images/player_2.png'), (CAR_HEIGHT, CAR_WIDTH)), 90)
 NPC_IMAGE = pg.transform.rotate(pg.transform.scale(pg.image.load('images/npc.png'), (CAR_HEIGHT, CAR_WIDTH)), 90)
@@ -38,9 +40,9 @@ BRAKE_SPEED = 1.01
 # raycaster  settings
 NUM_OF_RAYS = 5
 MAX_RAY_LENGTH = 200
-RAY_SPREAD = math.pi / 3
+RAY_SPREAD = math.pi
 HALF_SPREAD = RAY_SPREAD / 2
 RAY_GAP = RAY_SPREAD / (NUM_OF_RAYS - 1)
 
 # nnet settings
-NPC_AMOUNT = 0
+NPC_AMOUNT = 100

@@ -18,14 +18,18 @@ class Game:
         self.screen = pg.display.set_mode(RES)
         self.clock = pg.time.Clock()
         self.terrain = Terrain(self)
-        self.player_1 = Player1(self, self.terrain)
-        self.player_2 = Player2(self, self.terrain)
+        if P1:
+            self.player_1 = Player1(self, self.terrain)
+        if P2:
+            self.player_2 = Player2(self, self.terrain)
         for i in range(NPC_AMOUNT):
             self.terrain.cars[i] = Npc(self, self.terrain, i)
 
     def update(self):
-        self.player_1.update()
-        self.player_2.update()
+        if P1:
+            self.player_1.update()
+        if P2:
+            self.player_2.update()
         for _, car in list(self.terrain.cars.items()):
             car.update()
         pg.display.flip()
@@ -34,8 +38,10 @@ class Game:
 
     def draw(self):
         self.terrain.draw()
-        self.player_1.draw()
-        self.player_2.draw()
+        if P1:
+            self.player_1.draw()
+        if P2:
+            self.player_2.draw()
         for key, car in list(self.terrain.cars.items()):
             car.draw()
 
