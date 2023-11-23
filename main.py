@@ -41,6 +41,7 @@ class Game:
         if P1:
             self.player_1.draw()
         if P2:
+
             self.player_2.draw()
         for key, car in list(self.terrain.cars.items()):
             car.draw()
@@ -62,3 +63,21 @@ class Game:
 if __name__ == '__main__':
     game = Game()
     game.main_loop()
+
+
+class GameLoop:
+    def __init__(self):
+        self.running = True
+        self.terrain = Terrain(self)
+        if P1:
+            self.player_1 = Player1(self, self.terrain)
+        if P2:
+            self.player_2 = Player2(self, self.terrain)
+        for i in range(NPC_AMOUNT):
+            self.terrain.cars[i] = Npc(self, self.terrain, i)
+        self.game_loop()
+
+    def game_loop(self):
+        while self.running:
+            pass
+
