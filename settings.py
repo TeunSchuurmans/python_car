@@ -2,7 +2,7 @@ import pygame as pg
 import math
 
 # game settings
-RES = WIDTH, HEIGHT = 1000, 600
+RES = WIDTH, HEIGHT = 1600, 900
 FPS = 144
 
 # terrain settings
@@ -39,10 +39,10 @@ BRAKE_SPEED = 1.01
 
 # raycaster  settings
 NUM_OF_RAYS = 5
-MAX_RAY_LENGTH = 200
+MAX_RAY_LENGTH = 100
 RAY_SPREAD = math.pi
 HALF_SPREAD = RAY_SPREAD / 2
 RAY_GAP = RAY_SPREAD / (NUM_OF_RAYS - 1)
 
 # nnet settings
-NPC_AMOUNT = 100
+NPC_AMOUNT = 1

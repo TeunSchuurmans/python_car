@@ -45,6 +45,16 @@ class Car:
         else:
             return True, True
 
+    def handle_inputs(self, forward, left, right):
+        if forward:
+            self.speed = min(self.speed + ACCELERATION, MAX_SPEED)
+        else:
+            self.speed = max(self.speed - FRICTION, 0)
+        if left:
+            self.angle += self.rotation_speed
+        if right:
+            self.angle -= self.rotation_speed
+
     def check_status(self):
         pass
 
@@ -81,19 +91,9 @@ class Npc(Car):
     def delete(self):
         del self.terrain.cars[self.key]
 
-    def listen_inputs(self):
+    def check_inputs(self):
         forward, left, right = self.nnet.predict(self.input_data)
-
-        if forward:
-            self.speed = min(self.speed + ACCELERATION, MAX_SPEED)
-        else:
-            self.speed = max(self.speed - FRICTION, 0)
-
-        if left:
-            self.angle += self.rotation_speed
-
-        if right:
-            self.angle -= self.rotation_speed
+        self.handle_inputs(forward, left, right)
 
     def handle_collision(self, dx, dy):
         hor, ver = self.check_collision(dx, dy)
@@ -106,11 +106,11 @@ class Npc(Car):
 
     def draw(self):
         super().draw()
-        self.raycaster.draw()
+        # self.raycaster.draw()
 
     def update(self):
         self.raycaster.update()
-        self.listen_inputs()
+        self.check_inputs()
         super().movement()
 
 
@@ -120,17 +120,25 @@ class Player(Car):
         super().__init__(game, terrain, image)
         self.player_input = input_type
 
-    def listen_inputs(self):
+    def check_inputs(self):
+        forward = False
+        left = False
+        right = False
         player_input = pg.key.get_pressed()
 
         if player_input[self.player_input['forward']]:
             self.speed = min(self.speed + ACCELERATION, MAX_SPEED)
+            forward = True
         else:
             self.speed = max(self.speed - FRICTION, 0)
         if player_input[self.player_input['left']]:
             self.angle += self.rotation_speed
+            left = True
         if player_input[self.player_input['right']]:
             self.angle -= self.rotation_speed
+            right = True
+
+        return forward, left, right
 
     def handle_collision(self, dx, dy):
         hor, ver = self.check_collision(dx, dy)
@@ -141,7 +149,7 @@ class Player(Car):
             self.y -= dy
 
     def update(self):
-        self.listen_inputs()
+        self.check_inputs()
         super().update()
 
 

@@ -60,7 +60,7 @@ class Tile:
         self.key = key
         self.pos = self.x, self.y = pos
         self.type = ''
-        self.collision_borders = self.__init_border_type()
+        self.collision_borders = self.init_border_type()
         self.image = TILE_IMAGES[self.type]
         self.draw_on_surface()
 
@@ -90,7 +90,7 @@ class Tile:
         else:
             return minimum < value < maximum
 
-    def __init_border_type(self):
+    def init_border_type(self):
         match self.key:
             case 1:
                 self.terrain.start_pos = self.x + TILE_CENTER - (CAR_WIDTH / 2), self.y + TILE_CENTER - (CAR_HEIGHT / 2)
