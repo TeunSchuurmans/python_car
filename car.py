@@ -7,6 +7,7 @@ Code inspired by: Dr. Radu Mariescu-Istodor
     Video link: https://www.youtube.com/watch?v=Rs_rAxEsAvI&t=3m44s
 """
 
+
 from raycasting import *
 from terrain import *
 
@@ -16,7 +17,7 @@ class Car:
         self.game = game
         self.terrain = terrain
         self.image = image
-        self.pos = self.x, self.y = terrain.start_pos
+        self.x, self.y = terrain.start_pos
         self.angle = 0
         self.speed = 0
         self.rotation_speed = 0
@@ -51,9 +52,9 @@ class Car:
         else:
             self.speed = max(self.speed - FRICTION, 0)
         if left:
-            self.angle += self.rotation_speed
+            self.angle += self.rotation_speed % (math.pi * 2)
         if right:
-            self.angle -= self.rotation_speed
+            self.angle -= self.rotation_speed % (math.pi * 2)
 
     def check_status(self):
         pass
@@ -127,18 +128,13 @@ class Player(Car):
         player_input = pg.key.get_pressed()
 
         if player_input[self.player_input['forward']]:
-            self.speed = min(self.speed + ACCELERATION, MAX_SPEED)
             forward = True
-        else:
-            self.speed = max(self.speed - FRICTION, 0)
         if player_input[self.player_input['left']]:
-            self.angle += self.rotation_speed
             left = True
         if player_input[self.player_input['right']]:
-            self.angle -= self.rotation_speed
             right = True
 
-        return forward, left, right
+        self.handle_inputs(forward, left, right)
 
     def handle_collision(self, dx, dy):
         hor, ver = self.check_collision(dx, dy)
