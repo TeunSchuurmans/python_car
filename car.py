@@ -107,7 +107,7 @@ class Npc(Car):
 
     def draw(self):
         super().draw()
-        # self.raycaster.draw()
+        self.raycaster.draw()
 
     def update(self):
         self.raycaster.update()
@@ -120,6 +120,7 @@ class Player(Car):
     def __init__(self, game, terrain, input_type, image):
         super().__init__(game, terrain, image)
         self.player_input = input_type
+        self.raycaster = RayCaster(game, terrain, self)
 
     def check_inputs(self):
         forward = False
@@ -145,8 +146,13 @@ class Player(Car):
             self.y -= dy
 
     def update(self):
+        self.raycaster.update()
         self.check_inputs()
         super().update()
+
+    def draw(self):
+        super().draw()
+        self.raycaster.draw()
 
 
 class Player1(Player):

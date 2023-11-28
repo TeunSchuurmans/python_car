@@ -21,18 +21,49 @@ class RayCaster:
 
     #utility functions
     def ray_angle(self, index):
-        return self.npc.angle - HALF_SPREAD + RAY_GAP * index
+        return (self.npc.angle - HALF_SPREAD + RAY_GAP * index)  % (math.pi * 2)
 
     def ray_length(self, side1, side2):
         return  math.sqrt(side1**2 + side2 **2) 
 
     #loop functions
     def cast_rays(self):
-        for x, _ in enumerate(self.rays):
-            pass
+        for i, _ in enumerate(self.rays):
+            angle = self.ray_angle(i)
+            #horizontal
+            h_dx, h_dy = 0, TILE_SIZE
+            h_x_end, h_y_end = self.npc.center
+            #down
+            if (math.pi / 2) < angle < (math.pi * 3 / 2):
+                h_y_end = self.terrain.roads[Tile.current(self.npc.center)].borders['down']
+                h_x_end += math.tan(angle) * (h_y_end - self.npc.center[1])
+            #up
+            else:
+                h_y_end = self.terrain.roads[Tile.current(self.npc.center)].borders['up']
+                h_x_end -= math.tan(angle) * (self.npc.center[1] - h_y_end)
+
+            #vertical
+            v_dx, v_dy = TILE_SIZE, 0
+            v_x_end, v_y_end = self.npc.center
+            #left
+            if 0 < angle < math.pi:
+                v_x_end = self.terrain.roads[Tile.current(self.npc.center)].borders['left']
+                v_y_end = math.tan(angle) * (self.npc.center[0] - v_x_end)
+            #right
+            else:
+                v_x_end = self.terrain.roads[Tile.current(self.npc.center)].borders['right']
+                v_y_end = math.tan(angle) * (v_x_end - self.npc.center[0])
+
+            self.rays[i] = (MAX_RAY_LENGTH)
+            pg.draw.circle(self.game.screen, 'red', (v_x_end, v_y_end), 4)
+            pg.draw.line(self.game.screen, 'green', self.npc.center,(h_x_end, h_y_end), 4)
+            print(angle)
 
     def draw(self):
-        pass
+        for i,ray in enumerate(self.rays):
+            end = (self.npc.center[0] + math.sin(self.ray_angle(i)) * -ray, self.npc.center[1] + math.cos(self.ray_angle(i)) * -ray)
+            pg.draw.line(self.game.screen, 'white', self.npc.center, end, 2)
+            #pg.draw.circle(self.game.screen, 'red', end, 4)
             
     def update(self):
         self.cast_rays()
