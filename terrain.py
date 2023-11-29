@@ -49,6 +49,8 @@ class Terrain:
                     self.roads[key] = Tile(self, pos, tile)
                 else:
                     Tile(self, pos, tile)
+                if SHOW_GRID:
+                    Tile(self, pos, 'grid')
 
     def draw(self):
         self.game.screen.blit(self.surface, (0, 0))
@@ -114,8 +116,11 @@ class Tile:
             case 7:
                 self.type = 'ul'
                 return (None, self.borders['right']), (None, self.borders['down'])
-            case _:
+            case 0:
                 self.type = 'grass'
+                return (None, None), (None, None)
+            case 'grid':
+                self.type = 'grid'
                 return (None, None), (None, None)
 
     def check_collision(self, pos):

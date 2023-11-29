@@ -29,7 +29,7 @@ class RayCaster:
     #loop functions
     def cast_rays(self):
         for i, _ in enumerate(self.rays):
-            angle = self.ray_angle(i)
+            angle = self.ray_angle(i) + 1e-10
             #horizontal
             h_dx, h_dy = 0, TILE_SIZE
             h_x_end, h_y_end = self.npc.center
@@ -48,21 +48,22 @@ class RayCaster:
             #left
             if 0 < angle < math.pi:
                 v_x_end = self.terrain.roads[Tile.current(self.npc.center)].borders['left']
-                v_y_end = math.tan(angle) * (self.npc.center[0] - v_x_end)
+                v_y_end -= 1 / math.tan(angle) * (self.npc.center[0] - v_x_end)
             #right
             else:
                 v_x_end = self.terrain.roads[Tile.current(self.npc.center)].borders['right']
-                v_y_end = math.tan(angle) * (v_x_end - self.npc.center[0])
+                v_y_end += 1 / math.tan(angle) * (v_x_end - self.npc.center[0])
 
             self.rays[i] = (MAX_RAY_LENGTH)
-            pg.draw.circle(self.game.screen, 'red', (v_x_end, v_y_end), 4)
-            pg.draw.line(self.game.screen, 'green', self.npc.center,(h_x_end, h_y_end), 4)
-            print(angle)
+            pg.draw.line(self.game.screen, 'green', self.npc.center,(v_x_end, v_y_end), 1)
+            pg.draw.circle(self.game.screen, 'white', (v_x_end, v_y_end), 4)
+            pg.draw.line(self.game.screen, 'blue', self.npc.center,(h_x_end, h_y_end), 1)
+            pg.draw.circle(self.game.screen, 'white', (h_x_end, h_y_end), 4)
 
     def draw(self):
         for i,ray in enumerate(self.rays):
             end = (self.npc.center[0] + math.sin(self.ray_angle(i)) * -ray, self.npc.center[1] + math.cos(self.ray_angle(i)) * -ray)
-            pg.draw.line(self.game.screen, 'white', self.npc.center, end, 2)
+            #pg.draw.line(self.game.screen, 'yellow', self.npc.center, end, 2)
             #pg.draw.circle(self.game.screen, 'red', end, 4)
             
     def update(self):

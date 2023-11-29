@@ -21,6 +21,7 @@ TILE_IMAGES = {
     'ru': pg.transform.rotate(pg.transform.scale(pg.image.load('images/straight_corner.png'), (TILE_SIZE, TILE_SIZE)), 90),
     'ul': pg.transform.rotate(pg.transform.scale(pg.image.load('images/straight_corner.png'), (TILE_SIZE, TILE_SIZE)), 180),
 }
+SHOW_GRID = True
 
 # car settings
 CAR_WIDTH = TILE_SIZE / 6
@@ -38,9 +39,9 @@ FRICTION = MAX_SPEED / 150
 BRAKE_SPEED = 1.01
 
 # raycaster  settings
-NUM_OF_RAYS = 5
-MAX_RAY_LENGTH = 100
-RAY_SPREAD = 0
+NUM_OF_RAYS = 10
+MAX_RAY_LENGTH = 1000
+RAY_SPREAD = math.pi * 2
 HALF_SPREAD = RAY_SPREAD / 2
 RAY_GAP = RAY_SPREAD / (NUM_OF_RAYS - 1)
 
