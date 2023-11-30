@@ -55,6 +55,13 @@ class RayCaster:
                 h_dx = -h_dx
                 h_dy = -h_dy
 
+            for _ in DOF:
+                if self.ray_length(h_x_end, h_y_end) >= MAX_RAY_LENGTH:
+                    break
+                pg.draw.circle(self.game.screen, 'blue', (h_x_end, h_y_end), 4)
+                h_x_end += h_dx
+                h_y_end += h_dy
+
             """
             Vertical
             """
@@ -74,22 +81,23 @@ class RayCaster:
                 v_x_end = start_tb['right']
                 v_y_end += 1 / tan_a * (v_x_end - self.npc.center[0])
 
-            self.rays[i] = min(min(self.ray_length(h_x_end, h_y_end), self.ray_length(v_x_end, v_y_end)), MAX_RAY_LENGTH)
 
-            for i in DOF:
+            for _ in DOF:
+                if self.ray_length(v_x_end, v_y_end) >= MAX_RAY_LENGTH:
+                    break
                 pg.draw.circle(self.game.screen, 'green', (v_x_end, v_y_end), 4)
-                pg.draw.circle(self.game.screen, 'blue', (h_x_end, h_y_end), 4)
                 v_x_end += v_dx
                 v_y_end += v_dy
-                h_x_end += h_dx
-                h_y_end += h_dy
+
+            ray_length = min(self.ray_length(h_x_end, h_y_end), self.ray_length(v_x_end, v_y_end))
+            self.rays[i] = ray_length
 
 
     def draw(self):
         for i, ray in enumerate(self.rays):
             end = (self.npc.center[0] + math.sin(self.ray_angle(i)) * -ray, self.npc.center[1] + math.cos(self.ray_angle(i)) * -ray)
             pg.draw.line(self.game.screen, 'white', self.npc.center, end, 2)
-            pg.draw.circle(self.game.screen, 'blue', end, 4)
+            pg.draw.circle(self.game.screen, 'red', end, 4)
             
     def update(self):
         self.cast_rays()

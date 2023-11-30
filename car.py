@@ -73,7 +73,7 @@ class Car:
 
 class Npc(Car):
     def __init__(self, game, terrain, index):
-        self.image = CAR['npc']
+        self.image = CAR_IMAGES['npc']
         self.key = index
         self.raycaster = RayCaster(game, terrain, self)
         self.nnet = self.raycaster.nnet
@@ -157,7 +157,7 @@ class Player(Car):
 
 class Player1(Player):
     def __init__(self, game, terrain):
-        self.image = CAR['p1']
+        self.image = CAR_IMAGES['p1']
         self.input_type = {
             'forward': pg.K_w,
             'right': pg.K_d,
@@ -169,7 +169,7 @@ class Player1(Player):
 class Player2(Player):
 
     def __init__(self, game, road):
-        self.image = CAR['p2']
+        self.image = CAR_IMAGES['p2']
         self.input_type = {
             'forward': pg.K_UP,
             'right': pg.K_RIGHT,
