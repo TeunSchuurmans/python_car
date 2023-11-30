@@ -31,50 +31,59 @@ class RayCaster:
     #loop functions
     def cast_rays(self):
         for i, _ in enumerate(self.rays):
-            angle = self.ray_angle(i) + 1e-100
-            #horizontal
-            h_dx, h_dy = 0, TILE_SIZE
+
+            angle = self.ray_angle(i) + 1e-10
+            tan_a = math.tan(angle)
+            start_tb = self.terrain.roads[Tile.current(self.npc.center)].borders
+
+            """
+            Horizontal
+            """
+
             h_x_end, h_y_end = self.npc.center
-            #down
+            h_dx = TILE_SIZE * tan_a
+            h_dy = TILE_SIZE
+
+            # down
             if (math.pi / 2) < angle < (math.pi * 3 / 2):
-                h_y_end = self.terrain.roads[Tile.current(self.npc.center)].borders['down']
-                h_x_end += math.tan(angle) * (h_y_end - self.npc.center[1])
-            #up
+                h_y_end = start_tb['down']
+                h_x_end += tan_a * (h_y_end - self.npc.center[1])
+            # up
             else:
-                h_y_end = self.terrain.roads[Tile.current(self.npc.center)].borders['up']
-                h_x_end -= math.tan(angle) * (self.npc.center[1] - h_y_end)
+                h_y_end = start_tb['up']
+                h_x_end -= tan_a * (self.npc.center[1] - h_y_end)
+                h_dx = -h_dx
+                h_dy = -h_dy
 
-            for x in DOF:
-                if False:
-                    break
-                else:
-                    #h_x_end += h_dx
-                    #h_y_end += h_dy
-                    pass
+            """
+            Vertical
+            """
 
-            #vertical
-            v_dx, v_dy = TILE_SIZE, 0
             v_x_end, v_y_end = self.npc.center
+            v_dx = TILE_SIZE
+            v_dy = 1 / tan_a * TILE_SIZE
 
-            #left
+            # left
             if 0 < angle < math.pi:
-                v_x_end = self.terrain.roads[Tile.current(self.npc.center)].borders['left']
-                v_y_end -= 1 / math.tan(angle) * (self.npc.center[0] - v_x_end)
-            #right
+                v_x_end = start_tb['left']
+                v_y_end -= 1 / tan_a * (self.npc.center[0] - v_x_end)
+                v_dx = -v_dx
+                v_dy = -v_dy
+            # right
             else:
-                v_x_end = self.terrain.roads[Tile.current(self.npc.center)].borders['right']
-                v_y_end += 1 / math.tan(angle) * (v_x_end - self.npc.center[0])
+                v_x_end = start_tb['right']
+                v_y_end += 1 / tan_a * (v_x_end - self.npc.center[0])
 
-            for x in DOF:
-                if False:
-                    break
-                else:
-                    #v_x_end += v_dx
-                    #v_y_end += v_dy
-                    pass
+            self.rays[i] = min(min(self.ray_length(h_x_end, h_y_end), self.ray_length(v_x_end, v_y_end)), MAX_RAY_LENGTH)
 
-            ray_length = min(min(self.ray_length(h_x_end, h_y_end), self.ray_length(v_x_end, v_y_end)), MAX_RAY_LENGTH)
-            self.rays[i] = ray_length
+            for i in DOF:
+                pg.draw.circle(self.game.screen, 'green', (v_x_end, v_y_end), 4)
+                pg.draw.circle(self.game.screen, 'blue', (h_x_end, h_y_end), 4)
+                v_x_end += v_dx
+                v_y_end += v_dy
+                h_x_end += h_dx
+                h_y_end += h_dy
+
 
     def draw(self):
         for i, ray in enumerate(self.rays):

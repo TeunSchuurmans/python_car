@@ -21,16 +21,18 @@ TILE_IMAGES = {
     'ru': pg.transform.rotate(pg.transform.scale(pg.image.load('images/straight_corner.png'), (TILE_SIZE, TILE_SIZE)), 90),
     'ul': pg.transform.rotate(pg.transform.scale(pg.image.load('images/straight_corner.png'), (TILE_SIZE, TILE_SIZE)), 180),
 }
-SHOW_GRID = False
+SHOW_GRID = True
 
 # car settings
 CAR_WIDTH = TILE_SIZE / 6
 CAR_HEIGHT = CAR_WIDTH * 2
 P1 = True
 P2 = False
-P1_IMAGE = pg.transform.rotate(pg.transform.scale(pg.image.load('images/player_1.png'), (CAR_HEIGHT, CAR_WIDTH)), 90)
-P2_IMAGE = pg.transform.rotate(pg.transform.scale(pg.image.load('images/player_2.png'), (CAR_HEIGHT, CAR_WIDTH)), 90)
-NPC_IMAGE = pg.transform.rotate(pg.transform.scale(pg.image.load('images/npc.png'), (CAR_HEIGHT, CAR_WIDTH)), 90)
+CAR = {
+    'p1': pg.transform.rotate(pg.transform.scale(pg.image.load('images/player_1.png'), (CAR_HEIGHT, CAR_WIDTH)), 90),
+    'p2': pg.transform.rotate(pg.transform.scale(pg.image.load('images/player_2.png'), (CAR_HEIGHT, CAR_WIDTH)), 90),
+    'npc': pg.transform.rotate(pg.transform.scale(pg.image.load('images/npc.png'), (CAR_HEIGHT, CAR_WIDTH)), 90),
+}
 MAX_SPEED = 2
 ACCELERATION = MAX_SPEED / 150
 ROTATION_SPEED = 0.05
@@ -39,12 +41,12 @@ FRICTION = MAX_SPEED / 150
 BRAKE_SPEED = 1.01
 
 # raycaster  settings
-NUM_OF_RAYS = 5
-MAX_RAY_LENGTH = 1000
-RAY_SPREAD = math.pi
+NUM_OF_RAYS = 2
+MAX_RAY_LENGTH = 200
+RAY_SPREAD = 0
 HALF_SPREAD = RAY_SPREAD / 2
 RAY_GAP = RAY_SPREAD / (NUM_OF_RAYS - 1)
 DOF = range(10)
 
 # nnet settings
-NPC_AMOUNT = 1
+NPC_AMOUNT = range(0)

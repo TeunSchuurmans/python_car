@@ -22,7 +22,7 @@ class Game:
             self.player_1 = Player1(self, self.terrain)
         if P2:
             self.player_2 = Player2(self, self.terrain)
-        for i in range(NPC_AMOUNT):
+        for i in NPC_AMOUNT:
             self.terrain.cars[i] = Npc(self, self.terrain, i)
 
     def update(self):
