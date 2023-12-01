@@ -18,7 +18,7 @@ class Car:
         self.terrain = terrain
         self.image = image
         self.x, self.y = terrain.start_pos
-        self.angle = 0
+        self.angle = 1e-10
         self.speed = 0
         self.rotation_speed = 0
 

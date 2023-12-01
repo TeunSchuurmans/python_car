@@ -2,7 +2,7 @@ import pygame as pg
 import math
 
 # game settings
-RES = WIDTH, HEIGHT = 1000, 600
+RES = WIDTH, HEIGHT = 1600, 900
 FPS = 144
 
 # terrain settings
@@ -41,9 +41,9 @@ FRICTION = MAX_SPEED / 150
 BRAKE_SPEED = 1.01
 
 # raycaster  settings
-NUM_OF_RAYS = 2
-MAX_RAY_LENGTH = 400
-RAY_SPREAD = 0
+NUM_OF_RAYS = 5
+MAX_RAY_LENGTH = 200
+RAY_SPREAD = math.pi
 HALF_SPREAD = RAY_SPREAD / 2
 RAY_GAP = RAY_SPREAD / (NUM_OF_RAYS - 1)
 DOF = range(5)
