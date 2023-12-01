@@ -35,7 +35,7 @@ class RayCaster:
 
     def ray_pos(self, length, angle):
         return (math.sin(angle) * length, math.cos(angle) * length)
-    def ray_collision(self, ray, angle):
+    def tile_fraction(self, ray, angle):
         pos = self.ray_pos(ray, angle)
         return False
 
@@ -72,12 +72,12 @@ class RayCaster:
 
             for x in DOF:
                     if hor_length <= ver_length:
-                        if hor_length + hor_d > MAX_RAY_LENGTH or self.ray_collision(hor_length, angle):
+                        if hor_length + hor_d > MAX_RAY_LENGTH or self.tile_fraction(hor_length, angle):
                             break
                         else:
                             hor_length += hor_d
                     else:
-                        if ver_length + ver_d > MAX_RAY_LENGTH or self.ray_collision(ver_length, angle):
+                        if ver_length + ver_d > MAX_RAY_LENGTH or self.tile_fraction(ver_length, angle):
                             break
                         else:
                             ver_length += ver_d
@@ -86,7 +86,8 @@ class RayCaster:
 
     def draw(self):
         for i, ray in enumerate(self.rays):
-            end = (self.npc.center[0] + math.sin(self.ray_angle(i)) * -ray, self.npc.center[1] + math.cos(self.ray_angle(i)) * -ray)
+            angle = self.ray_angle(i)
+            end = (self.npc.center[0] + math.sin(angle) * ray, self.npc.center[1] + math.cos(angle) * ray)
             pg.draw.line(self.game.screen, 'white', self.npc.center, end, 2)
             pg.draw.circle(self.game.screen, 'red', end, 4)
             
