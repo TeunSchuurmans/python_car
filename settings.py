@@ -2,7 +2,7 @@ import pygame as pg
 import math
 
 # game settings
-RES = WIDTH, HEIGHT = 1000, 600
+RES = WIDTH, HEIGHT = 1600, 900
 FPS = 144
 
 # terrain settings
@@ -10,6 +10,7 @@ ROWS = 9
 COLUMNS = 16
 TILE_SIZE = 100
 TILE_CENTER = TILE_SIZE / 2
+SHOW_GRID = True
 TILE_IMAGES = {
     'grid': pg.transform.scale(pg.image.load('images/grid.png'), (TILE_SIZE, TILE_SIZE)),
     'grass': pg.transform.scale(pg.image.load('images/grass.png'), (TILE_SIZE, TILE_SIZE)),
@@ -21,7 +22,7 @@ TILE_IMAGES = {
     'ru': pg.transform.rotate(pg.transform.scale(pg.image.load('images/straight_corner.png'), (TILE_SIZE, TILE_SIZE)), 90),
     'ul': pg.transform.rotate(pg.transform.scale(pg.image.load('images/straight_corner.png'), (TILE_SIZE, TILE_SIZE)), 180),
 }
-SHOW_GRID = True
+
 
 # car settings
 CAR_WIDTH = TILE_SIZE / 6
