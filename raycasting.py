@@ -21,7 +21,7 @@ class RayCaster:
 
     #utility functions
     def ray_angle(self, index):
-        return (self.npc.angle - HALF_SPREAD + RAY_GAP * index)  % (math.pi * 2)
+        return (self.npc.angle - (RAY_SPREAD / 2) + RAY_GAP * index)  % (math.pi * 2)
 
     def ray_length(self, x, y):
         side1 = x - self.npc.center[0]
@@ -107,7 +107,7 @@ class RayCaster:
                 v_x_end += v_dx
                 v_y_end += v_dy
 
-            ray_length = min(self.ray_length(h_x_end, h_y_end), self.ray_length(v_x_end, v_y_end))
+            ray_length = min(min(self.ray_length(h_x_end, h_y_end), self.ray_length(v_x_end, v_y_end)), MAX_RAY_LENGTH)
             self.rays[i] = ray_length
 
 

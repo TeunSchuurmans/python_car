@@ -2,7 +2,7 @@ import pygame as pg
 import math
 
 # game settings
-RES = WIDTH, HEIGHT = 1000, 600
+RES = WIDTH, HEIGHT = 1600, 900
 FPS = 144
 
 # terrain settings
@@ -43,11 +43,12 @@ BRAKE_SPEED = 1.01
 
 # raycaster  settings
 NUM_OF_RAYS = 5
-MAX_RAY_LENGTH = 100
+MAX_RAY_LENGTH = 150
 RAY_SPREAD = math.pi
-HALF_SPREAD = RAY_SPREAD / 2
 RAY_GAP = RAY_SPREAD / (NUM_OF_RAYS - 1)
 DOF = range(5)
 
 # nnet settings
-NPC_AMOUNT = range(0)
+NPC_AMOUNT = range(1)
+HIDDEN_LAYERS = range(1)
+HIDDEN_LAYER_NEURONS = range(8)
