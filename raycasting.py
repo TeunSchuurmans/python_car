@@ -28,11 +28,29 @@ class RayCaster:
         side2 = y - self.npc.center[1]
         return  math.sqrt(side1**2 + side2 **2)
 
+    def check_ray_collision(self, pos, dir):
+        roads = self.terrain.roads
+
+        if Tile.current(pos) in roads:
+            tile = roads[Tile.current(pos)]
+            if dir == 'ver':
+                if pos[0] in tile.collision_borders[0]:
+                 return True
+                else:
+                    return False
+            elif dir == 'hor':
+                if pos[1] in tile.collision_borders[1]:
+                    return True
+                else:
+                    return False
+        else:
+            return False
+
     #loop functions
     def cast_rays(self):
         for i, _ in enumerate(self.rays):
 
-            angle = self.ray_angle(i) + 1e-10
+            angle = self.ray_angle(i)
             tan_a = math.tan(angle)
             start_tb = self.terrain.roads[Tile.current(self.npc.center)].borders
 
@@ -56,9 +74,9 @@ class RayCaster:
                 h_dy = -h_dy
 
             for _ in DOF:
-                if self.ray_length(h_x_end, h_y_end) >= MAX_RAY_LENGTH:
+                if self.ray_length(h_x_end, h_y_end) >= MAX_RAY_LENGTH or self.check_ray_collision((h_x_end, h_y_end), 'hor'):
                     break
-                pg.draw.circle(self.game.screen, 'blue', (h_x_end, h_y_end), 4)
+                #pg.draw.circle(self.game.screen, 'blue', (h_x_end, h_y_end), 4)
                 h_x_end += h_dx
                 h_y_end += h_dy
 
@@ -83,9 +101,9 @@ class RayCaster:
 
 
             for _ in DOF:
-                if self.ray_length(v_x_end, v_y_end) >= MAX_RAY_LENGTH:
+                if self.ray_length(v_x_end, v_y_end) >= MAX_RAY_LENGTH or self.check_ray_collision((v_x_end, v_y_end), 'ver'):
                     break
-                pg.draw.circle(self.game.screen, 'green', (v_x_end, v_y_end), 4)
+                #pg.draw.circle(self.game.screen, 'green', (v_x_end, v_y_end), 4)
                 v_x_end += v_dx
                 v_y_end += v_dy
 

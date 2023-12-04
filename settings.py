@@ -2,7 +2,7 @@ import pygame as pg
 import math
 
 # game settings
-RES = WIDTH, HEIGHT = 1600, 900
+RES = WIDTH, HEIGHT = 1000, 600
 FPS = 144
 
 # terrain settings
@@ -10,7 +10,7 @@ ROWS = 9
 COLUMNS = 16
 TILE_SIZE = 100
 TILE_CENTER = TILE_SIZE / 2
-SHOW_GRID = True
+SHOW_GRID = False
 TILE_IMAGES = {
     'grid': pg.transform.scale(pg.image.load('images/grid.png'), (TILE_SIZE, TILE_SIZE)),
     'grass': pg.transform.scale(pg.image.load('images/grass.png'), (TILE_SIZE, TILE_SIZE)),
@@ -42,9 +42,9 @@ FRICTION = MAX_SPEED / 150
 BRAKE_SPEED = 1.01
 
 # raycaster  settings
-NUM_OF_RAYS = 2
-MAX_RAY_LENGTH = 400
-RAY_SPREAD = 0
+NUM_OF_RAYS = 5
+MAX_RAY_LENGTH = 100
+RAY_SPREAD = math.pi
 HALF_SPREAD = RAY_SPREAD / 2
 RAY_GAP = RAY_SPREAD / (NUM_OF_RAYS - 1)
 DOF = range(5)

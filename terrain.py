@@ -24,8 +24,8 @@ class Terrain:
     # terrain generating algorithm. STILL IN PROGRESS!!!
     def generate_road(self):
         self.clear_tiles()
-
         # temporary tile map
+
         self.tile_map = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 5, 3, 3, 4, 0, 0, 0, 0, 5, 3, 3, 3, 3, 4, 0],
@@ -45,10 +45,7 @@ class Terrain:
             for col_i, tile in enumerate(row):
                 key = (col_i, row_i)
                 pos = (col_i * TILE_SIZE, row_i * TILE_SIZE)
-                if tile:
-                    self.roads[key] = Tile(self, pos, tile)
-                else:
-                    Tile(self, pos, tile)
+                self.roads[key] = Tile(self, pos, tile)
                 if SHOW_GRID:
                     Tile(self, pos, 'grid')
 
@@ -118,7 +115,7 @@ class Tile:
                 return (None, self.borders['right']), (None, self.borders['down'])
             case 0:
                 self.type = 'grass'
-                return (None, None), (None, None)
+                return (self.borders['left'], self.borders['right']), (self.borders['up'], self.borders['down'])
             case 'grid':
                 self.type = 'grid'
                 return (None, None), (None, None)
