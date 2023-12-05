@@ -11,13 +11,15 @@ class NNet:
             'input_to_hidden': [[round(random.uniform(0.0, 1.0), 9) for _ in HIDDEN_LAYER_NEURONS]for _ in range(INPUT_NEURONS)],
             'hidden_to_output': [[round(random.uniform(0.0, 1.0), 9) for _ in OUTPUT_NEURONS] for _ in HIDDEN_LAYERS],
         }
+        for x in self.weights['input_to_hidden']:
+            print(x)
+        print('test')
 
-
-    def get_average(self, index, value, node_amount):
+    def get_node_average(self, input_amount):
         value = 0
-        for i, x in range(node_amount):
+        for i, x in range(input_amount):
             value += 0
-        value /= node_amount
+        value /= input_amount
         return value
 
     def predict(self, data):
@@ -43,8 +45,6 @@ class NNet:
             data['angle'] / (math.pi * 2),
             data['rotation speed'] / ROTATION_SPEED,
         ] + [ray / MAX_RAY_LENGTH for ray in data['rays']]
-        hidden_layer = [self.get_average(index, value, INPUT_NEURONS) for index, value in enumerate(input_layer)]
-
-        print(self.weights)
+        hidden_layer = [self.get_node_average() for index, _ in enumerate(HIDDEN_LAYER_NEURONS)]
 
         return forward, left, right
