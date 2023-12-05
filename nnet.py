@@ -15,12 +15,8 @@ class NNet:
             print(x)
         print('test')
 
-    def get_node_average(self, input_amount):
-        value = 0
-        for i, x in range(input_amount):
-            value += 0
-        value /= input_amount
-        return value
+    def get_node_average(self, index, input_layer, weights):
+        return sum(node[index] * weights[i][index] for i, node in enumerate(input_layer)) / len(input_layer)
 
     def predict(self, data):
 
@@ -45,6 +41,6 @@ class NNet:
             data['angle'] / (math.pi * 2),
             data['rotation speed'] / ROTATION_SPEED,
         ] + [ray / MAX_RAY_LENGTH for ray in data['rays']]
-        hidden_layer = [self.get_node_average() for index, _ in enumerate(HIDDEN_LAYER_NEURONS)]
+        hidden_layer = [self.get_node_average(index, input_layer, self.weights['input_to_hidden']) for index, _ in enumerate(HIDDEN_LAYER_NEURONS)]
 
         return forward, left, right
