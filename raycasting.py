@@ -28,23 +28,17 @@ class RayCaster:
         side2 = y - self.npc.center[1]
         return  math.sqrt(side1**2 + side2 **2)
 
-    def check_ray_collision(self, pos, dir):
+    def check_ray_collision(self, pos, i):
         roads = self.terrain.roads
 
         if Tile.current(pos) in roads:
             tile = roads[Tile.current(pos)]
-            if dir == 'ver':
-                if pos[0] in tile.collision_borders[0]:
-                 return True
-                else:
-                    return False
-            elif dir == 'hor':
-                if pos[1] in tile.collision_borders[1]:
-                    return True
-                else:
-                    return False
+            if pos[i] in tile.collision_borders[i]:
+                return True
+            else:
+                return False
         else:
-            return False
+            return True
 
     #loop functions
     def cast_rays(self):
@@ -74,7 +68,7 @@ class RayCaster:
                 h_dy = -h_dy
 
             for _ in DOF:
-                if self.ray_length(h_x_end, h_y_end) >= MAX_RAY_LENGTH or self.check_ray_collision((h_x_end, h_y_end), 'hor'):
+                if self.ray_length(h_x_end, h_y_end) >= MAX_RAY_LENGTH or self.check_ray_collision((h_x_end, h_y_end), 1):
                     break
                 #pg.draw.circle(self.game.screen, 'blue', (h_x_end, h_y_end), 4)
                 h_x_end += h_dx
@@ -101,7 +95,7 @@ class RayCaster:
 
 
             for _ in DOF:
-                if self.ray_length(v_x_end, v_y_end) >= MAX_RAY_LENGTH or self.check_ray_collision((v_x_end, v_y_end), 'ver'):
+                if self.ray_length(v_x_end, v_y_end) >= MAX_RAY_LENGTH or self.check_ray_collision((v_x_end, v_y_end), 0):
                     break
                 #pg.draw.circle(self.game.screen, 'green', (v_x_end, v_y_end), 4)
                 v_x_end += v_dx
@@ -109,7 +103,6 @@ class RayCaster:
 
             ray_length = min(min(self.ray_length(h_x_end, h_y_end), self.ray_length(v_x_end, v_y_end)), MAX_RAY_LENGTH)
             self.rays[i] = ray_length
-
 
     def draw(self):
         for i, ray in enumerate(self.rays):

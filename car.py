@@ -52,9 +52,9 @@ class Car:
         else:
             self.speed = max(self.speed - FRICTION, 0)
         if left:
-            self.angle += self.rotation_speed % (math.pi * 2)
+            self.angle = (self.angle + self.rotation_speed) % (math.pi * 2)
         if right:
-            self.angle -= self.rotation_speed % (math.pi * 2)
+            self.angle = (self.angle - self.rotation_speed) % (math.pi * 2)
 
     def check_status(self):
         pass

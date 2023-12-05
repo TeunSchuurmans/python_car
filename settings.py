@@ -23,23 +23,22 @@ TILE_IMAGES = {
     'ul': pg.transform.rotate(pg.transform.scale(pg.image.load('images/straight_corner.png'), (TILE_SIZE, TILE_SIZE)), 180),
 }
 
-
 # car settings
 CAR_WIDTH = TILE_SIZE / 6
 CAR_HEIGHT = CAR_WIDTH * 2
 P1 = True
 P2 = False
-CAR_IMAGES = {
-    'p1': pg.transform.rotate(pg.transform.scale(pg.image.load('images/player_1.png'), (CAR_HEIGHT, CAR_WIDTH)), 90),
-    'p2': pg.transform.rotate(pg.transform.scale(pg.image.load('images/player_2.png'), (CAR_HEIGHT, CAR_WIDTH)), 90),
-    'npc': pg.transform.rotate(pg.transform.scale(pg.image.load('images/npc.png'), (CAR_HEIGHT, CAR_WIDTH)), 90),
-}
 MAX_SPEED = 2
 ACCELERATION = MAX_SPEED / 150
 ROTATION_SPEED = 0.05
 CORNERING_SPEED = ROTATION_SPEED * 15
 FRICTION = MAX_SPEED / 150
 BRAKE_SPEED = 1.01
+CAR_IMAGES = {
+    'p1': pg.transform.rotate(pg.transform.scale(pg.image.load('images/player_1.png'), (CAR_HEIGHT, CAR_WIDTH)), 90),
+    'p2': pg.transform.rotate(pg.transform.scale(pg.image.load('images/player_2.png'), (CAR_HEIGHT, CAR_WIDTH)), 90),
+    'npc': pg.transform.rotate(pg.transform.scale(pg.image.load('images/npc.png'), (CAR_HEIGHT, CAR_WIDTH)), 90),
+}
 
 # raycaster  settings
 NUM_OF_RAYS = 5
@@ -50,5 +49,7 @@ DOF = range(5)
 
 # nnet settings
 NPC_AMOUNT = range(1)
+INPUT_NEURONS = 3 + NUM_OF_RAYS
 HIDDEN_LAYERS = range(1)
-HIDDEN_LAYER_NEURONS = range(8)
+HIDDEN_LAYER_NEURONS = range(10)
+OUTPUT_NEURONS = range(3)

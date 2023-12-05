@@ -24,6 +24,7 @@ class Terrain:
     # terrain generating algorithm. STILL IN PROGRESS!!!
     def generate_road(self):
         self.clear_tiles()
+
         # temporary tile map
 
         self.tile_map = [
@@ -45,7 +46,10 @@ class Terrain:
             for col_i, tile in enumerate(row):
                 key = (col_i, row_i)
                 pos = (col_i * TILE_SIZE, row_i * TILE_SIZE)
-                self.roads[key] = Tile(self, pos, tile)
+                if tile:
+                    self.roads[key] = Tile(self, pos, tile)
+                else:
+                    Tile(self, pos, tile)
                 if SHOW_GRID:
                     Tile(self, pos, 'grid')
 
@@ -54,6 +58,8 @@ class Terrain:
 
 
 class Tile:
+
+    # init functions
     def __init__(self, terrain, pos, key):
         self.terrain = terrain
         self.key = key
@@ -63,6 +69,10 @@ class Tile:
         self.image = TILE_IMAGES[self.type]
         self.draw_on_surface()
 
+    def draw_on_surface(self):
+        self.terrain.surface.blit(self.image, self.pos)
+
+    # utility functions
     @property
     def borders(self):
         return {
@@ -130,7 +140,5 @@ class Tile:
 
         return hor, ver
 
-    def draw_on_surface(self):
-        self.terrain.surface.blit(self.image, self.pos)
 
 
