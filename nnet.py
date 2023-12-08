@@ -8,18 +8,15 @@ class NNet:
     def __init__(self, npc):
         self.npc = npc
         self.weights = {
-            'input_to_hidden': [[round(random.uniform(0.0, 1.0), 9) for _ in HIDDEN_LAYER_NEURONS]for _ in range(INPUT_NEURONS)],
-            'hidden_to_output': [[round(random.uniform(0.0, 1.0), 9) for _ in OUTPUT_NEURONS] for _ in HIDDEN_LAYERS],
+            'input_to_hidden': [[round(random.uniform(0.0, 1.7), 9) for _ in range(HIDDEN_LAYER_NEURONS)]for _ in range(INPUT_NEURONS)],
+            'hidden_to_output': [[round(random.uniform(0.0, 1.7), 9) for _ in range(OUTPUT_NEURONS)] for _ in range(HIDDEN_LAYER_NEURONS)],
         }
+        self.bias = round(random.uniform(0.0, 0.1), 9)
 
     def get_node_average(self, list_to_sum, weights):
-        return sum(num * weights[i] for i, num in enumerate(list_to_sum)) / len(list_to_sum)
+        return sum(num * weights[i] for i, num in enumerate(list_to_sum)) / len(list_to_sum) + self.bias
 
     def predict(self, data):
-
-        forward = random.getrandbits(1)
-        left = random.getrandbits(1)
-        right = random.getrandbits(1)
 
         input_layer = [
             data['speed'] / MAX_SPEED,
@@ -27,6 +24,12 @@ class NNet:
             data['rotation speed'] / ROTATION_SPEED,
         ] + [ray / MAX_RAY_LENGTH for ray in data['rays']]
 
-        hidden_layer = [self.get_node_average([1], [1]) for index, _ in enumerate(HIDDEN_LAYER_NEURONS)]
+        hidden_layer = [self.get_node_average(input_layer, [weight[index] for weight in self.weights['input_to_hidden']]) for index in range(HIDDEN_LAYER_NEURONS)]
 
-        return forward, left, right
+        output_layer = [self.get_node_average(hidden_layer, [weight[index] for weight in self.weights['hidden_to_output']]) for index, _ in enumerate(range(OUTPUT_NEURONS))]
+
+        # print(output_layer)
+
+        return [value > 0.5 for value in output_layer]
+
+

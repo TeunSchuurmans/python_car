@@ -18,7 +18,7 @@ class Car:
         self.terrain = terrain
         self.image = image
         self.x, self.y = terrain.start_pos
-        self.angle = 1e-1
+        self.angle = 1e-10
         self.speed = 0
         self.rotation_speed = 0
 
@@ -120,7 +120,6 @@ class Player(Car):
     def __init__(self, game, terrain, input_type, image):
         super().__init__(game, terrain, image)
         self.player_input = input_type
-        self.raycaster = RayCaster(game, terrain, self)
 
     def check_inputs(self):
         forward = False
@@ -146,13 +145,11 @@ class Player(Car):
             self.y -= dy
 
     def update(self):
-        self.raycaster.update()
         self.check_inputs()
         super().update()
 
     def draw(self):
         super().draw()
-        self.raycaster.draw()
 
 
 class Player1(Player):
