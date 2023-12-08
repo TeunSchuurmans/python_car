@@ -7,11 +7,13 @@ import random
 class NNet:
     def __init__(self, npc):
         self.npc = npc
-        self.weights = {
-            'input_to_hidden': [[round(random.uniform(0.0, 1.7), 9) for _ in range(HIDDEN_LAYER_NEURONS)]for _ in range(INPUT_NEURONS)],
-            'hidden_to_output': [[round(random.uniform(0.0, 1.7), 9) for _ in range(OUTPUT_NEURONS)] for _ in range(HIDDEN_LAYER_NEURONS)],
-        }
+        self.weights = {}
         self.bias = round(random.uniform(0.0, 0.1), 9)
+        self.init_weights()
+
+    def init_weights(self):
+        self.weights['input_to_hidden'] = [[round(random.uniform(0.0, 1.7), 9) for _ in range(HIDDEN_LAYER_NEURONS)] for _ in range(INPUT_NEURONS)]
+        self.weights['hidden_to_output'] = [[round(random.uniform(0.0, 1.7), 9) for _ in range(OUTPUT_NEURONS)] for _ in range(HIDDEN_LAYER_NEURONS)]
 
     def get_node_average(self, list_to_sum, weights):
         return sum(num * weights[i] for i, num in enumerate(list_to_sum)) / len(list_to_sum) + self.bias

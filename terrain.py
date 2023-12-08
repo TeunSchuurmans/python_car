@@ -5,11 +5,13 @@ Code inspired by : Coder Space
 """
 
 from settings import *
+from database import *
 
 
 class Terrain:
     def __init__(self, game):
         self.game = game
+        self.db = Database()
         self.surface = pg.Surface((WIDTH, HEIGHT))
         self.tile_map = [[0 for _ in range(COLUMNS)] for _ in range(ROWS)]
         self.roads = {}
@@ -26,7 +28,6 @@ class Terrain:
         self.clear_tiles()
 
         # temporary tile map
-
         self.tile_map = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 5, 3, 3, 4, 0, 0, 0, 0, 5, 3, 3, 3, 3, 4, 0],
@@ -55,6 +56,18 @@ class Terrain:
 
     def draw(self):
         self.game.screen.blit(self.surface, (0, 0))
+
+    def check_car_status(self):
+
+        """
+
+        if all npc cars are either dead, or have finished 2 laps:
+
+
+        """
+
+    def update(self):
+        self.check_car_status()
 
 
 class Tile:
@@ -139,6 +152,3 @@ class Tile:
             ver = True
 
         return hor, ver
-
-
-

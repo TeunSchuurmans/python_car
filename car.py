@@ -81,7 +81,7 @@ class Npc(Car):
         super().__init__(game, terrain, self.image)
 
     @property
-    def input_data(self):
+    def nnet_data(self):
         return {
             'speed': self.speed,
             'angle': self.angle,
@@ -89,11 +89,17 @@ class Npc(Car):
             'rays': self.raycaster.rays,
         }
 
+    @property
+    def db_data(self):
+        return None
+
     def delete(self):
+        # self.db_data should be added to a list upon crash
+
         del self.terrain.cars[self.key]
 
     def check_inputs(self):
-        forward, left, right = self.nnet.predict(self.input_data)
+        forward, left, right = self.nnet.predict(self.nnet_data)
         self.handle_inputs(forward, left, right)
 
     def handle_collision(self, dx, dy):

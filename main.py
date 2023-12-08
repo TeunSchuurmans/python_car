@@ -26,6 +26,7 @@ class Game:
             self.terrain.cars[i] = Npc(self, self.terrain, i)
 
     def update(self):
+        self.terrain.update()
         if P1:
             self.player_1.update()
         if P2:

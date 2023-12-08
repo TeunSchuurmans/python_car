@@ -24,9 +24,21 @@ class Database:
     def is_connected(self):
         return self.connection is not None
 
-    def insert(self):
+    def insert(self, db_data):
         if self.is_connected():
-            pass
+
+            """
+            what insert data should look like:
+            
+            id: auto ic
+            points: self.npc.points
+            weights: self.npc.nnet.weights
+            generation: auto ic
+            """
+
+            cursor = self.connection.cursor()
+            cursor.execute('INSERT INTO ')
+            cursor.close()
 
     def read(self):
         if self.is_connected():
@@ -41,16 +53,13 @@ class Database:
     def read_best(self):
         if self.is_connected():
             cursor = self.connection.cursor()
-            cursor.execute('SELECT * from `products`')
+            cursor.execute('SELECT `productID`, `productPrice` from `products` ORDER BY `productPrice`')
             result = cursor.fetchall()
             cursor.close()
-            return result
+            return result[0], result[1]
         else:
             return None
 
 
-database = Database()
-database.connect()
-print(database.read_best())
 
 
