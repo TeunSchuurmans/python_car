@@ -8,7 +8,7 @@ load_dotenv()
 class Database:
     def __init__(self):
         self.connection = None
-        self.database = 'webshop'
+        self.database = 'python_car'
         self.host = 'localhost'
         self.user = 'root'
         self.password = os.getenv('DB_PASSWORD')
@@ -22,7 +22,7 @@ class Database:
         )
 
     def disconnect(self):
-        if self.connection:
+        if self.is_connected():
             self.connection.close()
 
     def is_connected(self):
@@ -30,18 +30,15 @@ class Database:
 
     def insert(self, db_data):
         if self.is_connected():
-
-            """
-            what insert data should look like:
-            
-            id: auto ic
-            points: self.npc.points
-            weights: self.npc.nnet.weights
-            generation: auto ic
-            """
-
+            query = (
+                "INSERT INTO training_table "
+                "(generation, points, timeAlive, lapTime, hitWall, avgSpeed, weights) "
+                "VALUES "
+                "(%s, %s, %s, %s, %s, %s, %s)"
+            )
             cursor = self.connection.cursor()
-            cursor.execute('INSERT INTO ')
+            for value in db_data:
+                cursor.execute(query, [value[key] for key in value.keys()])
             cursor.close()
 
     def read(self):
@@ -57,7 +54,7 @@ class Database:
     def read_best(self):
         if self.is_connected():
             cursor = self.connection.cursor()
-            cursor.execute('SELECT `productID`, `productPrice` from `products` ORDER BY `productPrice`')
+            cursor.execute('SELECT `weights` from training_table ORDER BY `points` desc')
             result = cursor.fetchall()
             cursor.close()
             return result[0], result[1]

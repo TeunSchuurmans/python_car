@@ -16,16 +16,13 @@ class Terrain:
         self.tile_map = [[0 for _ in range(COLUMNS)] for _ in range(ROWS)]
         self.roads = {}
         self.cars = {}
+        self.db_data_list = []
         self.start_pos = WIDTH / 2, HEIGHT / 2
         self.generate_road()
 
-    def clear_tiles(self):
-        self.tile_map = [[0 for _ in range(COLUMNS)] for _ in range(ROWS)]
-        self.roads.clear()
-
     # terrain generating algorithm. STILL IN PROGRESS!!!
     def generate_road(self):
-        self.clear_tiles()
+        self.clear()
 
         # temporary tile map
         self.tile_map = [
@@ -42,6 +39,14 @@ class Terrain:
 
         self.init_tiles()
 
+    def clear(self):
+        self.tile_map = [[0 for _ in range(COLUMNS)] for _ in range(ROWS)]
+        self.roads.clear()
+        self.roads.clear()
+        self.cars.clear()
+        self.db_data_list.clear()
+        self.start_pos = WIDTH / 2, HEIGHT / 2
+
     def init_tiles(self):
         for row_i, row in enumerate(self.tile_map):
             for col_i, tile in enumerate(row):
@@ -57,17 +62,12 @@ class Terrain:
     def draw(self):
         self.game.screen.blit(self.surface, (0, 0))
 
-    def check_car_status(self):
-
-        """
-
-        if all npc cars are either dead, or have finished 2 laps:
-
-
-        """
+    def check_cars_status(self):
+        if len(self.cars) == 0:
+            self.db.insert(self.db_data_list)
 
     def update(self):
-        self.check_car_status()
+        self.check_cars_status()
 
 
 class Tile:

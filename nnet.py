@@ -5,7 +5,7 @@ import random
 
 
 class NNet:
-    def __init__(self, npc):
+    def __init__(self, npc, weights):
         self.npc = npc
         self.weights = {}
         self.bias = round(random.uniform(0.0, 0.1), 9)

@@ -8,6 +8,7 @@ Code inspired by: Dr. Radu Mariescu-Istodor
 """
 
 
+import json
 from raycasting import *
 from terrain import *
 
@@ -21,6 +22,9 @@ class Car:
         self.angle = 1e-10
         self.speed = 0
         self.rotation_speed = 0
+        self.time = 0
+        self.distance = 0
+        self.laps = []
 
     @property
     def center(self):
@@ -56,8 +60,14 @@ class Car:
         if right:
             self.angle = (self.angle - self.rotation_speed) % (math.pi * 2)
 
-    def check_status(self):
-        pass
+        self.distance += self.speed
+
+    def car_status(self):
+        return True
+
+    def tick(self):
+        if self.car_status() != 'not driving':
+            self.time += 1
 
     def draw(self):
 
@@ -68,17 +78,21 @@ class Car:
         self.game.screen.blit(rotated_car, car_rect.topleft)
 
     def update(self):
+        self.tick()
         self.movement()
 
 
 class Npc(Car):
-    def __init__(self, game, terrain, index):
+    def __init__(self, game, terrain, index, weights):
         self.image = CAR_IMAGES['npc']
         self.key = index
         self.raycaster = RayCaster(game, terrain, self)
-        self.nnet = NNet(self)
+        self.nnet = NNet(self, weights)
         self.points = 0
         super().__init__(game, terrain, self.image)
+
+    def __del__(self):
+        self.terrain.db_data_list.append(self.db_data)
 
     @property
     def nnet_data(self):
@@ -91,22 +105,35 @@ class Npc(Car):
 
     @property
     def db_data(self):
-        return None
+        return {
+            'generation': 0,
+            'points': self.points,
+            'timeAlive': self.time,
+            'lapTime': sorted(self.laps)[0] if len(self.laps) > 0 else None,
+            'avgSpeed': round(self.distance / self.time, 2),
+            'hitWall': False,
+            'weights': json.dumps(self.nnet.weights),
+        }
 
-    def delete(self):
-        # self.db_data should be added to a list upon crash
-
-        del self.terrain.cars[self.key]
+    @db_data.setter
+    def db_data(self, data):
+        key, value = data
+        self.db_data[key] = value
 
     def check_inputs(self):
         forward, left, right = self.nnet.predict(self.nnet_data)
         self.handle_inputs(forward, left, right)
 
+    def check_laps(self):
+        if len(self.laps) >= 2:
+            del self.terrain.cars[self.key]
+
     def handle_collision(self, dx, dy):
         hor, ver = self.check_collision(dx, dy)
 
         if not hor or not ver:
-            self.delete()
+            self.db_data = ('hit_wall', True)
+            del self.terrain.cars[self.key]
         else:
             self.x -= dx
             self.y -= dy
@@ -118,6 +145,7 @@ class Npc(Car):
     def update(self):
         self.raycaster.update()
         self.check_inputs()
+        self.check_laps()
         super().movement()
 
 
