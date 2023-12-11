@@ -5,5 +5,6 @@ with this project I want to get more comfortable using algebra, python, pygame a
 
 dependencies:
     pygame
+    
 
 

@@ -1,4 +1,8 @@
 import mysql.connector
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class Database:
@@ -7,7 +11,7 @@ class Database:
         self.database = 'webshop'
         self.host = 'localhost'
         self.user = 'root'
-        self.password = '6Nj3LKfMYzvzyKr8'
+        self.password = os.getenv('DB_PASSWORD')
 
     def connect(self):
         self.connection = mysql.connector.connect(
