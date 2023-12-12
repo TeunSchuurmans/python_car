@@ -1,0 +1,20 @@
+    def tick_timer(self):
+        self.total_time += 1
+        self.lap_time += 1
+
+    def mark_tiles(self):
+        self.tiles_visited[self.center] = True
+
+    def handle_laps(self):
+        if self.terrain.roads[Tile.current(self.center)].type == 'finish' and all(value for value in self.tiles_visited.values()):
+              self.laps.append(self.lap_time)
+              self.lap_time = 0
+              self.tiles_visited = {key: False for key in my_dict}
+
+    def check_if_completed_two_laps(self):
+       if len(self.laps) >= 2:
+           del self.terrain.npc_list[self.key]
+
+    def check_if_dnf(self):
+        if self.time >= 18000:
+            del self.terrain.npc_list[self.key]

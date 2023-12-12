@@ -22,15 +22,30 @@ class Car:
         self.angle = 1e-10
         self.speed = 0
         self.rotation_speed = 0
-        self.time = 1
-        self.distance = 0
+        self.tiles_visited = {key: False for key in self.terrain.roads}
+        self.driving = False
+        self.total_time = 1
+        self.lap_time = 1
         self.laps = []
+        self.distance = 0
 
     @property
     def center(self):
         return self.x + (CAR_WIDTH / 2), self.y + (CAR_HEIGHT / 2)
 
     # loop functions
+    def handle_inputs(self, forward, left, right):
+        if forward:
+            self.speed = min(self.speed + ACCELERATION, MAX_SPEED)
+        else:
+            self.speed = max(self.speed - FRICTION, 0)
+        if left:
+            self.angle = (self.angle + self.rotation_speed) % (math.pi * 2)
+        if right:
+            self.angle = (self.angle - self.rotation_speed) % (math.pi * 2)
+
+        self.distance += self.speed
+        
     def movement(self):
         if self.speed <= FRICTION:
             self.rotation_speed = 0
@@ -50,24 +65,19 @@ class Car:
         else:
             return True, True
 
-    def handle_inputs(self, forward, left, right):
-        if forward:
-            self.speed = min(self.speed + ACCELERATION, MAX_SPEED)
-        else:
-            self.speed = max(self.speed - FRICTION, 0)
-        if left:
-            self.angle = (self.angle + self.rotation_speed) % (math.pi * 2)
-        if right:
-            self.angle = (self.angle - self.rotation_speed) % (math.pi * 2)
+    def tick_timer(self):
+        self.total_time += 1
+        self.lap_time += 1
 
-        self.distance += self.speed
+    def mark_tiles(self):
+        self.tiles_visited[self.center] = True
 
-    def car_status(self):
-        return True
-
-    def tick(self):
-        if self.car_status() != 'not driving':
-            self.time += 1
+    def check_laps(self):
+        if self.terrain.roads[Tile.current(self.center)].type == 'finish' and all(
+                value for value in self.tiles_visited.values()):
+            self.laps.append(self.lap_time)
+            self.lap_time = 0
+            self.tiles_visited = {key: False for key in self.tiles_visited}
 
     def draw(self):
 
@@ -79,7 +89,9 @@ class Car:
 
     def update(self):
         self.movement()
-        self.tick()
+        self.tick_timer()
+        self.mark_tiles()
+        self.check_laps()
 
 
 class Npc(Car):
@@ -108,9 +120,9 @@ class Npc(Car):
         return {
             'generation': 0,
             'points': self.points,
-            'timeAlive': self.time,
+            'timeAlive': self.total_time,
             'lapTime': sorted(self.laps)[0] if len(self.laps) > 0 else None,
-            'avgSpeed': round(self.distance / self.time, 2),
+            'avgSpeed': round(self.distance / self.total_time, 2),
             'hitWall': False,
             'weights': json.dumps(self.nnet.weights),
         }
@@ -124,29 +136,34 @@ class Npc(Car):
         forward, left, right = self.nnet.predict(self.nnet_data)
         self.handle_inputs(forward, left, right)
 
-    def check_laps(self):
-        if len(self.laps) >= 2:
-            del self.terrain.cars[self.key]
-
     def handle_collision(self, dx, dy):
         hor, ver = self.check_collision(dx, dy)
 
         if not hor or not ver:
             self.db_data = ('hit_wall', True)
-            del self.terrain.cars[self.key]
+            del self.terrain.npc_list[self.key]
         else:
             self.x -= dx
             self.y -= dy
 
+    def check_if_completed_two_laps(self):
+        if len(self.laps) >= 2:
+            del self.terrain.npc_list[self.key]
+
+    def check_if_dnf(self):
+        if self.total_time >= 120*FPS:
+            del self.terrain.npc_list[self.key]
+    
     def draw(self):
         super().draw()
         self.raycaster.draw()
 
     def update(self):
+        super().update()
+        self.check_if_completed_two_laps()
+        self.check_if_dnf()
         self.raycaster.update()
         self.check_inputs()
-        self.check_laps()
-        super().movement()
 
 
 class Player(Car):

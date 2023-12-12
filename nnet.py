@@ -8,7 +8,7 @@ class NNet:
     def __init__(self, npc, weights):
         self.npc = npc
         self.weights = {}
-        self.bias = round(random.uniform(0.0, 0.1), 9)
+        self.bias = round(random.uniform(0.0, 0.1), 11)
         self.init_weights()
 
     def init_weights(self):
@@ -33,5 +33,6 @@ class NNet:
         # print(output_layer)
 
         return [value > 0.5 for value in output_layer]
+
 
 
