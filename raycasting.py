@@ -16,7 +16,6 @@ class RayCaster:
         self.game = game
         self.terrain = terrain
         self.npc = npc
-        self.nnet = NNet(self)
         self.rays = [0 for _ in range(NUM_OF_RAYS)]
 
     #utility functions

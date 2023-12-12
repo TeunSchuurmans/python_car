@@ -22,7 +22,7 @@ class Car:
         self.angle = 1e-10
         self.speed = 0
         self.rotation_speed = 0
-        self.time = 0
+        self.time = 1
         self.distance = 0
         self.laps = []
 
@@ -78,8 +78,8 @@ class Car:
         self.game.screen.blit(rotated_car, car_rect.topleft)
 
     def update(self):
-        self.tick()
         self.movement()
+        self.tick()
 
 
 class Npc(Car):

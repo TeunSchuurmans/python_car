@@ -18,7 +18,7 @@ class Game:
         self.screen = pg.display.set_mode(RES)
         self.clock = pg.time.Clock()
         self.terrain = Terrain(self)
-        self.init_cars({})
+        self.init_cars()
 
     def update(self):
         self.terrain.update()
@@ -43,15 +43,15 @@ class Game:
 
     def reset(self):
         self.terrain.generate_road()
-        self.init_cars({})
+        self.init_cars()
 
-    def init_cars(self, weights):
+    def init_cars(self):
         if P1:
             self.player_1 = Player1(self, self.terrain)
         if P2:
             self.player_2 = Player2(self, self.terrain)
         for key in NPC_AMOUNT:
-            self.terrain.cars[key] = Npc(self, self.terrain, key, weights)
+            self.terrain.cars[key] = Npc(self, self.terrain, key, {})
 
     @staticmethod
     def check_events():
