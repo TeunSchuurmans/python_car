@@ -134,7 +134,7 @@ class Npc(Car):
         self.db_data[key] = value
 
     def calculate_points(self):
-        points = 0
+        points = self.db_data['avgSpeed'] * self.db_data['timeAlive'] / 2 if self.db_data['hitWall'] else self.db_data['avgSpeed'] * self.db_data['timeAlive']
         self.db_data = ('points', points)
 
     # loop functions
@@ -157,7 +157,8 @@ class Npc(Car):
             del self.terrain.npc_list[self.key]
 
     def check_if_dnf(self):
-        if self.total_time >= 10*FPS:
+        #print(self.total_time)
+        if self.total_time >= 2*FPS:
             del self.terrain.npc_list[self.key]
     
     def draw(self):

@@ -29,7 +29,6 @@ class Database:
         return self.connection is not None
 
     def insert(self, db_data):
-        print('inserting')
         self.connect()
         if self.is_connected():
             query = (
@@ -63,7 +62,6 @@ class Database:
             cursor = self.connection.cursor()
             cursor.execute('SELECT `weights` from training_table ORDER BY `points` desc LIMIT 2')
             result = cursor.fetchall()
-            print(result)
             cursor.close()
             self.disconnect()
             return result
