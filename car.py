@@ -104,6 +104,7 @@ class Npc(Car):
         super().__init__(game, terrain, self.image)
 
     def __del__(self):
+        self.calculate_points()
         self.terrain.db_data_list.append(self.db_data)
 
     @property
@@ -132,6 +133,11 @@ class Npc(Car):
         key, value = data
         self.db_data[key] = value
 
+    def calculate_points(self):
+        points = 0
+        self.db_data = ('points', points)
+
+    # loop functions
     def check_inputs(self):
         forward, left, right = self.nnet.predict(self.nnet_data)
         self.handle_inputs(forward, left, right)
@@ -151,7 +157,7 @@ class Npc(Car):
             del self.terrain.npc_list[self.key]
 
     def check_if_dnf(self):
-        if self.total_time >= 120*FPS:
+        if self.total_time >= 10*FPS:
             del self.terrain.npc_list[self.key]
     
     def draw(self):

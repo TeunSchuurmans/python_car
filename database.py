@@ -29,6 +29,8 @@ class Database:
         return self.connection is not None
 
     def insert(self, db_data):
+        print('inserting')
+        self.connect()
         if self.is_connected():
             query = (
                 "INSERT INTO training_table "
@@ -39,25 +41,32 @@ class Database:
             cursor = self.connection.cursor()
             for value in db_data:
                 cursor.execute(query, [value[key] for key in value.keys()])
+            self.connection.commit()
             cursor.close()
+            self.disconnect()
 
     def read(self):
+        self.connect()
         if self.is_connected():
             cursor = self.connection.cursor()
             cursor.execute('SELECT * from `products`')
             result = cursor.fetchall()
             cursor.close()
+            self.disconnect()
             return result
         else:
             return None
 
     def read_best(self):
+        self.connect()
         if self.is_connected():
             cursor = self.connection.cursor()
-            cursor.execute('SELECT `weights` from training_table ORDER BY `points` desc')
+            cursor.execute('SELECT `weights` from training_table ORDER BY `points` desc LIMIT 2')
             result = cursor.fetchall()
+            print(result)
             cursor.close()
-            return result[0], result[1]
+            self.disconnect()
+            return result
         else:
             return None
 

@@ -18,14 +18,15 @@ class Game:
         self.screen = pg.display.set_mode(RES)
         self.clock = pg.time.Clock()
         self.terrain = Terrain(self)
+        self.init_cars(self.terrain.db.read_best())
 
-    def init_cars(self):
+    def init_cars(self, weights):
         if P1:
             self.terrain.player_list[0] = Player1(self, self.terrain)
         if P2:
             self.terrain.player_list[1] = Player2(self, self.terrain)
         for key in NPC_AMOUNT:
-            self.terrain.npc_list[key] = Npc(self, self.terrain, key, {})
+            self.terrain.npc_list[key] = Npc(self, self.terrain, key, weights)
 
     def update(self):
         self.terrain.update()
