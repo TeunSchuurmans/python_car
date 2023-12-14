@@ -47,12 +47,13 @@ class Game:
         for _, car in list(self.terrain.npc_list.items()):
             car.draw()
 
-    @staticmethod
-    def check_events():
+    def check_events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT or (event.type == pg.KEYUP and event.key == pg.K_ESCAPE):
                 pg.quit()
                 sys.exit()
+            if event.type == pg.KEYUP and event.key == pg.K_r:
+                self.terrain.npc_list.clear()
 
     def main_loop(self):
         while True:
