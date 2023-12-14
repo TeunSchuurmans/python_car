@@ -104,6 +104,7 @@ class Npc(Car):
         super().__init__(game, terrain, self.image)
 
     def __del__(self):
+        print(f'car {self.key} dead')
         self.calculate_points()
         self.terrain.db_data_list.append(self.db_data)
 
@@ -135,9 +136,7 @@ class Npc(Car):
 
     def calculate_points(self):
         points = self.db_data['avgSpeed'] * self.db_data['timeAlive'] / 2 if self.db_data['hitWall'] else self.db_data['avgSpeed'] * self.db_data['timeAlive']
-        print(f'car {self.key} points: {points}')
         self.db_data = ('points', points)
-        print()
 
     # loop functions
     def check_inputs(self):
