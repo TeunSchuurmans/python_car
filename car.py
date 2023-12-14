@@ -100,12 +100,10 @@ class Npc(Car):
         self.key = index
         self.raycaster = RayCaster(game, terrain, self)
         self.nnet = NNet(self, weights)
-        self.points = 0
         super().__init__(game, terrain, self.image)
 
-    def __del__(self):
-        print(f'car {self.key} dead')
-        self.calculate_points()
+    def delete(self):
+        del self.terrain.npc_list[self.key]
         self.terrain.db_data_list.append(self.db_data)
 
     @property
@@ -119,9 +117,13 @@ class Npc(Car):
 
     @property
     def db_data(self):
+        avg_speed = round(self.distance / self.total_time, 2)
+        time_alive = self.total_time
+        hit_wall = False
+
         return {
             'generation': 0,
-            'points': self.points,
+            'points': Npc.calc_points(avg_speed, time_alive, hit_wall),
             'timeAlive': self.total_time,
             'lapTime': sorted(self.laps)[0] if len(self.laps) > 0 else None,
             'avgSpeed': round(self.distance / self.total_time, 2),
@@ -129,14 +131,12 @@ class Npc(Car):
             'weights': json.dumps(self.nnet.weights),
         }
 
-    @db_data.setter
-    def db_data(self, data):
-        key, value = data
-        self.db_data[key] = value
-
-    def calculate_points(self):
-        points = self.db_data['avgSpeed'] * self.db_data['timeAlive'] / 2 if self.db_data['hitWall'] else self.db_data['avgSpeed'] * self.db_data['timeAlive']
-        self.db_data = ('points', points)
+    @staticmethod
+    def calc_points(avg_speed, time_alive, hit_wall):
+        if hit_wall:
+            return avg_speed * time_alive / 2
+        else:
+            return avg_speed * time_alive
 
     # loop functions
     def check_inputs(self):
@@ -147,19 +147,19 @@ class Npc(Car):
         hor, ver = self.check_collision(dx, dy)
 
         if not hor or not ver:
-            self.db_data = ('hit_wall', True)
-            del self.terrain.npc_list[self.key]
+            self.db_data['hitWall'] = True
+            self.delete()
         else:
             self.x -= dx
             self.y -= dy
 
     def check_if_completed_two_laps(self):
         if len(self.laps) >= 2:
-            del self.terrain.npc_list[self.key]
+            self.delete()
 
     def check_if_dnf(self):
         if self.total_time >= 10*FPS:
-            del self.terrain.npc_list[self.key]
+            self.delete()
     
     def draw(self):
         super().draw()

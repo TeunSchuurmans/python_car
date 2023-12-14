@@ -59,9 +59,7 @@ class Terrain:
 
     def handle_all_cars_dead(self):
         if not self.npc_list:
-            print('all cars are dead')
             self.db.insert(self.db_data_list)
-            self.npc_list.clear()
             self.player_list.clear()
             self.game.init_cars(self.db.read_best())
 
