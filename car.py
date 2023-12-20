@@ -123,20 +123,29 @@ class Npc(Car):
 
         return {
             'generation': 0,
-            'points': Npc.calc_points(avg_speed, time_alive, hit_wall),
-            'timeAlive': self.total_time,
+            'points': Npc.calc_points(avg_speed, time_alive, hit_wall, len(self.laps)),
+            'timeAlive': time_alive,
             'lapTime': sorted(self.laps)[0] if len(self.laps) > 0 else None,
-            'avgSpeed': round(self.distance / self.total_time, 2),
-            'hitWall': False,
+            'avgSpeed': avg_speed,
+            'hitWall': hit_wall,
             'weights': json.dumps(self.nnet.weights),
         }
 
     @staticmethod
-    def calc_points(avg_speed, time_alive, hit_wall):
-        if hit_wall:
-            return avg_speed * time_alive / 2
-        else:
-            return avg_speed * time_alive
+    def calc_points(avg_speed, time_alive, hit_wall, laps_completed):
+        base_points = 0
+
+        time_alive_bonus = time_alive * 5
+
+        hit_wall = 200 if hit_wall else 0
+
+        lap_bonus = laps_completed * 200
+
+        speed_penalty = max(0, 50 - avg_speed)
+
+        total_points = base_points + lap_bonus + time_alive_bonus - speed_penalty - hit_wall
+
+        return max(0, total_points)
 
     # loop functions
     def check_inputs(self):
@@ -231,3 +240,4 @@ class Player2(Player):
             'left': pg.K_LEFT,
         }
         super().__init__(game, road, self.input_type, self.image)
+    

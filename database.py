@@ -60,8 +60,12 @@ class Database:
         self.connect()
         if self.is_connected():
             cursor = self.connection.cursor()
-            cursor.execute('SELECT `weights` from training_table ORDER BY `points` desc LIMIT 2')
-            result = cursor.fetchall()
+            cursor.execute('SELECT `weights`, `bias` from training_table ORDER BY `points` desc LIMIT 2')
+            data = cursor.fetchall()
+            result = {
+                'weights': data[0],
+                'bias': data[1],
+            }
             cursor.close()
             self.disconnect()
             return result
